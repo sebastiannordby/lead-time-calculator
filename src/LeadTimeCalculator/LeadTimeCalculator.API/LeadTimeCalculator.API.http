@@ -1,0 +1,6 @@
+@LeadTimeCalculator.API_HostAddress = http://localhost:5147
+
+GET {{LeadTimeCalculator.API_HostAddress}}/weatherforecast/
+Accept: application/json
+
+###
