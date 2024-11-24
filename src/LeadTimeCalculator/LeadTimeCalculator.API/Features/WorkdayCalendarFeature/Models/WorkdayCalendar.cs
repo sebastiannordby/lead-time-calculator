@@ -1,17 +1,52 @@
-﻿namespace LeadTimeCalculator.API.Features.WorkdayCalendarFeature.Models
+﻿using LeadTimeCalculator.API.Shared.Exceptions;
+
+namespace LeadTimeCalculator.API.Features.WorkdayCalendarFeature.Models
 {
     public class WorkdayCalendar
     {
+        public int Id { get; private set; }
         private readonly Dictionary<DayOfWeek, (TimeSpan Start, TimeSpan End)> _defaultWorkHours;
         private readonly List<Holiday> _holidays;
         private readonly List<ExceptionDay> _exceptionDays;
         private readonly Dictionary<DateTime, WorkingDay> _specificDays;
-        private readonly double DefaulWorkhoursPerDay = 8;
+        private readonly double _defaultWorkhoursPerDay = 8;
+
+        internal WorkdayCalendar(
+            int id,
+            TimeSpan defaultWorkdayStartTime,
+            TimeSpan defaultWorkdayEndTime)
+        {
+            if (id <= 0)
+                throw new DomainException(
+                    "Id cannot be less than or equal to 0");
+            if (defaultWorkdayEndTime < defaultWorkdayStartTime)
+                throw new DomainException(
+                    $"{defaultWorkdayEndTime} cannot be less than {defaultWorkdayStartTime}");
+
+            var defaultNumberOfWorkingHoursPerDay =
+                (defaultWorkdayStartTime - defaultWorkdayEndTime).Hours;
+            if (defaultNumberOfWorkingHoursPerDay < 1)
+                throw new DomainException(
+                    "Number of hours of work per day must be greater than or equal to 1");
+
+            Id = id;
+
+            _defaultWorkHours = new Dictionary<DayOfWeek, (TimeSpan Start, TimeSpan End)>
+            {
+                { DayOfWeek.Monday, (defaultWorkdayStartTime, defaultWorkdayEndTime) },
+                { DayOfWeek.Tuesday, (defaultWorkdayStartTime, defaultWorkdayEndTime) },
+                { DayOfWeek.Wednesday, (defaultWorkdayStartTime, defaultWorkdayEndTime) },
+                { DayOfWeek.Thursday, (defaultWorkdayStartTime, defaultWorkdayEndTime) },
+                { DayOfWeek.Friday, (defaultWorkdayStartTime, defaultWorkdayEndTime) }
+            };
+        }
 
         public WorkdayCalendar(
+            double defaultWorkhoursPerDay,
             Dictionary<DayOfWeek, (TimeSpan Start, TimeSpan End)> defaultWorkHours,
             IEnumerable<Holiday> holidays)
         {
+            _defaultWorkhoursPerDay = defaultWorkhoursPerDay;
             _defaultWorkHours = defaultWorkHours;
             _holidays = holidays.ToList();
             _exceptionDays = new List<ExceptionDay>();
@@ -70,11 +105,11 @@
                     availableTime = workDayDuration;
                 }
 
-                var availableFractionOfWorkday = availableTime.TotalHours / DefaulWorkhoursPerDay;
+                var availableFractionOfWorkday = availableTime.TotalHours / _defaultWorkhoursPerDay;
 
                 if (remainingDays <= availableFractionOfWorkday)
                 {
-                    var hoursToAdjust = remainingDays * DefaulWorkhoursPerDay;
+                    var hoursToAdjust = remainingDays * _defaultWorkhoursPerDay;
 
                     return isAdding
                         ? ResetToWholeSecond(currentWorkday.AddHours(hoursToAdjust))

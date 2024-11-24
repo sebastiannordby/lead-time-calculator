@@ -8,5 +8,10 @@ namespace LeadTimeCalculator.API.Tests.Integration
         {
             Xunit.Assert.Equal(HttpStatusCode.OK, response.StatusCode);
         }
+
+        public static void AssertBadInputRequest(HttpResponseMessage response)
+        {
+            Xunit.Assert.Equal(HttpStatusCode.BadRequest, response.StatusCode);
+        }
     }
 }

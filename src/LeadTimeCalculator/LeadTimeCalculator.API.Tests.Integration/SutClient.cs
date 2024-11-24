@@ -1,4 +1,6 @@
-﻿namespace LeadTimeCalculator.API.Tests.Integration
+﻿using LeadTimeCalculator.API.Constracts.WorkdayCalendar.CreateCalendar;
+
+namespace LeadTimeCalculator.API.Tests.Integration
 {
     public class SutClient
     {
@@ -7,6 +9,15 @@
         public SutClient(HttpClient httpClient)
         {
             _httpClient = httpClient;
+        }
+
+        internal async Task<HttpResponseMessage> CreateWorkdayCalendar(
+            CreateWorkdayCalendarRequest request)
+        {
+            var response = await _httpClient
+                .PostAsJsonAsync("/api/workday-calendar", request);
+
+            return response;
         }
 
         internal async Task<HttpResponseMessage> GetWeatherForecast()
