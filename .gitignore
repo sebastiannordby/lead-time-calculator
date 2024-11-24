@@ -4,3 +4,8 @@
 
 /src/LeadTimeCalculator/.vs/LeadTimeCalculator
 /src/LeadTimeCalculator/LeadTimeCalculator.API/obj
+/src/LeadTimeCalculator/LeadTimeCalculator.API.Tests.Unit/obj/Debug/net9.0
+/src/LeadTimeCalculator/LeadTimeCalculator.API.Tests.Unit/obj
+/src/LeadTimeCalculator/.vs/ProjectEvaluation
+/src/LeadTimeCalculator/LeadTimeCalculator.API/bin/Debug/net9.0
+/src/LeadTimeCalculator/LeadTimeCalculator.API.Tests.Unit/bin/Debug/net9.0
