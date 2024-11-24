@@ -30,6 +30,7 @@ namespace LeadTimeCalculator.API.Tests.Unit.Features.WorkdayCalendarFeature
                 { DayOfWeek.Friday, (TimeSpan.FromHours(8), TimeSpan.FromHours(16)) },
             };
             var workdayCalendar = new WorkdayCalendar(
+                defaultWorkhoursPerDay: 8,
                 defaultWorkingDays,
                 Enumerable.Empty<Holiday>());
 
@@ -66,6 +67,7 @@ namespace LeadTimeCalculator.API.Tests.Unit.Features.WorkdayCalendarFeature
                 { DayOfWeek.Friday, (TimeSpan.FromHours(8), TimeSpan.FromHours(16)) },
             };
             var workdayCalendar = new WorkdayCalendar(
+                defaultWorkhoursPerDay: 8,
                 defaultWorkingDays,
                 Enumerable.Empty<Holiday>());
 
@@ -109,6 +111,7 @@ namespace LeadTimeCalculator.API.Tests.Unit.Features.WorkdayCalendarFeature
             };
 
             var workdayCalendar = new WorkdayCalendar(
+                defaultWorkhoursPerDay: 8,
                 defaultWorkingDays,
                 holidays);
 
@@ -168,6 +171,7 @@ namespace LeadTimeCalculator.API.Tests.Unit.Features.WorkdayCalendarFeature
             };
 
             var workdayCalendar = new WorkdayCalendar(
+                defaultWorkhoursPerDay: 8,
                 defaultWorkingDays,
                 holidays);
 

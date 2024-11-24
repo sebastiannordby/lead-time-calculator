@@ -22,6 +22,7 @@ namespace LeadTimeCalculator.API.Tests.Unit.Features.WorkdayCalendarFeature
                 { DayOfWeek.Friday, (TimeSpan.FromHours(8), TimeSpan.FromHours(16)) },
             };
             var workdayCalendar = new WorkdayCalendar(
+                defaultWorkhoursPerDay: 8,
                 defaultWorkingDays,
                 Enumerable.Empty<Holiday>());
 
@@ -60,6 +61,7 @@ namespace LeadTimeCalculator.API.Tests.Unit.Features.WorkdayCalendarFeature
             };
 
             var workdayCalendar = new WorkdayCalendar(
+                defaultWorkhoursPerDay: 8,
                 defaultWorkingDays,
                 holidays);
 
@@ -92,6 +94,7 @@ namespace LeadTimeCalculator.API.Tests.Unit.Features.WorkdayCalendarFeature
                 { DayOfWeek.Friday, (TimeSpan.FromHours(8), TimeSpan.FromHours(16)) },
             };
             var workdayCalendar = new WorkdayCalendar(
+                defaultWorkhoursPerDay: 8,
                 defaultWorkingDays,
                 Enumerable.Empty<Holiday>());
 
@@ -130,7 +133,10 @@ namespace LeadTimeCalculator.API.Tests.Unit.Features.WorkdayCalendarFeature
                 new ExceptionDay(new DateTime(2024, 3, 1), TimeSpan.FromHours(11), TimeSpan.FromHours(14))
             };
 
-            var workdayCalendar = new WorkdayCalendar(defaultWorkingHours, Enumerable.Empty<Holiday>());
+            var workdayCalendar = new WorkdayCalendar(
+                defaultWorkhoursPerDay: 8,
+                defaultWorkingHours,
+                Enumerable.Empty<Holiday>());
             exceptionDays.ForEach(workdayCalendar.AddExceptionDay);
 
             var startDate = DateTime.Parse("2024-03-01 12:00"); // Start within exception hours on 01 March 2024 after production
