@@ -167,7 +167,9 @@ namespace LeadTimeCalculator.Client.Components.Pages
 
             for (var date = rangeStartWorkingDays.Date; date < rangeEndWorkingDays.Date; date = date.AddDays(1))
             {
-                if (_selectedCalendar.Holidays.Any(x => x.Date == date))
+                var isHoliday = _selectedCalendar.Holidays.Any(h => h.Date == date ||
+                    (h.IsRecurring && h.Date.Month == date.Month && h.Date.Day == date.Day));
+                if (isHoliday)
                     continue;
 
                 if (exceptionDaysAsAppointment.Any(x => x.Start.Date == date))
