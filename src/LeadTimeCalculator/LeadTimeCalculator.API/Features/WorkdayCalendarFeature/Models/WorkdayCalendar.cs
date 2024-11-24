@@ -1,4 +1,5 @@
 ﻿using LeadTimeCalculator.API.Shared.Exceptions;
+using System.Collections.ObjectModel;
 
 namespace LeadTimeCalculator.API.Features.WorkdayCalendarFeature.Models
 {
@@ -8,8 +9,14 @@ namespace LeadTimeCalculator.API.Features.WorkdayCalendarFeature.Models
         private readonly Dictionary<DayOfWeek, (TimeSpan Start, TimeSpan End)> _defaultWorkHours;
         private readonly List<Holiday> _holidays;
         private readonly List<ExceptionDay> _exceptionDays;
-        private readonly Dictionary<DateTime, WorkingDay> _specificDays;
         private readonly double _defaultWorkhoursPerDay = 8;
+
+        public IReadOnlyCollection<Holiday> Holidays =>
+            _holidays.AsReadOnly();
+        public IReadOnlyCollection<ExceptionDay> ExceptionDays =>
+            _exceptionDays.AsReadOnly();
+        public ReadOnlyDictionary<DayOfWeek, (TimeSpan Start, TimeSpan End)> DefaultWorkHours =>
+            _defaultWorkHours.AsReadOnly();
 
         internal WorkdayCalendar(
             int id,
@@ -24,7 +31,7 @@ namespace LeadTimeCalculator.API.Features.WorkdayCalendarFeature.Models
                     $"{defaultWorkdayEndTime} cannot be less than {defaultWorkdayStartTime}");
 
             var defaultNumberOfWorkingHoursPerDay =
-                (defaultWorkdayStartTime - defaultWorkdayEndTime).Hours;
+                (defaultWorkdayEndTime - defaultWorkdayStartTime).Hours;
             if (defaultNumberOfWorkingHoursPerDay < 1)
                 throw new DomainException(
                     "Number of hours of work per day must be greater than or equal to 1");
@@ -39,6 +46,8 @@ namespace LeadTimeCalculator.API.Features.WorkdayCalendarFeature.Models
                 { DayOfWeek.Thursday, (defaultWorkdayStartTime, defaultWorkdayEndTime) },
                 { DayOfWeek.Friday, (defaultWorkdayStartTime, defaultWorkdayEndTime) }
             };
+            _holidays = new List<Holiday>();
+            _exceptionDays = new List<ExceptionDay>();
         }
 
         public WorkdayCalendar(
@@ -50,17 +59,11 @@ namespace LeadTimeCalculator.API.Features.WorkdayCalendarFeature.Models
             _defaultWorkHours = defaultWorkHours;
             _holidays = holidays.ToList();
             _exceptionDays = new List<ExceptionDay>();
-            _specificDays = new Dictionary<DateTime, WorkingDay>();
         }
 
         public void AddExceptionDay(ExceptionDay exception)
         {
             _exceptionDays.Add(exception);
-        }
-
-        public void SetSpecificWorkingDay(WorkingDay workingDay)
-        {
-            _specificDays[workingDay.Date] = workingDay;
         }
 
         public DateTime AddFractionalWorkingDays(DateTime start, double fractionalDays)
@@ -143,7 +146,8 @@ namespace LeadTimeCalculator.API.Features.WorkdayCalendarFeature.Models
 
         private bool TryGetWorkingHours(DateTime date, out (TimeSpan Start, TimeSpan End) workHours)
         {
-            var exceptionDay = _exceptionDays.FirstOrDefault(e => e.Date == date.Date);
+            var exceptionDay = _exceptionDays
+                .FirstOrDefault(e => e.Date == date.Date);
             if (exceptionDay != null)
             {
                 workHours = (exceptionDay.StartTime, exceptionDay.EndTime);

@@ -24,8 +24,18 @@ namespace LeadTimeCalculator.API.Infrastructure.Repositories
                 calendarId,
                 defaultWorkdayStartTime,
                 defaultWorkdayEndTime);
+            _workdayCalendars.Add(calendar);
 
             return await Task.FromResult(calendar);
+        }
+
+        public async Task<IReadOnlyCollection<WorkdayCalendar>> GetAllAsync(
+            CancellationToken cancellationToken = default)
+        {
+            var workdayCalendars = _workdayCalendars
+                .AsReadOnly();
+
+            return await Task.FromResult(workdayCalendars);
         }
 
         public async Task SaveAsync(

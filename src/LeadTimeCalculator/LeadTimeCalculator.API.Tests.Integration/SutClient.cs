@@ -1,4 +1,5 @@
 ﻿using LeadTimeCalculator.API.Constracts.WorkdayCalendar.CreateCalendar;
+using LeadTimeCalculator.API.Constracts.WorkdayCalendar.GetCalendars;
 
 namespace LeadTimeCalculator.API.Tests.Integration
 {
@@ -14,15 +15,19 @@ namespace LeadTimeCalculator.API.Tests.Integration
         internal async Task<HttpResponseMessage> CreateWorkdayCalendar(
             CreateWorkdayCalendarRequest request)
         {
+            var uri = "/api/workday-calendar";
             var response = await _httpClient
-                .PostAsJsonAsync("/api/workday-calendar", request);
+                .PostAsJsonAsync(uri, request);
 
             return response;
         }
 
-        internal async Task<HttpResponseMessage> GetWeatherForecast()
+        internal async Task<HttpResponseMessage> GetWorkdayCalendars(
+            GetWorkdayCalendarsRequest request)
         {
-            var response = await _httpClient.GetAsync("/weatherforecast");
+            var uri = $"/api/workday-calendar/list";
+            var response = await _httpClient
+                .PostAsJsonAsync(uri, request);
 
             return response;
         }

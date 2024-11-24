@@ -1,5 +1,6 @@
 ﻿
 using LeadTimeCalculator.API.Constracts.WorkdayCalendar.CreateCalendar;
+using LeadTimeCalculator.API.Constracts.WorkdayCalendar.GetCalendars;
 using LeadTimeCalculator.API.Features.WorkdayCalendarFeature.UseCases;
 using LeadTimeCalculator.API.Shared.Exceptions;
 using Microsoft.AspNetCore.Http.HttpResults;
@@ -25,6 +26,17 @@ namespace LeadTimeCalculator.API.Features.WorkdayCalendarFeature
             {
                 return TypedResults.BadRequest(ex.Message);
             }
+        }
+
+        internal static async Task<Ok<GetWorkdayCalendarsResponse>> GetWorkdayCalendars(
+            [FromBody] GetWorkdayCalendarsRequest request,
+            [FromServices] GetWorkdayCalendarsRequestHandler requestHandler,
+            CancellationToken cancellationToken)
+        {
+            var getWorkdayCalendarsResponse = await requestHandler
+                .HandleAsync(request, cancellationToken);
+
+            return TypedResults.Ok(getWorkdayCalendarsResponse);
         }
     }
 }

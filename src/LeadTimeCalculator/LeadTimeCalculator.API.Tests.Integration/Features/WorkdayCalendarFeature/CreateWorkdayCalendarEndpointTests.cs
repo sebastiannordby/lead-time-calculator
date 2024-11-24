@@ -24,7 +24,7 @@
                     DefaultWorkdayStartTime: TimeSpan.FromHours(startTimeAfterMidnight),
                     DefaultWorkdayEndTime: TimeSpan.FromHours(endTimeAfterMidnight)));
 
-            Assert.AssertBadInputRequest(httpResponse);
+            Assert.AssertBadInputResponse(httpResponse);
         }
     }
 }

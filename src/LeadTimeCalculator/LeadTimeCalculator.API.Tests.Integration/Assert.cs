@@ -2,16 +2,16 @@
 
 namespace LeadTimeCalculator.API.Tests.Integration
 {
-    public partial class Assert
+    public partial class Assert : Xunit.Assert
     {
-        public static void AssertSuccessfulRequest(HttpResponseMessage response)
+        public static void AssertSuccessfulResponse(HttpResponseMessage response)
         {
-            Xunit.Assert.Equal(HttpStatusCode.OK, response.StatusCode);
+            Assert.Equal(HttpStatusCode.OK, response.StatusCode);
         }
 
-        public static void AssertBadInputRequest(HttpResponseMessage response)
+        public static void AssertBadInputResponse(HttpResponseMessage response)
         {
-            Xunit.Assert.Equal(HttpStatusCode.BadRequest, response.StatusCode);
+            Assert.Equal(HttpStatusCode.BadRequest, response.StatusCode);
         }
     }
 }
