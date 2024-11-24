@@ -30,8 +30,8 @@ I started by making a test for the first example BasicWorkingDayCalculationTest,
 ## What this project is missing
 
 - Proper persistence (optional)
-- Contionous integration (should have been configured when starting out)
-- Continous delivery, with IaC (should have configured when starting out)
+- Continuous integration (should have been configured when starting out)
+- Continuous delivery, with IaC (should have configured when starting out)
 - Branching strategy (currently push to main)
 - Better folder structure, client and api sepaeratly
 - Security/Quality code scanning, Snyk and/or SonarCloud
