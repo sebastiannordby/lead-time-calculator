@@ -1,0 +1,36 @@
+﻿<RadzenStack 
+    Orientation="Orientation.Vertical" 
+    JustifyContent="JustifyContent.Center" 
+    AlignItems="AlignItems.Center" 
+    Gap="0.5rem" 
+    class="rz-p-2">
+    <RadzenLabel 
+        Text="Default workday - Start Time" 
+        Component="DefaultWorkdayStartTime" />
+    <RadzenDatePicker 
+        @bind-Value=@StartTime 
+        ShowTime="true" 
+        TimeOnly="true" 
+        DateFormat="HH:mm"
+        Name="DefaultWorkdayStartTime" />
+</RadzenStack>
+
+<RadzenStack 
+    Orientation="Orientation.Vertical" 
+    JustifyContent="JustifyContent.Center" 
+    AlignItems="AlignItems.Center" 
+    Gap="0.5rem" 
+    class="rz-p-2">
+    <RadzenLabel 
+        Text="Default workday - End Time" 
+        Component="DefaultWorkdayEndTime" />
+    <RadzenDatePicker 
+        @bind-Value=@EndTime 
+        Min="StartTime"
+        ShowTime="true" 
+        TimeOnly="true" 
+        DateFormat="HH:mm"
+        Name="DefaultWorkdayEndTime" />
+</RadzenStack>
+
+<RadzenButton class="w-100" Click="ExecuteRequestAsync">Add</RadzenButton>

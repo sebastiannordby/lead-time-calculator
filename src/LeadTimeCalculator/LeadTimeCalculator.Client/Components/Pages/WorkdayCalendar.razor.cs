@@ -1,5 +1,4 @@
-﻿using LeadTimeCalculator.API.Constracts.WorkdayCalendar.CreateCalendar;
-using LeadTimeCalculator.API.Constracts.WorkdayCalendar.GetCalendars;
+﻿using LeadTimeCalculator.API.Constracts.WorkdayCalendar.GetCalendars;
 using LeadTimeCalculator.Client.Components.Dialogs;
 using LeadTimeCalculator.Client.Data;
 using Microsoft.AspNetCore.Components;
@@ -33,11 +32,15 @@ namespace LeadTimeCalculator.Client.Components.Pages
 
         public async Task AddCalendar()
         {
-            var createWorkdayCalendarResponse = await ApiClient.CreateWorkdayCalendarAsync(
-                new CreateWorkdayCalendarRequest(
-                    DefaultWorkdayStartTime: TimeSpan.FromHours(8),
-                    DefaultWorkdayEndTime: TimeSpan.FromHours(16)));
-            var workdayCalendarId = createWorkdayCalendarResponse.CalendarId;
+            var workdayCalendarId = await DialogService.OpenAsync<CreateWorkdayCalendarDialog>($"Create calendar",
+                 new Dictionary<string, object>() { },
+                 new DialogOptions()
+                 {
+                     Resizable = false,
+                     Draggable = true,
+                     Width = "300px",
+                     Height = "330px",
+                 });
 
             await SetSelectedCalendar(workdayCalendarId);
         }
@@ -53,7 +56,7 @@ namespace LeadTimeCalculator.Client.Components.Pages
             var added = _leadTimeCalcFractionalWorkdays > 0;
             if (added)
             {
-                var leadTimeMessage = $@"If you receive all parts {_startingLeadTimeCalc}
+                var leadTimeMessage = $@"If you start producing at {_startingLeadTimeCalc}
                     you will be able to ship the product at {calculateLeadTimeResponse.StartOrEndTime}";
                 await DialogService.Alert(leadTimeMessage, "Lead Time");
             }
