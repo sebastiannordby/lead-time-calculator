@@ -6,4 +6,12 @@
     <ImplicitUsings>enable</ImplicitUsings>
   </PropertyGroup>
 
+  <ItemGroup>
+    <PackageReference Include="Radzen.Blazor" Version="5.6.7" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\LeadTimeCalculator.API.Constracts\LeadTimeCalculator.API.Constracts.csproj" />
+  </ItemGroup>
+
 </Project>

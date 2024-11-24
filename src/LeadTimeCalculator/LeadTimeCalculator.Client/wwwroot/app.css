@@ -1,5 +1,27 @@
 html, body {
     font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif;
+    height: 100vh;
+}
+
+body > .page {
+    height: 100%;
+    overflow: hidden;
+}
+
+.page > main {
+    overflow: hidden;
+    display: flex;
+    flex-direction: column;
+}
+
+.page > main > article {
+    flex: 1;
+    overflow-y: auto;
+}
+
+main > nav:first-child {
+    padding: .5em 1em;
+    background: darkseagreen;
 }
 
 a, .btn-link {

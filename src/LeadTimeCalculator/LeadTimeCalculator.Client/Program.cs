@@ -1,5 +1,6 @@
 using LeadTimeCalculator.Client.Components;
 using LeadTimeCalculator.Client.Data;
+using Radzen;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -7,6 +8,9 @@ var builder = WebApplication.CreateBuilder(args);
 builder.Services.AddRazorComponents()
     .AddInteractiveServerComponents();
 
+builder.Services.AddRadzenComponents();
+
+builder.Services.AddTransient<LeadTimeApiClient>();
 builder.Services.AddHttpClient<LeadTimeApiClient>(options =>
 {
     if (string.IsNullOrWhiteSpace(builder.Configuration["API_URI"]))
