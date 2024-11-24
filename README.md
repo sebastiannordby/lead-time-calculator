@@ -2,7 +2,8 @@
 
 ## How do i run this project?
 
-Preferably you have Visual Studio 2022 installed, community, professional or enterprise, does not matter.
+Preferably you have Visual Studio 2022 installed, community, professional or enterprise, does not matter:
+https://visualstudio.microsoft.com/downloads/
 
 This project is built on .NET 9, so you need to install the SDK from Microsoft:
 https://dotnet.microsoft.com/en-us/download/dotnet/9.0
