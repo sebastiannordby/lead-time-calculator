@@ -1,6 +1,7 @@
 ﻿
 using LeadTimeCalculator.API.Constracts.WorkdayCalendar.AddExceptionDay;
 using LeadTimeCalculator.API.Constracts.WorkdayCalendar.AddHoliday;
+using LeadTimeCalculator.API.Constracts.WorkdayCalendar.CalculateLeadTime;
 using LeadTimeCalculator.API.Constracts.WorkdayCalendar.CreateCalendar;
 using LeadTimeCalculator.API.Constracts.WorkdayCalendar.GetCalendars;
 using LeadTimeCalculator.API.Features.WorkdayCalendarFeature.UseCases;
@@ -41,6 +42,24 @@ namespace LeadTimeCalculator.API.Features.WorkdayCalendarFeature
                     .HandleAsync(request, cancellationToken);
 
                 return TypedResults.Ok();
+            }
+            catch (DomainException ex)
+            {
+                return TypedResults.BadRequest(ex.Message);
+            }
+        }
+
+        internal static async Task<Results<Ok<CalculateLeadTimeWorkdaysResponse>, BadRequest<string>>> CalculateLeadTimeWorkdays(
+            [FromBody] CalculateLeadTimeWorkdaysRequest request,
+            [FromServices] CalculateLeadTimeWorkdaysRequestHandler requestHandler,
+            CancellationToken cancellationToken)
+        {
+            try
+            {
+                var calculateLeadTimeResponse = await requestHandler
+                    .HandleAsync(request, cancellationToken);
+
+                return TypedResults.Ok(calculateLeadTimeResponse);
             }
             catch (DomainException ex)
             {

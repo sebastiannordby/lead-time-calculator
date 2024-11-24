@@ -76,14 +76,15 @@ namespace LeadTimeCalculator.API.Features.WorkdayCalendarFeature.Models
             _holidays.Add(holiday);
         }
 
-        public DateTime AddFractionalWorkingDays(DateTime start, double fractionalDays)
+        public DateTime CalculateLeadTimeWorkdays(
+            DateTime startingDate, double workdaysAdjustment)
         {
-            if (fractionalDays == 0)
-                return start;
+            if (workdaysAdjustment == 0)
+                return startingDate;
 
-            var isAdding = fractionalDays > 0;
-            var remainingDays = Math.Abs(fractionalDays);
-            var currentWorkday = GetNextValidWorkday(start, isAdding);
+            var isAdding = workdaysAdjustment > 0;
+            var remainingDays = Math.Abs(workdaysAdjustment);
+            var currentWorkday = GetNextValidWorkday(startingDate, isAdding);
 
             while (remainingDays > 0)
             {
@@ -91,19 +92,40 @@ namespace LeadTimeCalculator.API.Features.WorkdayCalendarFeature.Models
 
                 var currentWorkdayStartTime = currentWorkday.Date + workHours.Start;
                 var currentWorkdayEndTime = currentWorkday.Date + workHours.End;
+                TimeSpan availableTime;
 
-                if (currentWorkday < currentWorkdayStartTime)
+                if (!isAdding)
                 {
-                    currentWorkday = currentWorkdayStartTime;
+                    if (currentWorkday < currentWorkdayStartTime && currentWorkday == startingDate)
+                    {
+                        currentWorkday = GetNextValidWorkday(currentWorkday.Date.AddDays(-1), isAdding);
+                        continue;
+                    }
+
+                    if (currentWorkday > currentWorkdayStartTime && !isAdding)
+                    {
+                        availableTime = currentWorkday - currentWorkdayStartTime;
+                    }
+                    else
+                    {
+                        availableTime = currentWorkdayEndTime - currentWorkdayStartTime;
+                    }
                 }
-                else if (currentWorkday > currentWorkdayEndTime)
+                else
                 {
-                    currentWorkday = currentWorkdayEndTime;
+                    if (currentWorkday < currentWorkdayStartTime)
+                    {
+                        currentWorkday = currentWorkdayStartTime;
+                    }
+                    else if (currentWorkday > currentWorkdayEndTime)
+                    {
+                        currentWorkday = currentWorkdayEndTime;
+                    }
+
+                    availableTime = currentWorkdayEndTime - currentWorkday;
                 }
 
-                var availableTime = isAdding
-                    ? currentWorkdayEndTime - currentWorkday
-                    : currentWorkdayEndTime - currentWorkdayStartTime;
+
                 if (availableTime < TimeSpan.Zero)
                 {
                     currentWorkday = GetNextValidWorkday(

@@ -26,10 +26,12 @@ namespace LeadTimeCalculator.API.Tests.Unit.Features.WorkdayCalendarFeature
                 defaultWorkingDays,
                 Enumerable.Empty<Holiday>());
 
-            var startDate = DateTime.Parse("2024-03-01 09:00");
+            var receivePartsDayAndStartProduction = DateTime.Parse("2024-03-01 09:00");
+            var workDaysToFinishProduct = 5;
 
             // Act
-            var result = workdayCalendar.AddFractionalWorkingDays(startDate, 5);
+            var result = workdayCalendar
+                .CalculateLeadTimeWorkdays(receivePartsDayAndStartProduction, workDaysToFinishProduct);
 
             // Assert
             var expectedDate = DateTime.Parse("2024-03-08 09:00");
@@ -65,10 +67,12 @@ namespace LeadTimeCalculator.API.Tests.Unit.Features.WorkdayCalendarFeature
                 defaultWorkingDays,
                 holidays);
 
-            var startDate = DateTime.Parse("2024-12-22 09:00");
+            var receivePartsDayAndStartProduction = DateTime.Parse("2024-12-22 09:00");
+            var workDaysToFinishProduct = 3;
 
             // Act
-            var result = workdayCalendar.AddFractionalWorkingDays(startDate, 3);
+            var result = workdayCalendar
+                .CalculateLeadTimeWorkdays(receivePartsDayAndStartProduction, workDaysToFinishProduct);
 
             // Assert
             var expectedDate = DateTime.Parse("2024-12-27 09:00");
@@ -98,10 +102,12 @@ namespace LeadTimeCalculator.API.Tests.Unit.Features.WorkdayCalendarFeature
                 defaultWorkingDays,
                 Enumerable.Empty<Holiday>());
 
-            var startDate = DateTime.Parse("2024-03-01 09:00");
+            var receivePartsDayAndStartProduction = DateTime.Parse("2024-03-01 09:00");
+            var workDaysToFinishProduct = 0.5;
 
             // Act
-            var result = workdayCalendar.AddFractionalWorkingDays(startDate, 0.5);
+            var result = workdayCalendar
+                .CalculateLeadTimeWorkdays(receivePartsDayAndStartProduction, workDaysToFinishProduct);
 
             // Assert
             var expectedDate = DateTime.Parse("2024-03-01 13:00");
@@ -111,7 +117,6 @@ namespace LeadTimeCalculator.API.Tests.Unit.Features.WorkdayCalendarFeature
 
         /// <summary>
         /// 4. Produce what we can on exception day
-        /// if it s
         /// </summary>
         [Fact]
         public void ExceptionDaySpillingOverToNextWorkingDay()
@@ -139,15 +144,100 @@ namespace LeadTimeCalculator.API.Tests.Unit.Features.WorkdayCalendarFeature
                 Enumerable.Empty<Holiday>());
             exceptionDays.ForEach(workdayCalendar.AddExceptionDay);
 
-            var startDate = DateTime.Parse("2024-03-01 12:00"); // Start within exception hours on 01 March 2024 after production
+            var receivePartsDayAndStartProduction = DateTime.Parse("2024-03-01 12:00"); // Start within exception hours on 01 March 2024 after production
+            var workDaysToFinishProduct = 0.5;
 
             // Act
-            var result = workdayCalendar.AddFractionalWorkingDays(startDate, 0.5); // Add 4 hours (0.5 working days)
+            var result = workdayCalendar
+                .CalculateLeadTimeWorkdays(receivePartsDayAndStartProduction, workDaysToFinishProduct); // Add 4 hours (0.5 working days)
 
             // Assert
             var expectedDate = DateTime.Parse("2024-03-04 10:00"); // Spillover into Monday, 04 March 2024
             Assert.Equal(expectedDate, result);
         }
 
+        [Fact]
+        public void ExpectedToShipInTheMorningButLimitedAvailableTimeAndHolidayAndExceptionDayPreceeding()
+        {
+            // Arrange
+            var defaultWorkingHours = new Dictionary<DayOfWeek, (TimeSpan, TimeSpan)>
+            {
+                { DayOfWeek.Monday, (TimeSpan.FromHours(8), TimeSpan.FromHours(16)) },
+                { DayOfWeek.Tuesday, (TimeSpan.FromHours(8), TimeSpan.FromHours(16)) },
+                { DayOfWeek.Wednesday, (TimeSpan.FromHours(8), TimeSpan.FromHours(16)) },
+                { DayOfWeek.Thursday, (TimeSpan.FromHours(8), TimeSpan.FromHours(16)) },
+                { DayOfWeek.Friday, (TimeSpan.FromHours(8), TimeSpan.FromHours(16)) }
+            };
+
+            var exceptionDays = new List<ExceptionDay>
+            {
+                // 4 hours available
+                new ExceptionDay(new DateTime(2024, 11, 18), TimeSpan.FromHours(10), TimeSpan.FromHours(14))
+            };
+
+            var holidays = new List<Holiday>()
+            {
+                new Holiday(new DateTime(2024, 11, 19), false)
+            };
+
+            var workdayCalendar = new WorkdayCalendar(
+                defaultWorkhoursPerDay: 8,
+                defaultWorkingHours,
+                holidays);
+            exceptionDays.ForEach(workdayCalendar.AddExceptionDay);
+
+            var shipDate = DateTime.Parse("2024-11-20 09:00");
+            var timeToProduceProduct = 0.75;
+
+            // Act
+            var result = workdayCalendar
+                .CalculateLeadTimeWorkdays(shipDate, -timeToProduceProduct);
+
+            // Assert
+            var expectedDate = DateTime.Parse("2024-11-15 15:00");
+            Assert.Equal(expectedDate, result);
+        }
+
+        [Fact]
+        public void ShippingAtMidnightWithPreceedingHolidayAndExceptionDay()
+        {
+            // Arrange
+            var defaultWorkingHours = new Dictionary<DayOfWeek, (TimeSpan, TimeSpan)>
+            {
+                { DayOfWeek.Monday, (TimeSpan.FromHours(8), TimeSpan.FromHours(16)) },
+                { DayOfWeek.Tuesday, (TimeSpan.FromHours(8), TimeSpan.FromHours(16)) },
+                { DayOfWeek.Wednesday, (TimeSpan.FromHours(8), TimeSpan.FromHours(16)) },
+                { DayOfWeek.Thursday, (TimeSpan.FromHours(8), TimeSpan.FromHours(16)) },
+                { DayOfWeek.Friday, (TimeSpan.FromHours(8), TimeSpan.FromHours(16)) }
+            };
+
+            var exceptionDays = new List<ExceptionDay>
+            {
+                // 4 hours available
+                new ExceptionDay(new DateTime(2024, 11, 11), TimeSpan.FromHours(9), TimeSpan.FromHours(13))
+            };
+
+            var holidays = new List<Holiday>()
+            {
+                new Holiday(new DateTime(2024, 11, 12), false)
+            };
+
+            var workdayCalendar = new WorkdayCalendar(
+                defaultWorkhoursPerDay: 8,
+                defaultWorkingHours,
+                holidays);
+            exceptionDays.ForEach(workdayCalendar.AddExceptionDay);
+
+            var wantedTimeToShipProduct = DateTime.Parse("2024-11-13 00:00");
+            var workdaysToProduceProduct = 1;
+
+            // Act
+            var result = workdayCalendar
+                .CalculateLeadTimeWorkdays(wantedTimeToShipProduct, -workdaysToProduceProduct);
+
+            // Assert
+            var expectedDate = DateTime.Parse("2024-11-08 12:00");
+            Assert.Equal(expectedDate, result);
+        }
     }
 }

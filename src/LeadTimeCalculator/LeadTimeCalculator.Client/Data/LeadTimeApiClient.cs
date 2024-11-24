@@ -1,10 +1,23 @@
 ﻿using LeadTimeCalculator.API.Constracts.WorkdayCalendar.AddExceptionDay;
 using LeadTimeCalculator.API.Constracts.WorkdayCalendar.AddHoliday;
+using LeadTimeCalculator.API.Constracts.WorkdayCalendar.CalculateLeadTime;
 using LeadTimeCalculator.API.Constracts.WorkdayCalendar.CreateCalendar;
 using LeadTimeCalculator.API.Constracts.WorkdayCalendar.GetCalendars;
 
 namespace LeadTimeCalculator.Client.Data
 {
+    /// <summary>
+    /// Notes:
+    /// Would ideally been grouped in classes which is related to the feature
+    /// instead of repeating WorkdayCalendar, context matters though, and this approach is fine for this exercise. 
+    /// 
+    /// Example:
+    /// WorkdayCalendar:
+    /// - AddWorkday
+    /// - CreateCalendar
+    /// - GetCalendars
+    /// </summary>
+
     public class LeadTimeApiClient
     {
         private readonly HttpClient _httpClient;
@@ -13,6 +26,21 @@ namespace LeadTimeCalculator.Client.Data
             HttpClient httpClient)
         {
             _httpClient = httpClient;
+        }
+
+        public async Task<CalculateLeadTimeWorkdaysResponse> CalculateLeadTimeWorkdaysResponse(
+            CalculateLeadTimeWorkdaysRequest request,
+            CancellationToken cancellationToken = default)
+        {
+            var uri = $"/api/workday-calendar/calculate-lead-time-workdays";
+            var httpReponse = await _httpClient
+                .PostAsJsonAsync(uri, request, cancellationToken);
+            httpReponse.EnsureSuccessStatusCode();
+
+            var response = await ReadResponseAs<CalculateLeadTimeWorkdaysResponse>(httpReponse);
+
+            return response;
+
         }
 
         public async Task AddWorkdayCalendarExceptionDayAsync(

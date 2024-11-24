@@ -1,5 +1,6 @@
 ﻿using LeadTimeCalculator.API.Constracts.WorkdayCalendar.AddExceptionDay;
 using LeadTimeCalculator.API.Constracts.WorkdayCalendar.AddHoliday;
+using LeadTimeCalculator.API.Constracts.WorkdayCalendar.CalculateLeadTime;
 using LeadTimeCalculator.API.Constracts.WorkdayCalendar.CreateCalendar;
 using LeadTimeCalculator.API.Constracts.WorkdayCalendar.GetCalendars;
 
@@ -8,7 +9,7 @@ namespace LeadTimeCalculator.API.Tests.Integration
     /// <summary>
     /// Notes:
     /// Would ideally been grouped in classes which is related to the feature
-    /// instead of repeating WorkdayCalendar, context matters though, and this approach is fine for this exercise.
+    /// instead of repeating WorkdayCalendar, context matters though, and this approach is fine for this exercise. 
     /// 
     /// Example:
     /// WorkdayCalendarEndpoints:
@@ -23,6 +24,16 @@ namespace LeadTimeCalculator.API.Tests.Integration
         internal SutClient(HttpClient httpClient)
         {
             _httpClient = httpClient;
+        }
+
+        internal async Task<HttpResponseMessage> CalculateLeadTimeWorkdays(
+            CalculateLeadTimeWorkdaysRequest request)
+        {
+            var uri = "/api/workday-calendar/calculate-lead-time-workdays";
+            var response = await _httpClient
+                .PostAsJsonAsync(uri, request);
+
+            return response;
         }
 
         internal async Task<HttpResponseMessage> AddWorkdayCalendarExceptionDay(

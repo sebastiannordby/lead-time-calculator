@@ -21,6 +21,9 @@ namespace LeadTimeCalculator.Client.Components.Pages
         private IEnumerable<Appointment> _appointments = [];
         private RadzenScheduler<Appointment> _scheduler;
 
+        private DateTime _startingLeadTimeCalc;
+        private double _leadTimeCalcFractionalWorkdays;
+
         public string PageTitle
         {
             get => _selectedCalendar is not null
@@ -37,6 +40,29 @@ namespace LeadTimeCalculator.Client.Components.Pages
             var workdayCalendarId = createWorkdayCalendarResponse.CalendarId;
 
             await SetSelectedCalendar(workdayCalendarId);
+        }
+
+        private async Task CalculateLeadTime()
+        {
+            var calculateLeadTimeResponse = await ApiClient
+                .CalculateLeadTimeWorkdaysResponse(new(
+                    CalendarId: _selectedCalendar!.Id,
+                    StartingDate: _startingLeadTimeCalc,
+                    WorkdaysAdjustment: _leadTimeCalcFractionalWorkdays));
+
+            var added = _leadTimeCalcFractionalWorkdays > 0;
+            if (added)
+            {
+                var leadTimeMessage = $@"If you receive all parts {_startingLeadTimeCalc}
+                    you will be able to ship the product at {calculateLeadTimeResponse.StartOrEndTime}";
+                await DialogService.Alert(leadTimeMessage, "Lead Time");
+            }
+            else
+            {
+                var leadTimeMessage = $@"If you want to ship at {_startingLeadTimeCalc}
+                    you will need to start producing at {calculateLeadTimeResponse.StartOrEndTime} or before";
+                await DialogService.Alert(leadTimeMessage, "Lead Time");
+            }
         }
 
         public async Task LoadCalendars()
