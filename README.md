@@ -30,9 +30,18 @@ I started by making a test for the first example BasicWorkingDayCalculationTest,
 
 ## What this project is missing
 
+- Logging, non existing
 - Proper persistence (optional)
 - Continuous integration (should have been configured when starting out)
 - Continuous delivery, with IaC (should have configured when starting out)
 - Branching strategy (currently push to main)
 - Better folder structure, client and api sepaeratly
 - Security/Quality code scanning, Snyk and/or SonarCloud
+- Tests for frontend
+- Maybe some formatting rules for frontend, not sure if prettier has extension for razor pages
+
+## General notes
+
+- I have not in any way shape or form gone out of my way to optimize any of the algorithms made/used,
+  i wanted to solve the actual problem at hand (calendar) with a testable more domain driven approach.
+- The frontend could need some more love, but given the short time frame, and me being extraordinarly busy this weekend i tried my best given the short time frame.

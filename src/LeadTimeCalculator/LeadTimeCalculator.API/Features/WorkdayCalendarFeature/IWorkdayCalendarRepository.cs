@@ -15,5 +15,9 @@ namespace LeadTimeCalculator.API.Features.WorkdayCalendarFeature
 
         Task<IReadOnlyCollection<WorkdayCalendar>> GetAllAsync(
             CancellationToken cancellationToken = default);
+
+        Task<WorkdayCalendar?> FindAsync(
+            int calendarId,
+            CancellationToken cancellationToken);
     }
 }

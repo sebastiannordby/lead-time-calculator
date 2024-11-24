@@ -1,4 +1,5 @@
-﻿using LeadTimeCalculator.API.Constracts.WorkdayCalendar.CreateCalendar;
+﻿using LeadTimeCalculator.API.Constracts.WorkdayCalendar.AddHoliday;
+using LeadTimeCalculator.API.Constracts.WorkdayCalendar.CreateCalendar;
 using LeadTimeCalculator.API.Constracts.WorkdayCalendar.GetCalendars;
 
 namespace LeadTimeCalculator.API.Tests.Integration
@@ -10,6 +11,16 @@ namespace LeadTimeCalculator.API.Tests.Integration
         public SutClient(HttpClient httpClient)
         {
             _httpClient = httpClient;
+        }
+
+        internal async Task<HttpResponseMessage> AddWorkdayCalendarHoliday(
+            AddWorkdayCalendarHolidayRequest request)
+        {
+            var uri = "/api/workday-calendar/add-holiday";
+            var response = await _httpClient
+                .PostAsJsonAsync(uri, request);
+
+            return response;
         }
 
         internal async Task<HttpResponseMessage> CreateWorkdayCalendar(

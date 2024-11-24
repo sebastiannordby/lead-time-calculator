@@ -29,6 +29,16 @@ namespace LeadTimeCalculator.API.Infrastructure.Repositories
             return await Task.FromResult(calendar);
         }
 
+        public async Task<WorkdayCalendar?> FindAsync(
+            int calendarId,
+            CancellationToken cancellationToken)
+        {
+            var calendar = _workdayCalendars
+                .FirstOrDefault(x => x.Id == calendarId);
+
+            return await Task.FromResult(calendar);
+        }
+
         public async Task<IReadOnlyCollection<WorkdayCalendar>> GetAllAsync(
             CancellationToken cancellationToken = default)
         {

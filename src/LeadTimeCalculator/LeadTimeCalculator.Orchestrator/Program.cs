@@ -6,6 +6,6 @@ var api = builder
 var client = builder
     .AddProject<Projects.LeadTimeCalculator_Client>("leadtimecalculator-client")
     .WithReference(api)
-    .WithEnvironment("API_URI", "leadtimecalculator-api");
+    .WithEnvironment("API_URI", "https://leadtimecalculator-api");
 
 builder.Build().Run();

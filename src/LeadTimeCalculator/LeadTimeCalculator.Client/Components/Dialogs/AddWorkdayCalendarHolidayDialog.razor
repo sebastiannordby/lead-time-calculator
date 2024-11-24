@@ -1,0 +1,20 @@
+﻿
+<RadzenStack 
+    Orientation="Orientation.Horizontal" 
+    JustifyContent="JustifyContent.Center" 
+    AlignItems="AlignItems.Center" 
+    Gap="0.5rem" 
+    class="rz-p-2">
+    <RadzenLabel Text="Holiday" Component="HolidayDatePickerValue" />
+    <RadzenDatePicker @bind-Value=@_holidayDate Name="HolidayDatePickerValue" ShowCalendarWeek />
+</RadzenStack>
+<RadzenStack 
+    Orientation="Orientation.Horizontal" 
+    JustifyContent="JustifyContent.Center" 
+    AlignItems="AlignItems.Center" 
+    Gap="0.5rem" 
+    class="rz-p-2">
+    <RadzenLabel Text="IsReccuring" Component="HolidayDateIsReccuringValue" />
+    <RadzenCheckBox @bind-Value=@_isReccuring Name="HolidayDateIsReccuringValue"/>
+</RadzenStack>
+<RadzenButton class="w-100" Click="ExecuteRequestAsync">Add</RadzenButton>

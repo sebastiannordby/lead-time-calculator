@@ -1,4 +1,5 @@
-﻿using LeadTimeCalculator.API.Constracts.WorkdayCalendar.CreateCalendar;
+﻿using LeadTimeCalculator.API.Constracts.WorkdayCalendar.AddHoliday;
+using LeadTimeCalculator.API.Constracts.WorkdayCalendar.CreateCalendar;
 using LeadTimeCalculator.API.Constracts.WorkdayCalendar.GetCalendars;
 
 namespace LeadTimeCalculator.Client.Data
@@ -13,6 +14,16 @@ namespace LeadTimeCalculator.Client.Data
             _httpClient = httpClient;
         }
 
+        public async Task AddWorkdayCalendarHolidayAsync(
+            AddWorkdayCalendarHolidayRequest request,
+            CancellationToken cancellationToken = default)
+        {
+            var uri = $"/api/workday-calendar/add-holiday";
+            var httpReponse = await _httpClient
+                .PostAsJsonAsync(uri, request, cancellationToken);
+            httpReponse.EnsureSuccessStatusCode();
+        }
+
         public async Task<GetWorkdayCalendarsResponse> GetWorkdayCalendarsAsync(
             GetWorkdayCalendarsRequest request,
             CancellationToken cancellationToken = default)
@@ -24,7 +35,6 @@ namespace LeadTimeCalculator.Client.Data
                 await ReadResponseAs<GetWorkdayCalendarsResponse>(httpReponse);
 
             return response;
-
         }
 
         public async Task<CreateWorkdayCalendarResponse> CreateWorkdayCalendarAsync(

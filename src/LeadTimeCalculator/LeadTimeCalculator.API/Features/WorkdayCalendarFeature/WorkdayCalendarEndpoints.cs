@@ -1,4 +1,5 @@
 ﻿
+using LeadTimeCalculator.API.Constracts.WorkdayCalendar.AddHoliday;
 using LeadTimeCalculator.API.Constracts.WorkdayCalendar.CreateCalendar;
 using LeadTimeCalculator.API.Constracts.WorkdayCalendar.GetCalendars;
 using LeadTimeCalculator.API.Features.WorkdayCalendarFeature.UseCases;
@@ -10,6 +11,24 @@ namespace LeadTimeCalculator.API.Features.WorkdayCalendarFeature
 {
     internal sealed class WorkdayCalendarEndpoints
     {
+        internal static async Task<Results<Ok, BadRequest<string>>> AddHoliday(
+            [FromBody] AddWorkdayCalendarHolidayRequest request,
+            [FromServices] AddWorkdayCalendarHolidayRequestHandler requestHandler,
+            CancellationToken cancellationToken)
+        {
+            try
+            {
+                await requestHandler
+                    .HandleAsync(request, cancellationToken);
+
+                return TypedResults.Ok();
+            }
+            catch (DomainException ex)
+            {
+                return TypedResults.BadRequest(ex.Message);
+            }
+        }
+
         internal static async Task<Results<Ok<CreateWorkdayCalendarResponse>, BadRequest<string>>> CreateCalendar(
             [FromBody] CreateWorkdayCalendarRequest request,
             [FromServices] CreateWorkdayCalendarRequestHandler requestHandler,

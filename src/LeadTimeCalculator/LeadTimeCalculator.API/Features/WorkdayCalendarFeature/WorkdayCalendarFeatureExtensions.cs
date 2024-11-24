@@ -9,7 +9,8 @@ namespace LeadTimeCalculator.API.Features.WorkdayCalendarFeature
         {
             return services
                 .AddTransient<CreateWorkdayCalendarRequestHandler>()
-                .AddTransient<GetWorkdayCalendarsRequestHandler>();
+                .AddTransient<GetWorkdayCalendarsRequestHandler>()
+                .AddTransient<AddWorkdayCalendarHolidayRequestHandler>();
         }
 
         internal static void AddWorkdayCalendarFeatureEndpoints(
@@ -20,6 +21,9 @@ namespace LeadTimeCalculator.API.Features.WorkdayCalendarFeature
 
             workdayCalendarGroup
                 .MapPost(string.Empty, WorkdayCalendarEndpoints.CreateCalendar);
+
+            workdayCalendarGroup
+                .MapPost("/add-holiday", WorkdayCalendarEndpoints.AddHoliday);
 
             workdayCalendarGroup
                 .MapPost("/list", WorkdayCalendarEndpoints.GetWorkdayCalendars);

@@ -9,6 +9,12 @@ builder.Services.AddRazorComponents()
     .AddInteractiveServerComponents();
 
 builder.Services.AddRadzenComponents();
+builder.Services.AddScoped<DialogService>();
+builder.Services.AddScoped<NotificationService>();
+builder.Services.AddScoped<TooltipService>();
+builder.Services.AddScoped<ContextMenuService>();
+
+builder.Services.AddServiceDiscovery();
 
 builder.Services.AddTransient<LeadTimeApiClient>();
 builder.Services.AddHttpClient<LeadTimeApiClient>(options =>
@@ -19,7 +25,7 @@ builder.Services.AddHttpClient<LeadTimeApiClient>(options =>
 
     options.BaseAddress = new Uri(
         builder.Configuration["API_URI"]!);
-});
+}).AddServiceDiscovery();
 
 var app = builder.Build();
 

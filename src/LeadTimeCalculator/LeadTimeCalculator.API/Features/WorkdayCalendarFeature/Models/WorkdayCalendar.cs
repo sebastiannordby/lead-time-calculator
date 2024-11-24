@@ -66,6 +66,16 @@ namespace LeadTimeCalculator.API.Features.WorkdayCalendarFeature.Models
             _exceptionDays.Add(exception);
         }
 
+        public void AddHoliday(Holiday holiday)
+        {
+            if (holiday is null)
+                throw new DomainException("Holiday must have a value");
+            if (_holidays.Any(x => x.Matches(holiday.Date)))
+                throw new DomainException($"{holiday.Date} is already added");
+
+            _holidays.Add(holiday);
+        }
+
         public DateTime AddFractionalWorkingDays(DateTime start, double fractionalDays)
         {
             if (fractionalDays == 0)
