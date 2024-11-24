@@ -4,6 +4,7 @@ using LeadTimeCalculator.Client.Components.Dialogs;
 using LeadTimeCalculator.Client.Data;
 using Microsoft.AspNetCore.Components;
 using Radzen;
+using Radzen.Blazor;
 
 namespace LeadTimeCalculator.Client.Components.Pages
 {
@@ -18,6 +19,7 @@ namespace LeadTimeCalculator.Client.Components.Pages
         private CalendarDetailedView? _selectedCalendar;
         private IEnumerable<CalendarDetailedView> _calendarViews = [];
         private IEnumerable<Appointment> _appointments = [];
+        private RadzenScheduler<Appointment> _scheduler;
 
         public string PageTitle
         {
@@ -61,14 +63,19 @@ namespace LeadTimeCalculator.Client.Components.Pages
 
             if (_selectedCalendar is not null)
             {
-                UpdateAppointmentForSelectedCalendar();
+                if (_scheduler is null)
+                {
+                    UpdateAppointmentForSelectedCalendar();
+                }
+                else
+                {
+                    await _scheduler.Reload();
+                }
             }
             else
             {
                 _appointments = [];
             }
-
-            await InvokeAsync(StateHasChanged);
         }
 
         private void UpdateAppointmentForSelectedCalendar()
@@ -124,7 +131,7 @@ namespace LeadTimeCalculator.Client.Components.Pages
                 {
                     Start = x.Date + x.StartTime,
                     End = x.Date + x.EndTime,
-                    Text = "Exception Day"
+                    Text = $"Exception Day ({x.StartTime}-{x.EndTime})"
                 });
             appointments.AddRange(exceptionDaysAsAppointment);
 
@@ -147,7 +154,7 @@ namespace LeadTimeCalculator.Client.Components.Pages
                 {
                     Start = date.Add(defaultWorkHoursForDay.StartTime),
                     End = date.Add(defaultWorkHoursForDay.EndTime),
-                    Text = "Working Day"
+                    Text = $"Working Day ({defaultWorkHoursForDay.StartTime}-{defaultWorkHoursForDay.EndTime})"
                 });
             }
 
@@ -164,6 +171,21 @@ namespace LeadTimeCalculator.Client.Components.Pages
                      Draggable = true,
                      Width = "300px",
                      Height = "230px",
+                 });
+
+            await SetSelectedCalendar(_selectedCalendar.Id);
+        }
+
+        public async Task ShowAddExceptionDayDialogAsync()
+        {
+            await DialogService.OpenAsync<AddWorkdayCalendarExceptionDayDialog>($"Add exception day",
+                 new Dictionary<string, object>() { { "CalendarId", _selectedCalendar!.Id } },
+                 new DialogOptions()
+                 {
+                     Resizable = false,
+                     Draggable = true,
+                     Width = "300px",
+                     Height = "330px",
                  });
 
             await SetSelectedCalendar(_selectedCalendar.Id);

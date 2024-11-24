@@ -1,0 +1,53 @@
+﻿
+<RadzenStack 
+    Orientation="Orientation.Horizontal" 
+    JustifyContent="JustifyContent.Center" 
+    AlignItems="AlignItems.Center" 
+    Gap="0.5rem" 
+    class="rz-p-2">
+    <RadzenLabel 
+        Text="Date" 
+        Component="HolidayDatePickerValue" />
+    <RadzenDatePicker 
+        @bind-Value=@_date 
+        Name="HolidayDatePickerValue" 
+        ShowCalendarWeek />
+</RadzenStack>
+
+<RadzenStack 
+    Orientation="Orientation.Horizontal" 
+    JustifyContent="JustifyContent.Center" 
+    AlignItems="AlignItems.Center" 
+    Gap="0.5rem" 
+    class="rz-p-2">
+    <RadzenLabel 
+        Text="Start Time" 
+        Component="HolidayStartTimeValue" />
+    <RadzenDatePicker 
+        @bind-Value=@StartTime 
+        ShowTime="true" 
+        TimeOnly="true" 
+        DateFormat="HH:mm"
+        Name="HolidayStartTimeValue" />
+</RadzenStack>
+
+<RadzenStack 
+    Orientation="Orientation.Horizontal" 
+    JustifyContent="JustifyContent.Center" 
+    AlignItems="AlignItems.Center" 
+    Gap="0.5rem" 
+    class="rz-p-2">
+    <RadzenLabel 
+        Text="End Time" 
+        Component="HolidayEndTimeValue" />
+    <RadzenDatePicker 
+        @bind-Value=@EndTime 
+        Min="StartTime"
+        ShowTime="true" 
+        TimeOnly="true" 
+        DateFormat="HH:mm" 
+        Name="HolidayEndTimeValue" />
+</RadzenStack>
+
+<RadzenButton class="w-100" Click="ExecuteRequestAsync">Add</RadzenButton>
+

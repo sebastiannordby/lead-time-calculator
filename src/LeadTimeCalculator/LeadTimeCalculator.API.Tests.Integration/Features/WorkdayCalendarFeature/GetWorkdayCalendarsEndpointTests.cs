@@ -3,7 +3,7 @@ using LeadTimeCalculator.API.Constracts.WorkdayCalendar.GetCalendars;
 
 namespace LeadTimeCalculator.API.Tests.Integration.Features.WorkdayCalendarFeature
 {
-    [Collection(LeadTimeCalculatorApiCollection.CollectionName)]
+    [Collection(LeadTimeCalculatorApiTestCollection.CollectionName)]
     public class GetWorkdayCalendarsEndpointTests
     {
         private readonly SutClient _sutClient;

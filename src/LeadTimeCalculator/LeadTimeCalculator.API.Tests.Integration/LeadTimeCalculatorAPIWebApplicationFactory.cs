@@ -17,7 +17,7 @@ namespace LeadTimeCalculator.API.Tests.Integration
 
         }
 
-        public SutClient GetSutClient()
+        internal SutClient GetSutClient()
         {
             if (_sutClient is null)
             {

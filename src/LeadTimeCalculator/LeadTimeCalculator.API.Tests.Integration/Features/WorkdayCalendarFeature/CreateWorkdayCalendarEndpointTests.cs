@@ -1,6 +1,6 @@
 ﻿namespace LeadTimeCalculator.API.Tests.Integration.Features.WorkdayCalendarFeature
 {
-    [Collection(LeadTimeCalculatorApiCollection.CollectionName)]
+    [Collection(LeadTimeCalculatorApiTestCollection.CollectionName)]
     public class CreateWorkdayCalendarEndpointTests
     {
         private readonly SutClient _sutClient;

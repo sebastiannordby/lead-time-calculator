@@ -2,12 +2,12 @@
 
 namespace LeadTimeCalculator.API.Tests.Integration.Features.WorkdayCalendarFeature
 {
-    [Collection(LeadTimeCalculatorApiCollection.CollectionName)]
-    public class AddWorkdayCalendarHolidatEndpointTests
+    [Collection(LeadTimeCalculatorApiTestCollection.CollectionName)]
+    public class AddWorkdayCalendarHolidayEndpointTests
     {
         private readonly SutClient _sutClient;
 
-        public AddWorkdayCalendarHolidatEndpointTests(
+        public AddWorkdayCalendarHolidayEndpointTests(
             LeadTimeCalculatorAPIWebApplicationFactory factory)
         {
             _sutClient = factory.GetSutClient();
