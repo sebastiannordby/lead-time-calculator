@@ -1,4 +1,7 @@
-﻿namespace LeadTimeCalculator.API.Tests.Integration.Features.WorkdayCalendarFeature
+﻿using LeadTimeCalculator.API.Constracts.WorkdayCalendar.CreateCalendar;
+using LeadTimeCalculator.API.Constracts.WorkdayCalendar.GetCalendars;
+
+namespace LeadTimeCalculator.API.Tests.Integration.Features.WorkdayCalendarFeature
 {
     [Collection(LeadTimeCalculatorApiTestCollection.CollectionName)]
     public class CreateWorkdayCalendarEndpointTests
@@ -15,16 +18,56 @@
         [InlineData(8, 8)]
         [InlineData(16, 8)]
         [InlineData(0, 0)]
-        public async Task ShouldErrorOnInvalidInput(
+        public async Task GivenInvalidRequest_ShouldError(
             int startTimeAfterMidnight,
             int endTimeAfterMidnight)
         {
-            var httpResponse = await _sutClient
-                .CreateWorkdayCalendar(new(
-                    DefaultWorkdayStartTime: TimeSpan.FromHours(startTimeAfterMidnight),
-                    DefaultWorkdayEndTime: TimeSpan.FromHours(endTimeAfterMidnight)));
+            // Given
+            var validCreateCalendarRequest = new CreateWorkdayCalendarRequest(
+                DefaultWorkdayStartTime: TimeSpan.FromHours(startTimeAfterMidnight),
+                DefaultWorkdayEndTime: TimeSpan.FromHours(endTimeAfterMidnight));
 
-            Assert.AssertBadInputResponse(httpResponse);
+            // When
+            var createCalendarHttpResponse = await _sutClient
+                .CreateWorkdayCalendar(validCreateCalendarRequest);
+
+            // Then
+            Assert.AssertBadInputResponse(createCalendarHttpResponse);
+        }
+
+        [Fact]
+        public async Task GivenValidRequest_ShouldCreateCalendar()
+        {
+            // Given
+            var validCreateCalendarRequest = new CreateWorkdayCalendarRequest(
+                DefaultWorkdayStartTime: TimeSpan.FromHours(08),
+                DefaultWorkdayEndTime: TimeSpan.FromHours(16));
+
+            // When
+            var createCalendarHttpResponse = await _sutClient
+                .CreateWorkdayCalendar(validCreateCalendarRequest);
+
+            var createCalendarResponse = await createCalendarHttpResponse
+                .Content.ReadFromJsonAsync<CreateWorkdayCalendarResponse>();
+
+            // Then
+            Assert.AssertSuccessfulResponse(createCalendarHttpResponse);
+
+            var workdayCalendarsResponse = await GetWorkdayCalendars();
+            Assert.Contains(workdayCalendarsResponse.CalendarDetailedViews,
+                x => x.Id == createCalendarResponse!.CalendarId);
+        }
+
+        private async Task<GetWorkdayCalendarsResponse> GetWorkdayCalendars()
+        {
+            var getWorkdayCalendarsHttpResponse = await _sutClient
+                .GetWorkdayCalendars(new());
+            getWorkdayCalendarsHttpResponse.EnsureSuccessStatusCode();
+
+            var getWorkdayCalendarsResponse = await getWorkdayCalendarsHttpResponse
+                .Content.ReadFromJsonAsync<GetWorkdayCalendarsResponse>();
+
+            return getWorkdayCalendarsResponse!;
         }
     }
 }
