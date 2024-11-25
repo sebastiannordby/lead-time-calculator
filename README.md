@@ -54,4 +54,4 @@ There are several areas for improvement that I would address in future iteration
 - The frontend could use some additional work, but given the short timeframe and my busy schedule, I did my best to implement a functional solution within the constraints.
 - I have not used AI for anything other than polishing this README file. The code itself is written solely by me, **Sebastian Nordby**.
 - **When calculating lead time in the frontend, the date displayed in the popup after calculation is not adjusted to the first available working hour, but i assume you enter a time here yourself.
-  this time should have been in the response to show when which hour you should have started producing**
+  this time should have been in the response to show when which hour you should have started producing. The calculation should still be correct, but a bad user experience in my opinion**
