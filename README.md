@@ -53,3 +53,5 @@ There are several areas for improvement that I would address in future iteration
 - I have not in any way, shape, or form gone out of my way to optimize any of the algorithms made/used. My goal was to solve the actual problem at hand (the calendar) with a testable, domain-driven approach.
 - The frontend could use some additional work, but given the short timeframe and my busy schedule, I did my best to implement a functional solution within the constraints.
 - I have not used AI for anything other than polishing this README file. The code itself is written solely by me, **Sebastian Nordby**.
+
+Check out the YouTube video for how to use the software: https://www.youtube.com/watch?v=9zVJeKKJZnA
