@@ -56,7 +56,7 @@ namespace LeadTimeCalculator.Client.Components.Pages
             var added = _leadTimeCalcFractionalWorkdays > 0;
             if (added)
             {
-                var leadTimeMessage = $@"If you start producing at {_startingLeadTimeCalc}
+                var leadTimeMessage = $@"If you receive all items {_startingLeadTimeCalc}
                     you will be able to ship the product at {calculateLeadTimeResponse.StartOrEndTime}";
                 await DialogService.Alert(leadTimeMessage, "Lead Time");
             }
