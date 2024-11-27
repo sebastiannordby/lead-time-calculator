@@ -17,6 +17,7 @@ By restructuring the project like this we can
 - Unit test domain logic without mocking/fakes
 - Unit test application logic with mocking/fakes
 - Integration test as usual the API to get the whole workflow
+- Allow for architectural testing
 
 ## How to Run the Project
 

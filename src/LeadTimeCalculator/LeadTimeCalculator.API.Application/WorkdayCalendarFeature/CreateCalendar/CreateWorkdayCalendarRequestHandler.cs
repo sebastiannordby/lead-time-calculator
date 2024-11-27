@@ -1,6 +1,7 @@
 ﻿using FluentValidation;
 using LeadTimeCalculator.API.Constracts.WorkdayCalendar.CreateCalendar;
 using LeadTimeCalculator.API.Domain.Shared.Exceptions;
+using LeadTimeCalculator.API.Domain.WorkdayCalendarFeature;
 
 namespace LeadTimeCalculator.API.Application.WorkdayCalendarFeature.CreateCalendar
 {
@@ -26,12 +27,19 @@ namespace LeadTimeCalculator.API.Application.WorkdayCalendarFeature.CreateCalend
 
             try
             {
-                var calendar = await _workdayCalendarRepository.CreateAsync(
-                request.DefaultWorkdayStartTime,
-                request.DefaultWorkdayEndTime);
+                var calendarId = await _workdayCalendarRepository
+                    .GetNewCalendarNumberAsync(cancellationToken);
+
+                var calendar = new WorkdayCalendar(
+                    calendarId,
+                    request.DefaultWorkdayStartTime,
+                    request.DefaultWorkdayEndTime);
 
                 var response = new CreateWorkdayCalendarResponse(
                     calendar.Id);
+
+                await _workdayCalendarRepository
+                    .SaveAsync(calendar, cancellationToken);
 
                 return response;
             }

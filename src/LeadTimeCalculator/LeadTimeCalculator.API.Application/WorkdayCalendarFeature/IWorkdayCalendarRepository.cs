@@ -4,9 +4,7 @@ namespace LeadTimeCalculator.API.Application.WorkdayCalendarFeature
 {
     public interface IWorkdayCalendarRepository
     {
-        Task<WorkdayCalendar> CreateAsync(
-            TimeSpan defaultWorkdayStartTime,
-            TimeSpan defaultWorkdayEndTime,
+        Task<int> GetNewCalendarNumberAsync(
             CancellationToken cancellationToken = default);
 
         Task SaveAsync(

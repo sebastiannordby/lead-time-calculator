@@ -10,25 +10,6 @@ namespace LeadTimeCalculator.API.Infrastructure.Repositories
     {
         private readonly List<WorkdayCalendar> _workdayCalendars = new();
 
-        public async Task<WorkdayCalendar> CreateAsync(
-            TimeSpan defaultWorkdayStartTime,
-            TimeSpan defaultWorkdayEndTime,
-            CancellationToken cancellationToken = default)
-        {
-            var calendarNumberSeries = _workdayCalendars
-                .Select(x => x.Id);
-            var calendarId = !calendarNumberSeries.Any()
-                ? 1 : calendarNumberSeries.Max() + 1;
-
-            var calendar = new WorkdayCalendar(
-                calendarId,
-                defaultWorkdayStartTime,
-                defaultWorkdayEndTime);
-            _workdayCalendars.Add(calendar);
-
-            return await Task.FromResult(calendar);
-        }
-
         public async Task<WorkdayCalendar?> FindAsync(
             int calendarId,
             CancellationToken cancellationToken)
@@ -48,10 +29,26 @@ namespace LeadTimeCalculator.API.Infrastructure.Repositories
             return await Task.FromResult(workdayCalendars);
         }
 
+        public async Task<int> GetNewCalendarNumberAsync(
+            CancellationToken cancellationToken = default)
+        {
+            var calendarNumberSeries = _workdayCalendars
+                .Select(x => x.Id);
+            var calendarId = !calendarNumberSeries.Any()
+                ? 1 : calendarNumberSeries.Max() + 1;
+
+            return await Task.FromResult(calendarId);
+        }
+
         public async Task SaveAsync(
             WorkdayCalendar calendar,
             CancellationToken cancellationToken = default)
         {
+            if (!_workdayCalendars.Any(x => x.Id == calendar.Id))
+            {
+                _workdayCalendars.Add(calendar);
+            }
+
             await Task.CompletedTask;
         }
     }

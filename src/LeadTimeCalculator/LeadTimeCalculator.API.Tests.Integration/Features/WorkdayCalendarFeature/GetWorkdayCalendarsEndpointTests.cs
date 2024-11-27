@@ -31,7 +31,7 @@ namespace LeadTimeCalculator.API.Tests.Integration.Features.WorkdayCalendarFeatu
                 .GetWorkdayCalendars(new());
 
             // Assert
-            Assert.AssertSuccessfulResponse(getWorkdayCalendarsHttpResponse);
+            await Assert.AssertSuccessfulResponse(getWorkdayCalendarsHttpResponse);
 
             var getWorkdayCalendarsResponse = await getWorkdayCalendarsHttpResponse
                 .Content.ReadFromJsonAsync<GetWorkdayCalendarsResponse>();
