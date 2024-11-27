@@ -1,5 +1,10 @@
 # Lead-Time Calculator
 
+```
+I have refactored some code after 26.11.2024 12:00,
+but these changes are inside refactor/domain branch: https://github.com/sebastiannordby/lead-time-calculator/tree/refactor/domain
+```
+
 ## How to Run the Project
 
 To run this project, you will need the following prerequisites:
