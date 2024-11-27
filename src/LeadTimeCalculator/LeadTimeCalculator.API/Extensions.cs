@@ -1,18 +1,16 @@
-﻿using LeadTimeCalculator.API.Features.WorkdayCalendarFeature.UseCases;
+﻿using LeadTimeCalculator.API.Application.WorkdayCalendarFeature;
+using LeadTimeCalculator.API.Infrastructure.Endpoints;
+using LeadTimeCalculator.API.Infrastructure.Repositories;
 
-namespace LeadTimeCalculator.API.Features.WorkdayCalendarFeature
+namespace LeadTimeCalculator.API.Infrastructure
 {
-    internal static class WorkdayCalendarFeatureExtensions
+    internal static class Extensions
     {
-        internal static IServiceCollection AddWorkdayCalendarFeature(
+        internal static IServiceCollection AddInfrastructure(
             this IServiceCollection services)
         {
             return services
-                .AddTransient<CreateWorkdayCalendarRequestHandler>()
-                .AddTransient<GetWorkdayCalendarsRequestHandler>()
-                .AddTransient<AddWorkdayCalendarHolidayRequestHandler>()
-                .AddTransient<AddWorkdayCalendarExceptionDayRequestHandler>()
-                .AddTransient<CalculateLeadTimeWorkdaysRequestHandler>();
+                .AddSingleton<IWorkdayCalendarRepository, InMemoryWorkdayCalendarRepository>();
         }
 
         internal static void AddWorkdayCalendarFeatureEndpoints(

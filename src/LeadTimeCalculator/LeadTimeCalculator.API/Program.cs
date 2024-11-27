@@ -1,18 +1,15 @@
-using LeadTimeCalculator.API.Features.WorkdayCalendarFeature;
+using LeadTimeCalculator.API.Application.WorkdayCalendarFeature;
 using LeadTimeCalculator.API.Infrastructure;
 using Scalar.AspNetCore;
 
 var builder = WebApplication.CreateBuilder(args);
 
-// Add services to the container.
-// Learn more about configuring OpenAPI at https://aka.ms/aspnet/openapi
 builder.Services.AddOpenApi();
 builder.Services.AddInfrastructure();
-builder.Services.AddWorkdayCalendarFeature();
+builder.Services.AddWorkdayCalendarApplicationFeature();
 
 var app = builder.Build();
 
-// Configure the HTTP request pipeline.
 if (app.Environment.IsDevelopment())
 {
     app.MapOpenApi();

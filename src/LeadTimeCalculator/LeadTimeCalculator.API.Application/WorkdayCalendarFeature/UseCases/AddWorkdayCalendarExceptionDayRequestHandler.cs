@@ -1,10 +1,9 @@
 ﻿using LeadTimeCalculator.API.Constracts.WorkdayCalendar.AddExceptionDay;
-using LeadTimeCalculator.API.Features.WorkdayCalendarFeature.Models;
-using LeadTimeCalculator.API.Shared.Exceptions;
+using LeadTimeCalculator.API.Domain.WorkdayCalendarFeature;
 
-namespace LeadTimeCalculator.API.Features.WorkdayCalendarFeature.UseCases
+namespace LeadTimeCalculator.API.Application.WorkdayCalendarFeature.UseCases
 {
-    internal sealed class AddWorkdayCalendarExceptionDayRequestHandler
+    public sealed class AddWorkdayCalendarExceptionDayRequestHandler
     {
         private readonly IWorkdayCalendarRepository _workdayCalendarRepository;
 
@@ -14,14 +13,14 @@ namespace LeadTimeCalculator.API.Features.WorkdayCalendarFeature.UseCases
             _workdayCalendarRepository = workdayCalendarRepository;
         }
 
-        internal async Task HandleAsync(
+        public async Task HandleAsync(
             AddWorkdayCalendarExceptionDayRequest request,
             CancellationToken cancellationToken)
         {
             var calendar = await _workdayCalendarRepository
                 .FindAsync(request.CalendarId, cancellationToken);
             if (calendar is null)
-                throw new DomainException($"No WorkdayCalendar with given Id({request.CalendarId})");
+                throw new ArgumentException($"No WorkdayCalendar with given Id({request.CalendarId})");
 
             calendar.AddExceptionDay(new ExceptionDay(
                 request.Date,

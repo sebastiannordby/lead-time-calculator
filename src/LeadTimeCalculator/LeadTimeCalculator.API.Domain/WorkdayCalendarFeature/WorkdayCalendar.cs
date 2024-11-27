@@ -1,7 +1,7 @@
-﻿using LeadTimeCalculator.API.Shared.Exceptions;
+﻿using LeadTimeCalculator.API.Domain.Shared.Exceptions;
 using System.Collections.ObjectModel;
 
-namespace LeadTimeCalculator.API.Features.WorkdayCalendarFeature.Models
+namespace LeadTimeCalculator.API.Domain.WorkdayCalendarFeature
 {
     public class WorkdayCalendar
     {
@@ -18,7 +18,7 @@ namespace LeadTimeCalculator.API.Features.WorkdayCalendarFeature.Models
         public ReadOnlyDictionary<DayOfWeek, (TimeSpan Start, TimeSpan End)> DefaultWorkHours =>
             _defaultWorkHours.AsReadOnly();
 
-        internal WorkdayCalendar(
+        public WorkdayCalendar(
             int id,
             TimeSpan defaultWorkdayStartTime,
             TimeSpan defaultWorkdayEndTime)

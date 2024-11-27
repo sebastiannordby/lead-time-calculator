@@ -1,6 +1,6 @@
-﻿using LeadTimeCalculator.API.Shared.Exceptions;
+﻿using LeadTimeCalculator.API.Domain.Shared.Exceptions;
 
-namespace LeadTimeCalculator.API.Features.WorkdayCalendarFeature.Models
+namespace LeadTimeCalculator.API.Domain.WorkdayCalendarFeature
 {
     public class ExceptionDay
     {

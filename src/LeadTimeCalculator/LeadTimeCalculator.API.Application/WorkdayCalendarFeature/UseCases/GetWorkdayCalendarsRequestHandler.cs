@@ -1,8 +1,9 @@
 ﻿using LeadTimeCalculator.API.Constracts.WorkdayCalendar.GetCalendars;
+using LeadTimeCalculator.API.Domain.WorkdayCalendarFeature;
 
-namespace LeadTimeCalculator.API.Features.WorkdayCalendarFeature.UseCases
+namespace LeadTimeCalculator.API.Application.WorkdayCalendarFeature.UseCases
 {
-    internal sealed class GetWorkdayCalendarsRequestHandler
+    public sealed class GetWorkdayCalendarsRequestHandler
     {
         private readonly IWorkdayCalendarRepository _workdayCalendarRepository;
 
@@ -12,7 +13,7 @@ namespace LeadTimeCalculator.API.Features.WorkdayCalendarFeature.UseCases
             _workdayCalendarRepository = workdayCalendarRepository;
         }
 
-        internal async Task<GetWorkdayCalendarsResponse> HandleAsync(
+        public async Task<GetWorkdayCalendarsResponse> HandleAsync(
             GetWorkdayCalendarsRequest request,
             CancellationToken cancellationToken = default)
         {

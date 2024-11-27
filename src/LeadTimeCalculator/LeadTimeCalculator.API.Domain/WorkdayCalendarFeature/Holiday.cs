@@ -1,4 +1,4 @@
-﻿namespace LeadTimeCalculator.API.Features.WorkdayCalendarFeature.Models
+﻿namespace LeadTimeCalculator.API.Domain.WorkdayCalendarFeature
 {
     public class Holiday
     {

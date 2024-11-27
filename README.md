@@ -1,5 +1,15 @@
 # Lead-Time Calculator
 
+# This branch is based off main
+
+This branch is based off main, but refactored by encapsulating the domain and application logic in their own respective project.
+In this case the LeadTimeCalculator.API.Application acts as an ACL(anti corruption layer).
+
+Further refactoring would be to define a context where this WorkdayCalendar belongs, maybe it's a own bounded context?
+Given that this is only a simple application, but could envolve to something bigger i will set the line for refactoring to here.
+This is overenginnering at it finest already and the initial structuring is appropriate for this size of a project.
+Given the size of the project the developer(s) should be able to follow principles set in their coding standard and adhere to them.
+
 ## How to Run the Project
 
 To run this project, you will need the following prerequisites:

@@ -5,8 +5,6 @@ VisualStudioVersion = 17.12.35506.116
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "LeadTimeCalculator.API", "LeadTimeCalculator.API\LeadTimeCalculator.API.csproj", "{7D23DA48-AA8C-42FB-94CA-B7000AEFD15F}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "LeadTimeCalculator.API.Tests.Unit", "LeadTimeCalculator.API.Tests.Unit\LeadTimeCalculator.API.Tests.Unit.csproj", "{36D12614-3482-4D23-B096-98635296B657}"
-EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "LeadTimeCalculator.API.Constracts", "LeadTimeCalculator.API.Constracts\LeadTimeCalculator.API.Constracts.csproj", "{4ECD5F77-EFAB-482B-8AAA-0B6019C4E6CF}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "LeadTimeCalculator.API.Tests.Integration", "LeadTimeCalculator.API.Tests.Integration\LeadTimeCalculator.API.Tests.Integration.csproj", "{663637A3-1D63-42B7-B8B5-1D3CD2776C97}"
@@ -14,6 +12,12 @@ EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "LeadTimeCalculator.Client", "LeadTimeCalculator.Client\LeadTimeCalculator.Client.csproj", "{B93D3E90-8CE0-4A0C-A332-4DAAD7AD8227}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "LeadTimeCalculator.Orchestrator", "LeadTimeCalculator.Orchestrator\LeadTimeCalculator.Orchestrator.csproj", "{403A279B-E118-46D2-93DD-5B10891F1642}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "LeadTimeCalculator.API.Domain", "LeadTimeCalculator.API.Domain\LeadTimeCalculator.API.Domain.csproj", "{8D0A9DC1-A649-4169-B6FE-513D7FD30159}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "LeadTimeCalculator.API.Application", "LeadTimeCalculator.API.Application\LeadTimeCalculator.API.Application.csproj", "{9A7D6675-65A1-411E-8A76-C1D2EC320C08}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "LeadTimeCalculator.API.Domain.Tests.Unit", "LeadTimeCalculator.API.Domain.Tests.Unit\LeadTimeCalculator.API.Domain.Tests.Unit.csproj", "{CCE74099-1FF4-4241-B17C-AB93D0C729B4}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -25,10 +29,6 @@ Global
 		{7D23DA48-AA8C-42FB-94CA-B7000AEFD15F}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{7D23DA48-AA8C-42FB-94CA-B7000AEFD15F}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{7D23DA48-AA8C-42FB-94CA-B7000AEFD15F}.Release|Any CPU.Build.0 = Release|Any CPU
-		{36D12614-3482-4D23-B096-98635296B657}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{36D12614-3482-4D23-B096-98635296B657}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{36D12614-3482-4D23-B096-98635296B657}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{36D12614-3482-4D23-B096-98635296B657}.Release|Any CPU.Build.0 = Release|Any CPU
 		{4ECD5F77-EFAB-482B-8AAA-0B6019C4E6CF}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{4ECD5F77-EFAB-482B-8AAA-0B6019C4E6CF}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{4ECD5F77-EFAB-482B-8AAA-0B6019C4E6CF}.Release|Any CPU.ActiveCfg = Release|Any CPU
@@ -45,6 +45,18 @@ Global
 		{403A279B-E118-46D2-93DD-5B10891F1642}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{403A279B-E118-46D2-93DD-5B10891F1642}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{403A279B-E118-46D2-93DD-5B10891F1642}.Release|Any CPU.Build.0 = Release|Any CPU
+		{8D0A9DC1-A649-4169-B6FE-513D7FD30159}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{8D0A9DC1-A649-4169-B6FE-513D7FD30159}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{8D0A9DC1-A649-4169-B6FE-513D7FD30159}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{8D0A9DC1-A649-4169-B6FE-513D7FD30159}.Release|Any CPU.Build.0 = Release|Any CPU
+		{9A7D6675-65A1-411E-8A76-C1D2EC320C08}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{9A7D6675-65A1-411E-8A76-C1D2EC320C08}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{9A7D6675-65A1-411E-8A76-C1D2EC320C08}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{9A7D6675-65A1-411E-8A76-C1D2EC320C08}.Release|Any CPU.Build.0 = Release|Any CPU
+		{CCE74099-1FF4-4241-B17C-AB93D0C729B4}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{CCE74099-1FF4-4241-B17C-AB93D0C729B4}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{CCE74099-1FF4-4241-B17C-AB93D0C729B4}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{CCE74099-1FF4-4241-B17C-AB93D0C729B4}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

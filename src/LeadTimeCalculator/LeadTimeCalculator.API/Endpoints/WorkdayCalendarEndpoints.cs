@@ -1,15 +1,13 @@
-﻿
+﻿using LeadTimeCalculator.API.Application.WorkdayCalendarFeature.UseCases;
 using LeadTimeCalculator.API.Constracts.WorkdayCalendar.AddExceptionDay;
 using LeadTimeCalculator.API.Constracts.WorkdayCalendar.AddHoliday;
 using LeadTimeCalculator.API.Constracts.WorkdayCalendar.CalculateLeadTime;
 using LeadTimeCalculator.API.Constracts.WorkdayCalendar.CreateCalendar;
 using LeadTimeCalculator.API.Constracts.WorkdayCalendar.GetCalendars;
-using LeadTimeCalculator.API.Features.WorkdayCalendarFeature.UseCases;
-using LeadTimeCalculator.API.Shared.Exceptions;
 using Microsoft.AspNetCore.Http.HttpResults;
 using Microsoft.AspNetCore.Mvc;
 
-namespace LeadTimeCalculator.API.Features.WorkdayCalendarFeature
+namespace LeadTimeCalculator.API.Infrastructure.Endpoints
 {
     internal sealed class WorkdayCalendarEndpoints
     {
@@ -25,7 +23,7 @@ namespace LeadTimeCalculator.API.Features.WorkdayCalendarFeature
 
                 return TypedResults.Ok();
             }
-            catch (DomainException ex)
+            catch (ArgumentException ex)
             {
                 return TypedResults.BadRequest(ex.Message);
             }
@@ -43,7 +41,7 @@ namespace LeadTimeCalculator.API.Features.WorkdayCalendarFeature
 
                 return TypedResults.Ok();
             }
-            catch (DomainException ex)
+            catch (ArgumentException ex)
             {
                 return TypedResults.BadRequest(ex.Message);
             }
@@ -61,7 +59,7 @@ namespace LeadTimeCalculator.API.Features.WorkdayCalendarFeature
 
                 return TypedResults.Ok(calculateLeadTimeResponse);
             }
-            catch (DomainException ex)
+            catch (ArgumentException ex)
             {
                 return TypedResults.BadRequest(ex.Message);
             }
@@ -79,7 +77,7 @@ namespace LeadTimeCalculator.API.Features.WorkdayCalendarFeature
 
                 return TypedResults.Ok(createCalendarResponse);
             }
-            catch (DomainException ex)
+            catch (ArgumentException ex)
             {
                 return TypedResults.BadRequest(ex.Message);
             }
