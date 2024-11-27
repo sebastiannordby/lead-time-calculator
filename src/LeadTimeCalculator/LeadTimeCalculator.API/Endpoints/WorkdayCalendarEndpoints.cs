@@ -1,4 +1,9 @@
-﻿using LeadTimeCalculator.API.Application.WorkdayCalendarFeature.UseCases;
+﻿using FluentValidation;
+using LeadTimeCalculator.API.Application.WorkdayCalendarFeature.AddExceptionDay;
+using LeadTimeCalculator.API.Application.WorkdayCalendarFeature.AddHoliday;
+using LeadTimeCalculator.API.Application.WorkdayCalendarFeature.CalculateLeadTime;
+using LeadTimeCalculator.API.Application.WorkdayCalendarFeature.CreateCalendar;
+using LeadTimeCalculator.API.Application.WorkdayCalendarFeature.GetCalendars;
 using LeadTimeCalculator.API.Constracts.WorkdayCalendar.AddExceptionDay;
 using LeadTimeCalculator.API.Constracts.WorkdayCalendar.AddHoliday;
 using LeadTimeCalculator.API.Constracts.WorkdayCalendar.CalculateLeadTime;
@@ -23,7 +28,7 @@ namespace LeadTimeCalculator.API.Infrastructure.Endpoints
 
                 return TypedResults.Ok();
             }
-            catch (ArgumentException ex)
+            catch (Exception ex) when (ex is ArgumentException || ex is ValidationException)
             {
                 return TypedResults.BadRequest(ex.Message);
             }
@@ -41,7 +46,7 @@ namespace LeadTimeCalculator.API.Infrastructure.Endpoints
 
                 return TypedResults.Ok();
             }
-            catch (ArgumentException ex)
+            catch (Exception ex) when (ex is ArgumentException || ex is ValidationException)
             {
                 return TypedResults.BadRequest(ex.Message);
             }
@@ -59,7 +64,7 @@ namespace LeadTimeCalculator.API.Infrastructure.Endpoints
 
                 return TypedResults.Ok(calculateLeadTimeResponse);
             }
-            catch (ArgumentException ex)
+            catch (Exception ex) when (ex is ArgumentException || ex is ValidationException)
             {
                 return TypedResults.BadRequest(ex.Message);
             }
@@ -77,21 +82,29 @@ namespace LeadTimeCalculator.API.Infrastructure.Endpoints
 
                 return TypedResults.Ok(createCalendarResponse);
             }
-            catch (ArgumentException ex)
+            catch (Exception ex) when (ex is ArgumentException || ex is ValidationException)
             {
                 return TypedResults.BadRequest(ex.Message);
             }
         }
 
-        internal static async Task<Ok<GetWorkdayCalendarsResponse>> GetWorkdayCalendars(
+        internal static async Task<Results<Ok<GetWorkdayCalendarsResponse>, BadRequest<string>>> GetWorkdayCalendars(
             [FromBody] GetWorkdayCalendarsRequest request,
             [FromServices] GetWorkdayCalendarsRequestHandler requestHandler,
             CancellationToken cancellationToken)
         {
-            var getWorkdayCalendarsResponse = await requestHandler
-                .HandleAsync(request, cancellationToken);
+            try
+            {
+                var getWorkdayCalendarsResponse = await requestHandler
+                    .HandleAsync(request, cancellationToken);
 
-            return TypedResults.Ok(getWorkdayCalendarsResponse);
+                return TypedResults.Ok(getWorkdayCalendarsResponse);
+
+            }
+            catch (Exception ex) when (ex is ArgumentException || ex is ValidationException)
+            {
+                return TypedResults.BadRequest(ex.Message);
+            }
         }
     }
 }

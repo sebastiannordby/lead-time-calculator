@@ -1,22 +1,29 @@
-﻿using LeadTimeCalculator.API.Constracts.WorkdayCalendar.CreateCalendar;
+﻿using FluentValidation;
+using LeadTimeCalculator.API.Constracts.WorkdayCalendar.CreateCalendar;
 using LeadTimeCalculator.API.Domain.Shared.Exceptions;
 
-namespace LeadTimeCalculator.API.Application.WorkdayCalendarFeature.UseCases
+namespace LeadTimeCalculator.API.Application.WorkdayCalendarFeature.CreateCalendar
 {
     public sealed class CreateWorkdayCalendarRequestHandler
     {
         private readonly IWorkdayCalendarRepository _workdayCalendarRepository;
+        private readonly IValidator<CreateWorkdayCalendarRequest> _requestValidator;
 
         public CreateWorkdayCalendarRequestHandler(
-            IWorkdayCalendarRepository workdayCalendarRepository)
+            IWorkdayCalendarRepository workdayCalendarRepository,
+            IValidator<CreateWorkdayCalendarRequest> requestValidator)
         {
             _workdayCalendarRepository = workdayCalendarRepository;
+            _requestValidator = requestValidator;
         }
 
         public async Task<CreateWorkdayCalendarResponse> HandleAsync(
             CreateWorkdayCalendarRequest request,
             CancellationToken cancellationToken = default)
         {
+            await _requestValidator
+                .ValidateAndThrowAsync(request, cancellationToken);
+
             try
             {
                 var calendar = await _workdayCalendarRepository.CreateAsync(
