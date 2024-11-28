@@ -49,7 +49,7 @@ The project is organized into features, with the **WorkdayCalendarFeature** as t
 
 I prefer and advocate for **Test-Driven Development (TDD)**, as it ensures that the code remains clean, testable, and well-structured.
 
-For this exercise, I applied a **Domain-Driven Design (DDD)** approach, beginning by analyzing the terminology used in the interview document. Initially, I was not concerned with how the data should be stored, as the problem doesn't dictate a specific persistence strategy.
+For this exercise, I applied a **Model-Driven Design with some **Domain-Driven Design (DDD)**, beginning by analyzing the terminology used in the interview document and create the models needed for the required functionality. Initially, I was not concerned with how the data should be stored, as the problem doesn't dictate a specific persistence strategy.
 
 My approach began by creating a test for the first example, **BasicWorkingDayCalculationTest**. This test served as the foundation for determining the necessary classes and logic to make the test pass.
 
