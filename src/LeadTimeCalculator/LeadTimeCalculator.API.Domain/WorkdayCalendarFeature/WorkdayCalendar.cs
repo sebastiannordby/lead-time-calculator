@@ -90,16 +90,6 @@ namespace LeadTimeCalculator.API.Domain.WorkdayCalendarFeature
 
             while (remainingWorkdays > 0)
             {
-                if (currentWorkday.Day == 27)
-                {
-                    string e = "";
-                }
-
-                if (currentWorkday.Day == 24)
-                {
-                    string e = "";
-                }
-
                 var currentDayWorkHours = TryGetWorkingHours(currentWorkday);
                 var currentDayStart = currentDayWorkHours.Start;
                 var currentDayEnd = currentDayWorkHours.End;
@@ -152,7 +142,7 @@ namespace LeadTimeCalculator.API.Domain.WorkdayCalendarFeature
                 var currentDayStart = currentDayWorkHours.Start;
                 var currentDayEnd = currentDayWorkHours.End;
 
-                // Adjust the end time for the last day (wanted delivery day)
+                // Adjust the end time for the last day wanted shipping day
                 if (currentWorkday.Date == shippingAt.Date)
                 {
                     currentDayEnd = shippingAt.TimeOfDay < currentDayEnd
@@ -167,7 +157,7 @@ namespace LeadTimeCalculator.API.Domain.WorkdayCalendarFeature
                 if (remainingWorkdays <= availableWorkHoursAsWorkdayFraction)
                 {
                     // Production starts on this day
-                    var hoursToStart = remainingWorkdays * _defaultWorkhoursPerDay; // Use actual available hours
+                    var hoursToStart = remainingWorkdays * _defaultWorkhoursPerDay;
                     var productionStartTime = currentDayEnd - TimeSpan.FromHours(hoursToStart);
                     return ResetToWholeSecond(currentWorkday.Date + productionStartTime);
                 }
@@ -205,7 +195,9 @@ namespace LeadTimeCalculator.API.Domain.WorkdayCalendarFeature
                         movingDate = movingDate.AddDays(1).Date.Add(workingHours.Start);
                         continue; // Recheck the new day
                     }
-                    else if (traversalType == WorkdayTraversal.BackwardsInTime && currentTime < workingHours.Start) // If moving backward in time, check if we are before working hours
+
+                    // If moving backward in time, check if we are before working hours
+                    if (traversalType == WorkdayTraversal.BackwardsInTime && currentTime < workingHours.Start)
                     {
                         // Move to the previous valid working day
                         movingDate = movingDate.AddDays(-1).Date.Add(workingHours.Start);
