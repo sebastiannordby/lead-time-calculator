@@ -28,10 +28,11 @@ namespace LeadTimeCalculator.API.Application.WorkdayCalendarFeature.CalculateLea
             if (calendar is null)
                 throw new ArgumentException($"No WorkdayCalendar with given Id({request.CalendarId})");
 
-            var leadTime = calendar
-                .CalculateLeadTimeWorkdays(request.StartingDate, request.WorkdaysAdjustment);
+            var leadTime = request.WorkdaysAdjustment > 0
+                ? calendar.CalculateDateForProductionFinished(request.StartingDate, request.WorkdaysAdjustment)
+                : calendar.CalculateWhenHaveToStartProduceToDeliverAt(request.StartingDate, request.WorkdaysAdjustment);
 
-            var response = new CalculateLeadTimeWorkdaysResponse(leadTime);
+            var response = new CalculateLeadTimeWorkdaysResponse(DateTime.Now);
 
             return response;
         }

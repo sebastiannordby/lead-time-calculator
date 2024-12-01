@@ -76,90 +76,99 @@ namespace LeadTimeCalculator.API.Domain.WorkdayCalendarFeature
             _holidays.Add(holiday);
         }
 
-        public DateTime CalculateLeadTimeWorkdays(
-            DateTime startingDate, double workdaysAdjustment)
+        public DateTime CalculateDateForProductionFinished(
+            DateTime startProductionAt, double productionTimeWorkdayFractions)
         {
-            if (workdaysAdjustment == 0)
-                return startingDate;
+            if (productionTimeWorkdayFractions < 0)
+                throw new DomainException($"{nameof(productionTimeWorkdayFractions)} must be greater than 0");
+            if (productionTimeWorkdayFractions == 0)
+                return startProductionAt;
 
-            var isAdding = workdaysAdjustment > 0;
-            var remainingDays = Math.Abs(workdaysAdjustment);
-            var currentWorkday = GetNextValidWorkday(startingDate, isAdding);
+            var remainingWorkdays = productionTimeWorkdayFractions;
+            var currentWorkday = GetNextValidWorkday(startProductionAt, true);
+            var currentProductionTime = startProductionAt;
 
-            while (remainingDays > 0)
+            while (remainingWorkdays > 0)
             {
-                var workHours = TryGetWorkingHours(currentWorkday, isAdding);
+                var currentDayWorkHours = TryGetWorkingHours(currentWorkday, true);
+                var currentDayStart = currentDayWorkHours.Start;
+                var currentDayEnd = currentDayWorkHours.End;
 
-                var currentWorkdayStartTime = currentWorkday.Date + workHours.Start;
-                var currentWorkdayEndTime = currentWorkday.Date + workHours.End;
-                TimeSpan availableTime;
-
-                if (!isAdding)
+                // Adjust the start time for the first production day
+                if (currentWorkday.Date == startProductionAt.Date)
                 {
-                    if (currentWorkday < currentWorkdayStartTime && currentWorkday == startingDate)
-                    {
-                        currentWorkday = GetNextValidWorkday(currentWorkday.Date.AddDays(-1), isAdding);
-                        continue;
-                    }
-
-                    if (currentWorkday > currentWorkdayStartTime)
-                    {
-                        availableTime = currentWorkday - currentWorkdayStartTime;
-                    }
-                    else
-                    {
-                        availableTime = currentWorkdayEndTime - currentWorkdayStartTime;
-                    }
-                }
-                else
-                {
-                    if (currentWorkday < currentWorkdayStartTime)
-                    {
-                        currentWorkday = currentWorkdayStartTime;
-                    }
-                    else if (currentWorkday > currentWorkdayEndTime)
-                    {
-                        currentWorkday = currentWorkdayEndTime;
-                    }
-
-                    availableTime = currentWorkdayEndTime - currentWorkday;
+                    currentDayStart = startProductionAt.TimeOfDay > currentDayStart
+                        ? startProductionAt.TimeOfDay
+                        : currentDayStart;
                 }
 
+                // Calculate available working time for the day
+                var availableWorkHours = (currentDayEnd - currentDayStart).TotalHours;
+                var availableWorkHoursAsWorkdayFraction = availableWorkHours / _defaultWorkhoursPerDay;
 
-                if (availableTime < TimeSpan.Zero)
+                if (remainingWorkdays <= availableWorkHoursAsWorkdayFraction)
                 {
-                    currentWorkday = GetNextValidWorkday(
-                        isAdding ? currentWorkday.Date.AddDays(1) : currentWorkday.Date.AddDays(-1),
-                        isAdding);
-                    continue;
+                    // Production finishes on this day
+                    var hoursToComplete = remainingWorkdays * _defaultWorkhoursPerDay;
+                    var productionEndTime = currentDayStart + TimeSpan.FromHours(hoursToComplete);
+                    return currentWorkday.Date + productionEndTime;
                 }
 
-                var workDayDuration = workHours.End - workHours.Start;
-                if (availableTime > workDayDuration)
-                {
-                    availableTime = workDayDuration;
-                }
-
-                var availableFractionOfWorkday = availableTime.Hours / _defaultWorkhoursPerDay;
-
-                if (remainingDays <= availableFractionOfWorkday)
-                {
-                    var hoursToAdjust = remainingDays * _defaultWorkhoursPerDay;
-
-                    return isAdding
-                        ? ResetToWholeSecond(currentWorkday.AddHours(hoursToAdjust))
-                        : ResetToWholeSecond(currentWorkdayEndTime.AddHours(-hoursToAdjust));
-                }
-
-
-                remainingDays -= availableFractionOfWorkday;
-                currentWorkday = GetNextValidWorkday(
-                    isAdding ? currentWorkday.Date.AddDays(1) : currentWorkday.Date.AddDays(-1),
-                    isAdding);
+                // Move to the next workday
+                remainingWorkdays -= availableWorkHoursAsWorkdayFraction;
+                currentWorkday = GetNextValidWorkday(currentWorkday.AddDays(1), true);
             }
 
-            return currentWorkday;
+            throw new InvalidOperationException("Production time exceeds calculated workdays");
         }
+
+
+        public DateTime CalculateWhenHaveToStartProduceToDeliverAt(
+            DateTime wantedDelivery, double productionTimeWorkdayFractions)
+        {
+            if (productionTimeWorkdayFractions < 0)
+                throw new DomainException($"{nameof(productionTimeWorkdayFractions)} must be greater than 0");
+            if (productionTimeWorkdayFractions == 0)
+                return wantedDelivery;
+
+            var remainingWorkdays = productionTimeWorkdayFractions;
+            var currentWorkday = GetNextValidWorkday(wantedDelivery, false);
+            var currentProductionTime = wantedDelivery;
+
+            while (remainingWorkdays > 0)
+            {
+                var currentDayWorkHours = TryGetWorkingHours(currentWorkday, false);
+                var currentDayStart = currentDayWorkHours.Start;
+                var currentDayEnd = currentDayWorkHours.End;
+
+                // Adjust the end time for the last day (wanted delivery day)
+                if (currentWorkday.Date == wantedDelivery.Date)
+                {
+                    currentDayEnd = wantedDelivery.TimeOfDay < currentDayEnd
+                        ? wantedDelivery.TimeOfDay
+                        : currentDayEnd;
+                }
+
+                // Calculate available working time for the day
+                var availableWorkHours = (currentDayEnd - currentDayStart).TotalHours;
+                var availableWorkHoursAsWorkdayFraction = availableWorkHours / _defaultWorkhoursPerDay;
+
+                if (remainingWorkdays <= availableWorkHoursAsWorkdayFraction)
+                {
+                    // Production starts on this day
+                    var hoursToStart = remainingWorkdays * availableWorkHours; // Use actual available hours
+                    var productionStartTime = currentDayEnd - TimeSpan.FromHours(hoursToStart);
+                    return currentWorkday.Date + productionStartTime;
+                }
+
+                // Move to the previous workday
+                remainingWorkdays -= availableWorkHoursAsWorkdayFraction;
+                currentWorkday = GetNextValidWorkday(currentWorkday.AddDays(-1), false);
+            }
+
+            throw new InvalidOperationException("Production time exceeds calculated workdays");
+        }
+
 
         private DateTime ResetToWholeSecond(DateTime dateTime)
         {
@@ -168,15 +177,18 @@ namespace LeadTimeCalculator.API.Domain.WorkdayCalendarFeature
 
         private DateTime GetNextValidWorkday(DateTime date, bool isAdding)
         {
-            (TimeSpan start, TimeSpan end) def = TryGetWorkingHours(date, isAdding);
-
-            while (def == default)
+            while (true)
             {
-                date = isAdding ? date.AddDays(1) : date.AddDays(-1);
-                def = TryGetWorkingHours(date, isAdding);
-            }
+                // Check if the day has valid working hours
+                var workingHours = TryGetWorkingHours(date, isAdding);
+                if (workingHours != default)
+                {
+                    return date;
+                }
 
-            return date;
+                // Move to the next/previous day
+                date = isAdding ? date.AddDays(1) : date.AddDays(-1);
+            }
         }
 
         private (TimeSpan Start, TimeSpan End) TryGetWorkingHours(
