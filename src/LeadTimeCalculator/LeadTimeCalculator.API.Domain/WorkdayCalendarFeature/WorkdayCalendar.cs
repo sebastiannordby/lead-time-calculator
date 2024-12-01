@@ -76,7 +76,7 @@ namespace LeadTimeCalculator.API.Domain.WorkdayCalendarFeature
             _holidays.Add(holiday);
         }
 
-        public DateTime CalculateDateForProductionFinished(
+        public DateTime CalculateWhenCanShipWhenProductionStartsAt(
             DateTime startProductionAt, double productionTimeWorkdayFractions)
         {
             if (productionTimeWorkdayFractions < 0)
@@ -85,12 +85,22 @@ namespace LeadTimeCalculator.API.Domain.WorkdayCalendarFeature
                 return startProductionAt;
 
             var remainingWorkdays = productionTimeWorkdayFractions;
-            var currentWorkday = GetNextValidWorkday(startProductionAt, true);
+            var currentWorkday = GetNextValidWorkday(startProductionAt, WorkdayTraversal.ForwardsInTime);
             var currentProductionTime = startProductionAt;
 
             while (remainingWorkdays > 0)
             {
-                var currentDayWorkHours = TryGetWorkingHours(currentWorkday, true);
+                if (currentWorkday.Day == 27)
+                {
+                    string e = "";
+                }
+
+                if (currentWorkday.Day == 24)
+                {
+                    string e = "";
+                }
+
+                var currentDayWorkHours = TryGetWorkingHours(currentWorkday);
                 var currentDayStart = currentDayWorkHours.Start;
                 var currentDayEnd = currentDayWorkHours.End;
 
@@ -111,41 +121,42 @@ namespace LeadTimeCalculator.API.Domain.WorkdayCalendarFeature
                     // Production finishes on this day
                     var hoursToComplete = remainingWorkdays * _defaultWorkhoursPerDay;
                     var productionEndTime = currentDayStart + TimeSpan.FromHours(hoursToComplete);
-                    return currentWorkday.Date + productionEndTime;
+
+                    return ResetToWholeSecond(currentWorkday.Date + productionEndTime);
                 }
 
                 // Move to the next workday
                 remainingWorkdays -= availableWorkHoursAsWorkdayFraction;
-                currentWorkday = GetNextValidWorkday(currentWorkday.AddDays(1), true);
+                currentWorkday = GetNextValidWorkday(currentWorkday.AddDays(1), WorkdayTraversal.ForwardsInTime);
             }
 
             throw new InvalidOperationException("Production time exceeds calculated workdays");
         }
 
 
-        public DateTime CalculateWhenHaveToStartProduceToDeliverAt(
-            DateTime wantedDelivery, double productionTimeWorkdayFractions)
+        public DateTime CalculateProductionTimeWhenHaveToShipAt(
+            DateTime shippingAt, double productionTimeWorkdayFractions)
         {
             if (productionTimeWorkdayFractions < 0)
                 throw new DomainException($"{nameof(productionTimeWorkdayFractions)} must be greater than 0");
             if (productionTimeWorkdayFractions == 0)
-                return wantedDelivery;
+                return shippingAt;
 
             var remainingWorkdays = productionTimeWorkdayFractions;
-            var currentWorkday = GetNextValidWorkday(wantedDelivery, false);
-            var currentProductionTime = wantedDelivery;
+            var currentWorkday = GetNextValidWorkday(shippingAt, WorkdayTraversal.BackwardsInTime);
+            var currentProductionTime = shippingAt;
 
             while (remainingWorkdays > 0)
             {
-                var currentDayWorkHours = TryGetWorkingHours(currentWorkday, false);
+                var currentDayWorkHours = TryGetWorkingHours(currentWorkday);
                 var currentDayStart = currentDayWorkHours.Start;
                 var currentDayEnd = currentDayWorkHours.End;
 
                 // Adjust the end time for the last day (wanted delivery day)
-                if (currentWorkday.Date == wantedDelivery.Date)
+                if (currentWorkday.Date == shippingAt.Date)
                 {
-                    currentDayEnd = wantedDelivery.TimeOfDay < currentDayEnd
-                        ? wantedDelivery.TimeOfDay
+                    currentDayEnd = shippingAt.TimeOfDay < currentDayEnd
+                        ? shippingAt.TimeOfDay
                         : currentDayEnd;
                 }
 
@@ -156,43 +167,63 @@ namespace LeadTimeCalculator.API.Domain.WorkdayCalendarFeature
                 if (remainingWorkdays <= availableWorkHoursAsWorkdayFraction)
                 {
                     // Production starts on this day
-                    var hoursToStart = remainingWorkdays * availableWorkHours; // Use actual available hours
+                    var hoursToStart = remainingWorkdays * _defaultWorkhoursPerDay; // Use actual available hours
                     var productionStartTime = currentDayEnd - TimeSpan.FromHours(hoursToStart);
-                    return currentWorkday.Date + productionStartTime;
+                    return ResetToWholeSecond(currentWorkday.Date + productionStartTime);
                 }
 
                 // Move to the previous workday
                 remainingWorkdays -= availableWorkHoursAsWorkdayFraction;
-                currentWorkday = GetNextValidWorkday(currentWorkday.AddDays(-1), false);
+                currentWorkday = GetNextValidWorkday(currentWorkday.AddDays(-1), WorkdayTraversal.BackwardsInTime);
             }
 
             throw new InvalidOperationException("Production time exceeds calculated workdays");
         }
-
 
         private DateTime ResetToWholeSecond(DateTime dateTime)
         {
             return dateTime.AddTicks(-(dateTime.Ticks % TimeSpan.TicksPerMinute));
         }
 
-        private DateTime GetNextValidWorkday(DateTime date, bool isAdding)
+        private DateTime GetNextValidWorkday(DateTime date, WorkdayTraversal traversalType)
         {
+            var movingDate = date;
+
             while (true)
             {
                 // Check if the day has valid working hours
-                var workingHours = TryGetWorkingHours(date, isAdding);
+                var workingHours = TryGetWorkingHours(movingDate);
+
                 if (workingHours != default)
                 {
-                    return date;
+                    var currentTime = movingDate.TimeOfDay;
+
+                    // If moving forward in time, check if we are after working hours
+                    if (traversalType == WorkdayTraversal.ForwardsInTime && currentTime > workingHours.End)
+                    {
+                        // Move to the next valid working day
+                        movingDate = movingDate.AddDays(1).Date.Add(workingHours.Start);
+                        continue; // Recheck the new day
+                    }
+                    else if (traversalType == WorkdayTraversal.BackwardsInTime && currentTime < workingHours.Start) // If moving backward in time, check if we are before working hours
+                    {
+                        // Move to the previous valid working day
+                        movingDate = movingDate.AddDays(-1).Date.Add(workingHours.Start);
+                        continue; // Recheck the new day
+                    }
+
+                    // If the current time is within working hours, return the date
+                    return movingDate;
                 }
 
-                // Move to the next/previous day
-                date = isAdding ? date.AddDays(1) : date.AddDays(-1);
+                // If no valid working hours, move to the next/previous day
+                movingDate = traversalType == WorkdayTraversal.ForwardsInTime
+                    ? movingDate.AddDays(1)
+                    : movingDate.AddDays(-1);
             }
         }
 
-        private (TimeSpan Start, TimeSpan End) TryGetWorkingHours(
-            DateTime date, bool isAdding)
+        private (TimeSpan Start, TimeSpan End) TryGetWorkingHours(DateTime date)
         {
             var exceptionDay = _exceptionDays
                 .FirstOrDefault(e => e.Date == date.Date);
@@ -217,6 +248,12 @@ namespace LeadTimeCalculator.API.Domain.WorkdayCalendarFeature
             }
 
             return default;
+        }
+
+        private enum WorkdayTraversal
+        {
+            ForwardsInTime = 0,
+            BackwardsInTime = 1
         }
     }
 }

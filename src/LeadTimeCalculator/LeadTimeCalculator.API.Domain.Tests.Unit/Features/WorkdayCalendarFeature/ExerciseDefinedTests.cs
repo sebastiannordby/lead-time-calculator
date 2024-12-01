@@ -37,7 +37,7 @@ namespace LeadTimeCalculator.API.Tests.Unit.Features.WorkdayCalendarFeature
 
             // Act
             var work = workdayCalendar
-                .CalculateDateForProductionFinished(date, 0.25);
+                .CalculateWhenCanShipWhenProductionStartsAt(date, 0.25);
 
             // Assert
             var expectedDate = new DateTime(2004, 5, 25, 09, 7, 0); // 25.05.2004 09:07
@@ -74,7 +74,7 @@ namespace LeadTimeCalculator.API.Tests.Unit.Features.WorkdayCalendarFeature
 
             // Act 
             var work = workdayCalendar
-                .CalculateDateForProductionFinished(date, 0.5);
+                .CalculateWhenCanShipWhenProductionStartsAt(date, 0.5);
 
             // Assert
             var expectedDate = DateTime.Parse("2004-05-24 12:00"); // 24.05.2004 12:00
@@ -118,7 +118,7 @@ namespace LeadTimeCalculator.API.Tests.Unit.Features.WorkdayCalendarFeature
 
             // Act
             var work = workdayCalendar
-                .CalculateWhenHaveToStartProduceToDeliverAt(date, 5.5);
+                .CalculateProductionTimeWhenHaveToShipAt(date, 5.5);
 
             // Assert
             var expectedDate = DateTime.Parse("2004-05-14 12:00"); // 14.05.2004 12:00
@@ -143,43 +143,46 @@ namespace LeadTimeCalculator.API.Tests.Unit.Features.WorkdayCalendarFeature
         ///      o Input: 24-05-2004 07:03, Add 8.276628 working days
         ///              o Expected Output: 04-06-2004 10:12
         /// </summary>
-        //[Theory]
-        //[InlineData("2004-05-24 19:03", 44.723656, "2004-07-27 13:47")] // Example 1
-        //[InlineData("2004-05-24 18:03", -6.7470217, "2004-05-13 10:01")] // Example 2
-        //[InlineData("2004-05-24 08:03", 12.782709, "2004-06-10 14:18")] // Example 3
-        //[InlineData("2004-05-24 07:03", 8.276628, "2004-06-04 10:12")]  // Example 4
-        //public void AdditionalCorrectResults(
-        //    string inputDateStr, double workingHoursToAdd, string expectedDateStr)
-        //{
-        //    DateTime inputDate = DateTime.ParseExact(inputDateStr, "yyyy-MM-dd HH:mm", CultureInfo.InvariantCulture);
-        //    DateTime expectedDate = DateTime.ParseExact(expectedDateStr, "yyyy-MM-dd HH:mm", CultureInfo.InvariantCulture);
+        [Theory]
+        [InlineData("2004-05-24 19:03", 44.723656, "2004-07-27 13:47")] // Example 1
+        [InlineData("2004-05-24 18:03", -6.7470217, "2004-05-13 10:01")] // Example 2
+        [InlineData("2004-05-24 08:03", 12.782709, "2004-06-10 14:18")] // Example 3
+        [InlineData("2004-05-24 07:03", 8.276628, "2004-06-04 10:12")]  // Example 4
+        public void AdditionalCorrectResults(
+            string inputDateStr, double workingHoursToAdd, string expectedDateStr)
+        {
+            DateTime inputDate = DateTime.Parse(inputDateStr);
+            DateTime expectedDate = DateTime.Parse(expectedDateStr);
 
-        //    // Arrange
-        //    var defaultWorkingDays = new Dictionary<DayOfWeek, (TimeSpan, TimeSpan)>()
-        //    {
-        //        { DayOfWeek.Monday, (TimeSpan.FromHours(8), TimeSpan.FromHours(16)) },
-        //        { DayOfWeek.Tuesday, (TimeSpan.FromHours(8), TimeSpan.FromHours(16)) },
-        //        { DayOfWeek.Wednesday, (TimeSpan.FromHours(8), TimeSpan.FromHours(16)) },
-        //        { DayOfWeek.Thursday, (TimeSpan.FromHours(8), TimeSpan.FromHours(16)) },
-        //        { DayOfWeek.Friday, (TimeSpan.FromHours(8), TimeSpan.FromHours(16)) },
-        //    };
-        //    var holidays = new List<Holiday>()
-        //    {
-        //        new Holiday(DateTime.ParseExact("2004/05/27", "yyyy/MM/dd", CultureInfo.InvariantCulture), isRecurring: false),
-        //        new Holiday(DateTime.ParseExact("2004/05/17", "yyyy/MM/dd", CultureInfo.InvariantCulture), isRecurring: true)
-        //    };
+            // Arrange
+            var eightToFour = (TimeSpan.FromHours(8), TimeSpan.FromHours(16));
+            var defaultWorkingDays = new Dictionary<DayOfWeek, (TimeSpan, TimeSpan)>()
+            {
+                { DayOfWeek.Monday, eightToFour },
+                { DayOfWeek.Tuesday, eightToFour },
+                { DayOfWeek.Wednesday, eightToFour },
+                { DayOfWeek.Thursday, eightToFour },
+                { DayOfWeek.Friday, eightToFour },
+            };
 
-        //    var workdayCalendar = new WorkdayCalendar(
-        //        defaultWorkhoursPerDay: 8,
-        //        defaultWorkingDays,
-        //        holidays);
+            var holidays = new List<Holiday>()
+            {
+                new Holiday(DateTime.Parse("2004-05-27"), isRecurring: false),
+                new Holiday(DateTime.Parse("2004-05-17"), isRecurring: true)
+            };
 
-        //    // Act
-        //    var work = workdayCalendar
-        //        .CalculateLeadTimeWorkdays(inputDate, workingHoursToAdd);
+            var workdayCalendar = new WorkdayCalendar(
+                defaultWorkhoursPerDay: 8,
+                defaultWorkingDays,
+                holidays);
 
-        //    // Assert
-        //    Assert.Equal(expectedDate, work);
-        //}
+            // Act
+            var work = workingHoursToAdd > 0
+                ? workdayCalendar.CalculateWhenCanShipWhenProductionStartsAt(inputDate, workingHoursToAdd)
+                : workdayCalendar.CalculateProductionTimeWhenHaveToShipAt(inputDate, -workingHoursToAdd);
+
+            // Assert
+            Assert.Equal(expectedDate, work);
+        }
     }
 }
