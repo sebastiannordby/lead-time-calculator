@@ -88,7 +88,7 @@ namespace LeadTimeCalculator.API.Domain.WorkdayCalendarFeature
 
             while (remainingDays > 0)
             {
-                TryGetWorkingHours(currentWorkday, out var workHours);
+                var workHours = TryGetWorkingHours(currentWorkday, isAdding);
 
                 var currentWorkdayStartTime = currentWorkday.Date + workHours.Start;
                 var currentWorkdayEndTime = currentWorkday.Date + workHours.End;
@@ -102,7 +102,7 @@ namespace LeadTimeCalculator.API.Domain.WorkdayCalendarFeature
                         continue;
                     }
 
-                    if (currentWorkday > currentWorkdayStartTime && !isAdding)
+                    if (currentWorkday > currentWorkdayStartTime)
                     {
                         availableTime = currentWorkday - currentWorkdayStartTime;
                     }
@@ -140,7 +140,7 @@ namespace LeadTimeCalculator.API.Domain.WorkdayCalendarFeature
                     availableTime = workDayDuration;
                 }
 
-                var availableFractionOfWorkday = availableTime.TotalHours / _defaultWorkhoursPerDay;
+                var availableFractionOfWorkday = availableTime.Hours / _defaultWorkhoursPerDay;
 
                 if (remainingDays <= availableFractionOfWorkday)
                 {
@@ -168,44 +168,43 @@ namespace LeadTimeCalculator.API.Domain.WorkdayCalendarFeature
 
         private DateTime GetNextValidWorkday(DateTime date, bool isAdding)
         {
-            while (!TryGetWorkingHours(date, out _))
+            (TimeSpan start, TimeSpan end) def = TryGetWorkingHours(date, isAdding);
+
+            while (def == default)
             {
                 date = isAdding ? date.AddDays(1) : date.AddDays(-1);
+                def = TryGetWorkingHours(date, isAdding);
             }
 
             return date;
         }
 
-        private bool TryGetWorkingHours(DateTime date, out (TimeSpan Start, TimeSpan End) workHours)
+        private (TimeSpan Start, TimeSpan End) TryGetWorkingHours(
+            DateTime date, bool isAdding)
         {
             var exceptionDay = _exceptionDays
                 .FirstOrDefault(e => e.Date == date.Date);
             if (exceptionDay != null)
             {
-                workHours = (exceptionDay.StartTime, exceptionDay.EndTime);
-                return true;
+                return (exceptionDay.StartTime, exceptionDay.EndTime);
             }
 
             if (_holidays.Any(h => h.Matches(date)))
             {
-                workHours = default;
-                return false;
+                return default;
             }
 
             if (date.DayOfWeek == DayOfWeek.Saturday || date.DayOfWeek == DayOfWeek.Sunday)
             {
-                workHours = default;
-                return false;
+                return default;
             }
 
             if (_defaultWorkHours.TryGetValue(date.DayOfWeek, out var hours))
             {
-                workHours = hours;
-                return true;
+                return hours;
             }
 
-            workHours = default;
-            return false;
+            return default;
         }
     }
 }
