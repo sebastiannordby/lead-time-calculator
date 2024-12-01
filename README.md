@@ -1,5 +1,7 @@
 # Lead-Time Calculator
 
+[![.NET - Build & Test](https://github.com/sebastiannordby/lead-time-calculator/actions/workflows/ci-workflow.yml/badge.svg)](https://github.com/sebastiannordby/lead-time-calculator/actions/workflows/ci-workflow.yml)
+
 Given that this is only a simple application, but could envolve to something bigger i will set the line for refactoring to here.
 This is overenginnering at it finest already and the initial structuring is appropriate for this size of a project.
 Given the size of the project the developer(s) should be able to follow principles set in their coding standard and adhere to them.
