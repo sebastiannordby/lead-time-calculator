@@ -1,7 +1,5 @@
 # Lead-Time Calculator
 
-# This branch is based off main
-
 This branch is based off main, but refactored by encapsulating the domain and application logic in their own respective project.
 In this case the LeadTimeCalculator.API.Application acts as an ACL(anti corruption layer).
 
