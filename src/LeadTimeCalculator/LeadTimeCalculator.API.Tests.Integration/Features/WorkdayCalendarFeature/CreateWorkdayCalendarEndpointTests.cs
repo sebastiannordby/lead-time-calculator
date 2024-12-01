@@ -32,7 +32,7 @@ namespace LeadTimeCalculator.API.Tests.Integration.Features.WorkdayCalendarFeatu
                 .CreateWorkdayCalendar(validCreateCalendarRequest);
 
             // Then
-            Assert.AssertBadInputResponse(createCalendarHttpResponse);
+            await Assert.AssertBadInputResponse(createCalendarHttpResponse);
         }
 
         [Fact]
@@ -51,7 +51,7 @@ namespace LeadTimeCalculator.API.Tests.Integration.Features.WorkdayCalendarFeatu
                 .Content.ReadFromJsonAsync<CreateWorkdayCalendarResponse>();
 
             // Then
-            Assert.AssertSuccessfulResponse(createCalendarHttpResponse);
+            await Assert.AssertSuccessfulResponse(createCalendarHttpResponse);
 
             var workdayCalendarsResponse = await GetWorkdayCalendars();
             Assert.Contains(workdayCalendarsResponse.CalendarDetailedViews,

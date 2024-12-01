@@ -18,7 +18,7 @@ namespace LeadTimeCalculator.Client.Components.Pages
         private CalendarDetailedView? _selectedCalendar;
         private IEnumerable<CalendarDetailedView> _calendarViews = [];
         private IEnumerable<Appointment> _appointments = [];
-        private RadzenScheduler<Appointment> _scheduler;
+        private RadzenScheduler<Appointment>? _scheduler;
 
         private DateTime _startingLeadTimeCalc;
         private double _leadTimeCalcFractionalWorkdays;

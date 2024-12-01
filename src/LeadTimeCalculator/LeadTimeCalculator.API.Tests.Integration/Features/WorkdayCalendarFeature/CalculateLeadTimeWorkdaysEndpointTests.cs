@@ -27,7 +27,7 @@ namespace LeadTimeCalculator.API.Tests.Integration.Features.WorkdayCalendarFeatu
                 .CalculateLeadTimeWorkdays(invalidRequest);
 
             // Assert
-            Assert.AssertBadInputResponse(calculateLeadTimeHttpResponse);
+            await Assert.AssertBadInputResponse(calculateLeadTimeHttpResponse);
         }
     }
 }

@@ -29,7 +29,7 @@ namespace LeadTimeCalculator.API.Tests.Integration.Features.WorkdayCalendarFeatu
                 .AddWorkdayCalendarHoliday(invalidRequest);
 
             // Then
-            Assert.AssertBadInputResponse(addHolidayHttpResponse);
+            await Assert.AssertBadInputResponse(addHolidayHttpResponse);
         }
 
         [Fact]
@@ -50,7 +50,7 @@ namespace LeadTimeCalculator.API.Tests.Integration.Features.WorkdayCalendarFeatu
                 .AddWorkdayCalendarHoliday(validAddExceptionDayRequest);
 
             // Then
-            Assert.AssertSuccessfulResponse(addHolidayHttpResponse);
+            await Assert.AssertSuccessfulResponse(addHolidayHttpResponse);
 
             var getWorkdayCalendarsResponse = await GetWorkdayCalendars();
 

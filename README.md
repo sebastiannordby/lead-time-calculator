@@ -1,9 +1,22 @@
 # Lead-Time Calculator
 
-```
-I have refactored some code after 26.11.2024 12:00,
-but these changes are inside refactor/domain branch: https://github.com/sebastiannordby/lead-time-calculator/tree/refactor/domain
-```
+# This branch is based off main
+
+This branch is based off main, but refactored by encapsulating the domain and application logic in their own respective project.
+In this case the LeadTimeCalculator.API.Application acts as an ACL(anti corruption layer).
+
+Given that this is only a simple application, but could envolve to something bigger i will set the line for refactoring to here.
+This is overenginnering at it finest already and the initial structuring is appropriate for this size of a project.
+Given the size of the project the developer(s) should be able to follow principles set in their coding standard and adhere to them.
+
+Mediator could have been used to dispatch requests to the application layer, to avoid having to reference handlers directly in the API-project.
+
+By restructuring the project like this we can
+
+- Unit test domain logic without mocking/fakes
+- Unit test application logic with mocking/fakes
+- Integration test as usual the API to get the whole workflow
+- Allow for architectural testing
 
 ## How to Run the Project
 

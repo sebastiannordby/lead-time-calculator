@@ -14,7 +14,7 @@ namespace LeadTimeCalculator.Client.Components.Dialogs
 
         private TimeSpan _startTime = TimeSpan.FromHours(8);
         private TimeSpan _endTime = TimeSpan.FromHours(16);
-        private DateTime _date;
+        private DateTime _date = DateTime.Now;
         private bool _isReccuring;
 
         public DateTime StartTime
