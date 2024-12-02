@@ -11,6 +11,9 @@
   <ItemGroup>
     <PackageReference Include="Microsoft.AspNetCore.OpenApi" Version="9.0.0" />
     <PackageReference Include="Microsoft.VisualStudio.Azure.Containers.Tools.Targets" Version="1.21.0" />
+    <PackageReference Include="OpenTelemetry.Exporter.Prometheus.AspNetCore" Version="1.10.0-beta.1" />
+    <PackageReference Include="OpenTelemetry.Extensions.Hosting" Version="1.9.0" />
+    <PackageReference Include="OpenTelemetry.Instrumentation.AspNetCore" Version="1.9.0" />
     <PackageReference Include="Scalar.AspNetCore" Version="1.2.44" />
   </ItemGroup>
 
@@ -18,6 +21,10 @@
     <ProjectReference Include="..\LeadTimeCalculator.API.Application\LeadTimeCalculator.API.Application.csproj" />
     <ProjectReference Include="..\LeadTimeCalculator.API.Constracts\LeadTimeCalculator.API.Constracts.csproj" />
     <ProjectReference Include="..\LeadTimeCalculator.API.Domain\LeadTimeCalculator.API.Domain.csproj" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Folder Include="Observability\" />
   </ItemGroup>
 
 </Project>

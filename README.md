@@ -53,7 +53,6 @@ There are several areas for improvement that I would address in future iteration
 - ✖ **Branching Strategy**: Currently, everything is pushed to the `main` branch.
 - ✖ **Security/Quality Code Scanning**: Tools like **Snyk** and/or **SonarCloud** should be integrated for scanning and monitoring security and quality.
 - ✖ **Frontend Tests**: There are no tests for the frontend at the moment.
-- ✖ **Frontend Formatting Rules**: Although not critical, some formatting rules (e.g., using **Prettier**) could be applied, especially for Razor pages.
 - ✖ API -> Application: Mediatr Could have been used to dispatch requests to the application layer, to avoid having to reference handlers directly in the API-project.
 
 ## General Notes

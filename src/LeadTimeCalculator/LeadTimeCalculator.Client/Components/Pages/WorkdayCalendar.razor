@@ -7,104 +7,109 @@
 <PageTitle>@PageTitle</PageTitle>
 <RadzenDialog />
 
-<div class="p-2 d-flex flex-column gap-3 border-1 border">
-    <div class="d-flex flex-row gap-2 align-items-center">
-        <RadzenLabel
-            Text="Start production:"
-            Style="width: 150px;"
-            Component="_calculateLeadTimeForWhenCanShipDateTime" />
-        <RadzenDatePicker
-            @bind-Value=@_calculateLeadTimeForWhenCanShipDateTime
-            Name="_calculateLeadTimeForWhenCanShipDateTime"
-            Disabled="_selectedCalendar is null"
-            ShowCalendarWeek
-            Placeholder="Start production" />
-        <RadzenLabel
-            class="mr-2"
-            Text="Time to produce(workdays):"
-            Component="_calculateLeadTimeForWhenCanShipFractionalWorkdays" />
-        <RadzenNumeric
-            ShowUpDown="false"
-            TValue="double"
-            @bind-Value=@_calculateLeadTimeForWhenCanShipFractionalWorkdays
-            Disabled="_selectedCalendar is null"
-            Name="_calculateLeadTimeForWhenCanShipFractionalWorkdays"
-            Style="width: 115px"
-            Placeholder="Fractional workdays" />
-        <RadzenButton 
-            Disabled="_selectedCalendar is null"
-            Click="CalculateEarliestTimeForWhenCanShip">Calculate</RadzenButton>
-    </div>
-    <div class="d-flex flex-row gap-2 align-items-center">
-        <RadzenLabel
-            Text="Requested shipping:"
-            Style="width: 150px;"
-            Component="_calculateLeadTimeForWhenToStartProductionDateTime" />
-        <RadzenDatePicker
-            @bind-Value=@_calculateLeadTimeForWhenToStartProductionDateTime
-            Name="_calculateLeadTimeForWhenToStartProductionDateTime"
-            Disabled="_selectedCalendar is null"
-            ShowCalendarWeek
-            Placeholder="Ship product at" />
-        <RadzenLabel
-            class="mr-2"
-            Text="Time to produce(workdays):"
-            Component="calculateLeadTimeForWhenToStartProductionFractionalWorkdays" />
-        <RadzenNumeric
-            ShowUpDown="false"
-            TValue="double"
-            @bind-Value=@_calculateLeadTimeForWhenToStartProductionFractionalWorkdays
-            Disabled="_selectedCalendar is null"
-            Name="calculateLeadTimeForWhenToStartProductionFractionalWorkdays"
-            Style="width: 115px"
-            Placeholder="Fractional workdays" />
-        <RadzenButton 
-            Disabled="_selectedCalendar is null"
-            Click="CalculateLatestTimeForWhenToStartProduction">Calculate</RadzenButton>
+<div class="bg-white">
+    <div class="p-2 d-flex flex-column gap-3 border-1 border-bottom bg-white">
+        <div class="d-flex flex-row gap-2 align-items-center">
+            <RadzenLabel
+                Text="Start production:"
+                Style="width: 150px;"
+                Component="_calculateLeadTimeForWhenCanShipDateTime" />
+            <RadzenDatePicker
+                @bind-Value=@_calculateLeadTimeForWhenCanShipDateTime
+                Name="_calculateLeadTimeForWhenCanShipDateTime"
+                Disabled="_selectedCalendar is null"
+                ShowCalendarWeek
+                Placeholder="Start production" />
+            <RadzenLabel
+                class="mr-2"
+                Text="Time to produce(workdays):"
+                Component="_calculateLeadTimeForWhenCanShipFractionalWorkdays" />
+            <RadzenNumeric
+                ShowUpDown="false"
+                TValue="double"
+                @bind-Value=@_calculateLeadTimeForWhenCanShipFractionalWorkdays
+                Disabled="_selectedCalendar is null"
+                Name="_calculateLeadTimeForWhenCanShipFractionalWorkdays"
+                Style="width: 115px"
+                Placeholder="Fractional workdays" />
+            <RadzenButton 
+                Disabled="_selectedCalendar is null"
+                Click="CalculateEarliestTimeForWhenCanShip">Calculate</RadzenButton>
+        </div>
+        <div class="d-flex flex-row gap-2 align-items-center">
+            <RadzenLabel
+                Text="Requested shipping:"
+                Style="width: 150px;"
+                Component="_calculateLeadTimeForWhenToStartProductionDateTime" />
+            <RadzenDatePicker
+                @bind-Value=@_calculateLeadTimeForWhenToStartProductionDateTime
+                Name="_calculateLeadTimeForWhenToStartProductionDateTime"
+                Disabled="_selectedCalendar is null"
+                ShowCalendarWeek
+                Placeholder="Ship product at" />
+            <RadzenLabel
+                class="mr-2"
+                Text="Time to produce(workdays):"
+                Component="calculateLeadTimeForWhenToStartProductionFractionalWorkdays" />
+            <RadzenNumeric
+                ShowUpDown="false"
+                TValue="double"
+                @bind-Value=@_calculateLeadTimeForWhenToStartProductionFractionalWorkdays
+                Disabled="_selectedCalendar is null"
+                Name="calculateLeadTimeForWhenToStartProductionFractionalWorkdays"
+                Style="width: 115px"
+                Placeholder="Fractional workdays" />
+            <RadzenButton 
+                Disabled="_selectedCalendar is null"
+                Click="CalculateLatestTimeForWhenToStartProduction">Calculate</RadzenButton>
+        </div>
+
     </div>
 
+    <RadzenMenu >
+        <RadzenMenuItem 
+            Text="Add Workday Calendar" 
+            Click="AddCalendar"
+            Disabled="_selectedCalendar is not null"
+            Icon="add"  />
+        <RadzenMenuItem 
+            Text="Add Holiday" 
+            Disabled="_selectedCalendar is null"
+            Click="ShowAddHolidayDialogAsync"
+            Icon="add"  />
+        <RadzenMenuItem 
+            Text="Add Exception Day" 
+            Disabled="_selectedCalendar is null"
+            Click="ShowAddExceptionDayDialogAsync"
+            Icon="add"  />
+    </RadzenMenu>
+
+    @if(_selectedCalendar is not null) 
+    {
+        <RadzenScheduler 
+            @ref="_scheduler"
+            SlotRender=@OnSlotRender 
+            style="height: 768px;" 
+            TItem="Appointment" 
+            Data=@_appointments 
+            StartProperty="Start" 
+            EndProperty="End"
+            TextProperty="Text" 
+            SelectedIndex="0"
+            LoadData=@OnSchedulerLoadData
+            AppointmentRender=@OnAppointmentRender>
+                <RadzenMonthView />
+        </RadzenScheduler>
+    }
+    else 
+    {
+        <div class="p-4">
+            <h5 class="p-2 text-center text-body-emphasis">No selected workday calendar, create one to begin calculating lead times.</h5>
+            <p class="text-center">Click <u style="cursor: pointer;" @onclick="AddCalendar">here</u> or "Add Workday Calendar" to start</p>
+        </div>
+    }
 </div>
 
-<RadzenMenu >
-    <RadzenMenuItem 
-        Text="Add Workday Calendar" 
-        Click="AddCalendar"
-        Disabled="_selectedCalendar is not null"
-        Icon="add"  />
-    <RadzenMenuItem 
-        Text="Add Holiday" 
-        Disabled="_selectedCalendar is null"
-        Click="ShowAddHolidayDialogAsync"
-        Icon="add"  />
-    <RadzenMenuItem 
-        Text="Add Exception Day" 
-        Disabled="_selectedCalendar is null"
-        Click="ShowAddExceptionDayDialogAsync"
-        Icon="add"  />
-</RadzenMenu>
-
-@if(_selectedCalendar is not null) 
-{
-    <RadzenScheduler 
-        @ref="_scheduler"
-        SlotRender=@OnSlotRender 
-        style="height: 768px;" 
-        TItem="Appointment" 
-        Data=@_appointments 
-        StartProperty="Start" 
-        EndProperty="End"
-        TextProperty="Text" 
-        SelectedIndex="0"
-        LoadData=@OnSchedulerLoadData
-        AppointmentRender=@OnAppointmentRender>
-            <RadzenMonthView />
-    </RadzenScheduler>
-}
-else 
-{
-    <h5 class="p-2 text-center text-body-emphasis">No selected workday calendar, create one to begin calculating lead times.</h5>
-    <p class="text-center">Click "Add Workday Calendar" to start</p>
-}
 
 
 @code {
