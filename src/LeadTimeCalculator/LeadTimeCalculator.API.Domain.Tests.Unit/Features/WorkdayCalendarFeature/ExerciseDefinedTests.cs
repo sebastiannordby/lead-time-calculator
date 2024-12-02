@@ -20,15 +20,9 @@ namespace LeadTimeCalculator.API.Tests.Unit.Features.WorkdayCalendarFeature
         public void BasicWorkingDayCalculationTest()
         {
             // Arrange
-            var eightToFour = new WorkHours(TimeSpan.FromHours(8), TimeSpan.FromHours(16));
-            var defaultWorkingDays = new WorkWeek()
-            {
-                MondayWorkingHours = eightToFour,
-                TuesdayWorkingHours = eightToFour,
-                WednesdayWorkingHours = eightToFour,
-                ThursdayWorkingHours = eightToFour,
-                FridayWorkingHours = eightToFour
-            };
+            var sameWorkingHoursForWholeWeek = new WorkHours(TimeSpan.FromHours(8), TimeSpan.FromHours(16));
+            var defaultWorkingDays = new WorkWeek(sameWorkingHoursForWholeWeek);
+
             var workdayCalendar = new WorkdayCalendar(
                 defaultWorkhoursPerDay: 8,
                 defaultWorkingDays,
@@ -58,15 +52,9 @@ namespace LeadTimeCalculator.API.Tests.Unit.Features.WorkdayCalendarFeature
         public void MidnightBoundaryandFractionalWorkingDayTests()
         {
             // Arrange
-            var eightToFour = new WorkHours(TimeSpan.FromHours(8), TimeSpan.FromHours(16));
-            var defaultWorkingDays = new WorkWeek()
-            {
-                MondayWorkingHours = eightToFour,
-                TuesdayWorkingHours = eightToFour,
-                WednesdayWorkingHours = eightToFour,
-                ThursdayWorkingHours = eightToFour,
-                FridayWorkingHours = eightToFour
-            };
+            var sameWorkingHoursForWholeWeek = new WorkHours(TimeSpan.FromHours(8), TimeSpan.FromHours(16));
+            var defaultWorkingDays = new WorkWeek(sameWorkingHoursForWholeWeek);
+
             var workdayCalendar = new WorkdayCalendar(
                 defaultWorkhoursPerDay: 8,
                 defaultWorkingDays,
@@ -96,15 +84,8 @@ namespace LeadTimeCalculator.API.Tests.Unit.Features.WorkdayCalendarFeature
         public void WorkingDayCalculationwithNegativeDays()
         {
             // Arrange
-            var eightToFour = new WorkHours(TimeSpan.FromHours(8), TimeSpan.FromHours(16));
-            var defaultWorkingDays = new WorkWeek()
-            {
-                MondayWorkingHours = eightToFour,
-                TuesdayWorkingHours = eightToFour,
-                WednesdayWorkingHours = eightToFour,
-                ThursdayWorkingHours = eightToFour,
-                FridayWorkingHours = eightToFour
-            };
+            var sameWorkingHoursForWholeWeek = new WorkHours(TimeSpan.FromHours(8), TimeSpan.FromHours(16));
+            var defaultWorkingDays = new WorkWeek(sameWorkingHoursForWholeWeek);
 
             var holidays = new List<Holiday>()
             {
@@ -154,19 +135,12 @@ namespace LeadTimeCalculator.API.Tests.Unit.Features.WorkdayCalendarFeature
         public void AdditionalCorrectResults(
             string inputDateStr, double workingHoursToAdd, string expectedDateStr)
         {
+            // Arrange
             DateTime inputDate = DateTime.Parse(inputDateStr);
             DateTime expectedDate = DateTime.Parse(expectedDateStr);
 
-            // Arrange
-            var eightToFour = new WorkHours(TimeSpan.FromHours(8), TimeSpan.FromHours(16));
-            var defaultWorkingDays = new WorkWeek()
-            {
-                MondayWorkingHours = eightToFour,
-                TuesdayWorkingHours = eightToFour,
-                WednesdayWorkingHours = eightToFour,
-                ThursdayWorkingHours = eightToFour,
-                FridayWorkingHours = eightToFour
-            };
+            var sameWorkingHoursForWholeWeek = new WorkHours(TimeSpan.FromHours(8), TimeSpan.FromHours(16));
+            var defaultWorkingDays = new WorkWeek(sameWorkingHoursForWholeWeek);
 
             var holidays = new List<Holiday>()
             {

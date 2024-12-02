@@ -12,14 +12,12 @@ namespace LeadTimeCalculator.API.Tests.Unit.Features.WorkdayCalendarFeature
         public void GivenFiveWorkdaysAndNoHolidays_WhenCalculateWhenCanShipWhenProductionStartsAt_ThenSkipsWeekends()
         {
             // Given
-            var defaultWorkingDays = new WorkWeek()
-            {
-                MondayWorkingHours = new WorkHours(TimeSpan.FromHours(8), TimeSpan.FromHours(12)),
-                TuesdayWorkingHours = new WorkHours(TimeSpan.FromHours(8), TimeSpan.FromHours(12)),
-                WednesdayWorkingHours = new WorkHours(TimeSpan.FromHours(8), TimeSpan.FromHours(16)),
-                ThursdayWorkingHours = new WorkHours(TimeSpan.FromHours(8), TimeSpan.FromHours(16)),
-                FridayWorkingHours = new WorkHours(TimeSpan.FromHours(8), TimeSpan.FromHours(16)),
-            };
+            var defaultWorkingDays = new WorkWeek(
+                mondayWorkingHours: new WorkHours(TimeSpan.FromHours(8), TimeSpan.FromHours(12)),
+                tuesdayWorkingHours: new WorkHours(TimeSpan.FromHours(8), TimeSpan.FromHours(12)),
+                wednesdayWorkingHours: new WorkHours(TimeSpan.FromHours(8), TimeSpan.FromHours(16)),
+                thursdayWorkingHours: new WorkHours(TimeSpan.FromHours(8), TimeSpan.FromHours(16)),
+                fridayWorkingHours: new WorkHours(TimeSpan.FromHours(8), TimeSpan.FromHours(16)));
 
             var workdayCalendar = new WorkdayCalendar(
                 defaultWorkhoursPerDay: 8,
@@ -42,15 +40,8 @@ namespace LeadTimeCalculator.API.Tests.Unit.Features.WorkdayCalendarFeature
         public void GivenAHolidayInTheMiddleOfProduction_WhenCalculateWhenCanShipWhenProductionStartsAt_ThenSkipsHoliday()
         {
             // Given
-            var eightToFour = new WorkHours(TimeSpan.FromHours(8), TimeSpan.FromHours(16));
-            var defaultWorkingDays = new WorkWeek()
-            {
-                MondayWorkingHours = eightToFour,
-                TuesdayWorkingHours = eightToFour,
-                WednesdayWorkingHours = eightToFour,
-                ThursdayWorkingHours = eightToFour,
-                FridayWorkingHours = eightToFour
-            };
+            var sameWorkingHoursForWholeWeek = new WorkHours(TimeSpan.FromHours(8), TimeSpan.FromHours(16));
+            var defaultWorkingDays = new WorkWeek(sameWorkingHoursForWholeWeek);
 
             var holidays = new List<Holiday>
             {
@@ -78,15 +69,8 @@ namespace LeadTimeCalculator.API.Tests.Unit.Features.WorkdayCalendarFeature
         public void GivenFractionalWorkdays_WhenCalculateWhenCanShipWhenProductionStartsAt_ThenRespectsDailyWorkingHours()
         {
             // Given
-            var eightToFour = new WorkHours(TimeSpan.FromHours(8), TimeSpan.FromHours(16));
-            var defaultWorkingDays = new WorkWeek()
-            {
-                MondayWorkingHours = eightToFour,
-                TuesdayWorkingHours = eightToFour,
-                WednesdayWorkingHours = eightToFour,
-                ThursdayWorkingHours = eightToFour,
-                FridayWorkingHours = eightToFour
-            };
+            var sameWorkingHoursForWholeWeek = new WorkHours(TimeSpan.FromHours(8), TimeSpan.FromHours(16));
+            var defaultWorkingDays = new WorkWeek(sameWorkingHoursForWholeWeek);
 
             var workdayCalendar = new WorkdayCalendar(
                 defaultWorkhoursPerDay: 8,
@@ -109,18 +93,16 @@ namespace LeadTimeCalculator.API.Tests.Unit.Features.WorkdayCalendarFeature
         public void GivenFractionalWorkdays_WhenCalculateWhenCanShipWhenProductionStartsAt_ThenRespectsDailyWorkingHours_2()
         {
             // Given
-            var workingHours = new WorkWeek
-            {
-                MondayWorkingHours = new WorkHours(TimeSpan.FromHours(8), TimeSpan.FromHours(12)), // 4 hours
-                TuesdayWorkingHours = new WorkHours(TimeSpan.FromHours(9), TimeSpan.FromHours(13)), // 4 hours
-                WednesdayWorkingHours = new WorkHours(TimeSpan.FromHours(10), TimeSpan.FromHours(14)), // 4 hours
-                ThursdayWorkingHours = new WorkHours(TimeSpan.FromHours(11), TimeSpan.FromHours(15)), // 4 hours
-                FridayWorkingHours = new WorkHours(TimeSpan.FromHours(8), TimeSpan.FromHours(16)),
-            };
+            var defaultWorkingDays = new WorkWeek(
+                mondayWorkingHours: new WorkHours(TimeSpan.FromHours(8), TimeSpan.FromHours(12)),
+                tuesdayWorkingHours: new WorkHours(TimeSpan.FromHours(9), TimeSpan.FromHours(13)),
+                wednesdayWorkingHours: new WorkHours(TimeSpan.FromHours(10), TimeSpan.FromHours(14)),
+                thursdayWorkingHours: new WorkHours(TimeSpan.FromHours(11), TimeSpan.FromHours(15)),
+                fridayWorkingHours: new WorkHours(TimeSpan.FromHours(8), TimeSpan.FromHours(16)));
 
             var workdayCalendar = new WorkdayCalendar(
                 defaultWorkhoursPerDay: 8,
-                workingHours,
+                defaultWorkingDays,
                 Enumerable.Empty<Holiday>());
 
             var startProductionAt = DateTime.Parse("2024-10-28 12:00");
@@ -140,18 +122,16 @@ namespace LeadTimeCalculator.API.Tests.Unit.Features.WorkdayCalendarFeature
         public void GivenFractionalWorkdays_WhenCalculateProductionTimeWhenHaveToShipA_ThenExceedsDailyWorkingHours()
         {
             // Given
-            var workingHours = new WorkWeek
-            {
-                MondayWorkingHours = new WorkHours(TimeSpan.FromHours(8), TimeSpan.FromHours(12)), // 4 hours
-                TuesdayWorkingHours = new WorkHours(TimeSpan.FromHours(9), TimeSpan.FromHours(13)), // 4 hours
-                WednesdayWorkingHours = new WorkHours(TimeSpan.FromHours(10), TimeSpan.FromHours(14)), // 4 hours
-                ThursdayWorkingHours = new WorkHours(TimeSpan.FromHours(11), TimeSpan.FromHours(15)), // 4 hours
-                FridayWorkingHours = new WorkHours(TimeSpan.FromHours(8), TimeSpan.FromHours(16)), // 8 hours
-            };
+            var defaultWorkingDays = new WorkWeek(
+                mondayWorkingHours: new WorkHours(TimeSpan.FromHours(8), TimeSpan.FromHours(12)),
+                tuesdayWorkingHours: new WorkHours(TimeSpan.FromHours(9), TimeSpan.FromHours(13)),
+                wednesdayWorkingHours: new WorkHours(TimeSpan.FromHours(10), TimeSpan.FromHours(14)),
+                thursdayWorkingHours: new WorkHours(TimeSpan.FromHours(11), TimeSpan.FromHours(15)),
+                fridayWorkingHours: new WorkHours(TimeSpan.FromHours(8), TimeSpan.FromHours(16)));
 
             var workdayCalendar = new WorkdayCalendar(
                 defaultWorkhoursPerDay: 8,
-                workingHours,
+                defaultWorkingDays,
                 Enumerable.Empty<Holiday>());
 
             var wantingToShipAt = DateTime.Parse("2024-11-29 12:00");
@@ -165,6 +145,5 @@ namespace LeadTimeCalculator.API.Tests.Unit.Features.WorkdayCalendarFeature
             var expectedFinishDate = DateTime.Parse("2024-11-25 08:00");
             Assert.Equal(expectedFinishDate, minRequiredStartProductionTime);
         }
-
     }
 }

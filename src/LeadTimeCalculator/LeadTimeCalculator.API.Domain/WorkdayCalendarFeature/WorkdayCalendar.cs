@@ -36,14 +36,8 @@ namespace LeadTimeCalculator.API.Domain.WorkdayCalendarFeature
 
             Id = id;
 
-            _workWeek = new WorkWeek
-            {
-                MondayWorkingHours = new(defaultWorkdayStartTime, defaultWorkdayEndTime),
-                TuesdayWorkingHours = new(defaultWorkdayStartTime, defaultWorkdayEndTime),
-                WednesdayWorkingHours = new(defaultWorkdayStartTime, defaultWorkdayEndTime),
-                ThursdayWorkingHours = new(defaultWorkdayStartTime, defaultWorkdayEndTime),
-                FridayWorkingHours = new(defaultWorkdayStartTime, defaultWorkdayEndTime)
-            };
+            _workWeek = new WorkWeek(
+                new(defaultWorkdayStartTime, defaultWorkdayEndTime));
             _holidays = new List<Holiday>();
             _exceptionDays = new List<ExceptionDay>();
         }
