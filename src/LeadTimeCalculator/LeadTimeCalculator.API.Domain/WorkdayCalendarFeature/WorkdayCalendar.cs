@@ -69,16 +69,16 @@ namespace LeadTimeCalculator.API.Domain.WorkdayCalendarFeature
         }
 
         public DateTime CalculateShippingDate(
-            DateTime startProductionAt, double productionTimeWorkdayFractions)
+            DateTime productionStartDate, double productionTimeWorkdayFractions)
         {
             if (productionTimeWorkdayFractions < 0)
                 throw new DomainException($"{nameof(productionTimeWorkdayFractions)} must be greater than 0");
             if (productionTimeWorkdayFractions == 0)
-                return startProductionAt;
+                return productionStartDate;
 
             var remainingWorkdays = productionTimeWorkdayFractions;
-            var currentWorkday = GetNextValidWorkday(startProductionAt);
-            var currentProductionTime = startProductionAt;
+            var currentWorkday = GetNextValidWorkday(productionStartDate);
+            var currentProductionTime = productionStartDate;
 
             while (remainingWorkdays > 0)
             {
@@ -87,10 +87,10 @@ namespace LeadTimeCalculator.API.Domain.WorkdayCalendarFeature
                 var currentDayEnd = currentDayWorkHours.EndTime;
 
                 // Adjust the start time for the first production day
-                if (currentWorkday.Date == startProductionAt.Date)
+                if (currentWorkday.Date == productionStartDate.Date)
                 {
-                    currentDayStart = startProductionAt.TimeOfDay > currentDayStart
-                        ? startProductionAt.TimeOfDay
+                    currentDayStart = productionStartDate.TimeOfDay > currentDayStart
+                        ? productionStartDate.TimeOfDay
                         : currentDayStart;
                 }
 

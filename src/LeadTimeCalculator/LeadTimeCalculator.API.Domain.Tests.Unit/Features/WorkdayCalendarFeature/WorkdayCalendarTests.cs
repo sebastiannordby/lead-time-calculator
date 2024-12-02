@@ -50,17 +50,17 @@ namespace LeadTimeCalculator.API.Tests.Unit.Features.WorkdayCalendarFeature
                 new Holiday(DateTime.Parse("2024-11-25"), isRecurring: false),
             };
 
-            var workdayCalendar = new WorkdayCalendar(
+            var sut = new WorkdayCalendar(
                 defaultWorkhoursPerDay: 8,
                 defaultWorkingDays,
                 holidays);
 
-            var startProductionAt = DateTime.Parse("2024-11-22 09:00");
+            var productionStartDate = DateTime.Parse("2024-11-22 09:00");
             var workDaysToFinishProduct = 3;
 
             // When
-            var minDateTimeAbleToShip = workdayCalendar
-                .CalculateShippingDate(startProductionAt, workDaysToFinishProduct);
+            var minDateTimeAbleToShip = sut
+                .CalculateShippingDate(productionStartDate, workDaysToFinishProduct);
 
             // Then
             var expectedDate = DateTime.Parse("2024-11-28 09:00");
@@ -76,17 +76,17 @@ namespace LeadTimeCalculator.API.Tests.Unit.Features.WorkdayCalendarFeature
             var defaultWorkingDays = new WorkWeek(
                 sameWorkingHoursForWholeWeek);
 
-            var workdayCalendar = new WorkdayCalendar(
+            var sut = new WorkdayCalendar(
                 defaultWorkhoursPerDay: 8,
                 defaultWorkingDays,
                 Enumerable.Empty<Holiday>());
 
-            var startProductionAt = DateTime.Parse("2024-03-01 09:00");
+            var productionStartDate = DateTime.Parse("2024-03-01 09:00");
             var workDaysToFinishProduct = 0.5;
 
             // When
-            var minDateTimeAbleToShip = workdayCalendar
-                .CalculateShippingDate(startProductionAt, workDaysToFinishProduct);
+            var minDateTimeAbleToShip = sut
+                .CalculateShippingDate(productionStartDate, workDaysToFinishProduct);
 
             // Then
             var expectedDate = DateTime.Parse("2024-03-01 13:00");
@@ -104,17 +104,17 @@ namespace LeadTimeCalculator.API.Tests.Unit.Features.WorkdayCalendarFeature
                 thursdayWorkingHours: new WorkHours(TimeSpan.FromHours(11), TimeSpan.FromHours(15)),
                 fridayWorkingHours: new WorkHours(TimeSpan.FromHours(8), TimeSpan.FromHours(16)));
 
-            var workdayCalendar = new WorkdayCalendar(
+            var sut = new WorkdayCalendar(
                 defaultWorkhoursPerDay: 8,
                 defaultWorkingDays,
                 Enumerable.Empty<Holiday>());
 
-            var startProductionAt = DateTime.Parse("2024-10-28 12:00");
+            var productionStartDate = DateTime.Parse("2024-10-28 12:00");
             var productionTime = 2;
 
             // When
-            var minDateTimeAbleToShip = workdayCalendar
-                .CalculateShippingDate(startProductionAt, productionTime);
+            var minDateTimeAbleToShip = sut
+                .CalculateShippingDate(productionStartDate, productionTime);
 
             // Then
             var expectedFinishDate = DateTime.Parse("2024-11-01 12:00"); // Adjusted for valid date
@@ -128,26 +128,26 @@ namespace LeadTimeCalculator.API.Tests.Unit.Features.WorkdayCalendarFeature
             var defaultWorkingDays = new WorkWeek(
                 new WorkHours(TimeSpan.FromHours(8), TimeSpan.FromHours(16)));
 
-            var workdayCalendar = new WorkdayCalendar(
+            var sut = new WorkdayCalendar(
                 defaultWorkhoursPerDay: 8,
                 defaultWorkingDays,
                 Enumerable.Empty<Holiday>());
 
-            workdayCalendar.AddExceptionDay(new(
+            sut.AddExceptionDay(new(
                 DateTime.Parse("2024-11-26"), TimeSpan.FromHours(8), TimeSpan.FromHours(10)));
-            workdayCalendar.AddExceptionDay(new(
+            sut.AddExceptionDay(new(
                 DateTime.Parse("2024-11-27"), TimeSpan.FromHours(10), TimeSpan.FromHours(12)));
-            workdayCalendar.AddExceptionDay(new(
+            sut.AddExceptionDay(new(
                 DateTime.Parse("2024-11-28"), TimeSpan.FromHours(12), TimeSpan.FromHours(14)));
-            workdayCalendar.AddExceptionDay(new(
+            sut.AddExceptionDay(new(
                 DateTime.Parse("2024-11-29"), TimeSpan.FromHours(14), TimeSpan.FromHours(16)));
 
-            var startProductionAt = DateTime.Parse("2024-11-25 08:00");
+            var productionStartDate = DateTime.Parse("2024-11-25 08:00");
             var productionTime = 2;
 
             // When
-            var minDateTimeAbleToShip = workdayCalendar
-                .CalculateShippingDate(startProductionAt, productionTime);
+            var minDateTimeAbleToShip = sut
+                .CalculateShippingDate(productionStartDate, productionTime);
 
             // Then
             var expectedFinishDate = DateTime.Parse("2024-11-29 16:00");
@@ -165,7 +165,7 @@ namespace LeadTimeCalculator.API.Tests.Unit.Features.WorkdayCalendarFeature
                 thursdayWorkingHours: new WorkHours(TimeSpan.FromHours(8), TimeSpan.FromHours(16)),
                 fridayWorkingHours: new WorkHours(TimeSpan.FromHours(8), TimeSpan.FromHours(16)));
 
-            var workdayCalendar = new WorkdayCalendar(
+            var sut = new WorkdayCalendar(
                 defaultWorkhoursPerDay: 8,
                 defaultWorkingDays,
                 Enumerable.Empty<Holiday>());
@@ -174,7 +174,7 @@ namespace LeadTimeCalculator.API.Tests.Unit.Features.WorkdayCalendarFeature
             var productionTime = 5;
 
             // When
-            var productionStartDate = workdayCalendar
+            var productionStartDate = sut
                 .CalculateProductionStartDateForShipping(shippingDeadline, productionTime);
 
             // Then
@@ -196,7 +196,7 @@ namespace LeadTimeCalculator.API.Tests.Unit.Features.WorkdayCalendarFeature
                 new Holiday(DateTime.Parse("2024-11-25"), isRecurring: false),
             };
 
-            var workdayCalendar = new WorkdayCalendar(
+            var sut = new WorkdayCalendar(
                 defaultWorkhoursPerDay: 8,
                 defaultWorkingDays,
                 holidays);
@@ -205,7 +205,7 @@ namespace LeadTimeCalculator.API.Tests.Unit.Features.WorkdayCalendarFeature
             var productionTime = 3;
 
             // When
-            var productionStartDate = workdayCalendar
+            var productionStartDate = sut
                 .CalculateProductionStartDateForShipping(shippingDeadline, productionTime);
 
             // Then
@@ -222,7 +222,7 @@ namespace LeadTimeCalculator.API.Tests.Unit.Features.WorkdayCalendarFeature
             var defaultWorkingDays = new WorkWeek(
                 sameWorkingHoursForWholeWeek);
 
-            var workdayCalendar = new WorkdayCalendar(
+            var sut = new WorkdayCalendar(
                 defaultWorkhoursPerDay: 8,
                 defaultWorkingDays,
                 Enumerable.Empty<Holiday>());
@@ -231,7 +231,7 @@ namespace LeadTimeCalculator.API.Tests.Unit.Features.WorkdayCalendarFeature
             var productionTime = 0.5;
 
             // When
-            var productionStartDate = workdayCalendar
+            var productionStartDate = sut
                 .CalculateProductionStartDateForShipping(shippingDeadline, productionTime);
 
             // Then
@@ -250,7 +250,7 @@ namespace LeadTimeCalculator.API.Tests.Unit.Features.WorkdayCalendarFeature
                 thursdayWorkingHours: new WorkHours(TimeSpan.FromHours(11), TimeSpan.FromHours(15)),
                 fridayWorkingHours: new WorkHours(TimeSpan.FromHours(8), TimeSpan.FromHours(16)));
 
-            var workdayCalendar = new WorkdayCalendar(
+            var sut = new WorkdayCalendar(
                 defaultWorkhoursPerDay: 8,
                 defaultWorkingDays,
                 Enumerable.Empty<Holiday>());
@@ -259,7 +259,7 @@ namespace LeadTimeCalculator.API.Tests.Unit.Features.WorkdayCalendarFeature
             var productionTime = 2;
 
             // When
-            var productionStartDate = workdayCalendar
+            var productionStartDate = sut
                 .CalculateProductionStartDateForShipping(shippingDeadline, productionTime);
 
             // Then
@@ -274,25 +274,25 @@ namespace LeadTimeCalculator.API.Tests.Unit.Features.WorkdayCalendarFeature
             var defaultWorkingDays = new WorkWeek(
                 new WorkHours(TimeSpan.FromHours(8), TimeSpan.FromHours(16)));
 
-            var workdayCalendar = new WorkdayCalendar(
+            var sut = new WorkdayCalendar(
                 defaultWorkhoursPerDay: 8,
                 defaultWorkingDays,
                 Enumerable.Empty<Holiday>());
 
-            workdayCalendar.AddExceptionDay(
+            sut.AddExceptionDay(
                 new(DateTime.Parse("2024-11-26"), TimeSpan.FromHours(8), TimeSpan.FromHours(10)));
-            workdayCalendar.AddExceptionDay(
+            sut.AddExceptionDay(
                 new(DateTime.Parse("2024-11-27"), TimeSpan.FromHours(10), TimeSpan.FromHours(12)));
-            workdayCalendar.AddExceptionDay(
+            sut.AddExceptionDay(
                 new(DateTime.Parse("2024-11-28"), TimeSpan.FromHours(12), TimeSpan.FromHours(14)));
-            workdayCalendar.AddExceptionDay(
+            sut.AddExceptionDay(
                 new(DateTime.Parse("2024-11-29"), TimeSpan.FromHours(14), TimeSpan.FromHours(16)));
 
             var shippingDeadline = DateTime.Parse("2024-11-29 16:00");
             var productionTime = 2;
 
             // When
-            var productionStartDate = workdayCalendar
+            var productionStartDate = sut
                 .CalculateProductionStartDateForShipping(shippingDeadline, productionTime);
 
             // Then
