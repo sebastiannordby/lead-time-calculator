@@ -14,19 +14,19 @@ namespace LeadTimeCalculator.API.Tests.Integration.Features.WorkdayCalendarFeatu
         }
 
         [Fact]
-        public async Task ShouldValidateRequest()
+        public async Task InvalidRequest_ReturnsError()
         {
-            // Arrange
+            // Given
             var invalidRequest = new CalculateLeadTimeWorkdaysRequest(
                 CalendarId: 0,
                 StartingDate: DateTime.MinValue,
                 WorkdaysAdjustment: 0);
 
-            // Act
+            // When
             var calculateLeadTimeHttpResponse = await _sutClient
                 .CalculateLeadTimeWorkdays(invalidRequest);
 
-            // Assert
+            // Then
             await Assert.AssertBadInputResponse(calculateLeadTimeHttpResponse);
         }
     }

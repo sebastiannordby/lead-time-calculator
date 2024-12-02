@@ -68,7 +68,7 @@ namespace LeadTimeCalculator.API.Domain.WorkdayCalendarFeature
             _holidays.Add(holiday);
         }
 
-        public DateTime CalculateWhenCanShipWhenProductionStartsAt(
+        public DateTime CalculateShippingDate(
             DateTime startProductionAt, double productionTimeWorkdayFractions)
         {
             if (productionTimeWorkdayFractions < 0)
@@ -116,17 +116,17 @@ namespace LeadTimeCalculator.API.Domain.WorkdayCalendarFeature
         }
 
 
-        public DateTime CalculateProductionTimeWhenHaveToShipAt(
-            DateTime shippingAt, double productionTimeWorkdayFractions)
+        public DateTime CalculateProductionStartDateForShipping(
+            DateTime shippingDeadline, double productionTimeWorkdayFractions)
         {
             if (productionTimeWorkdayFractions < 0)
                 throw new DomainException($"{nameof(productionTimeWorkdayFractions)} must be greater than 0");
             if (productionTimeWorkdayFractions == 0)
-                return shippingAt;
+                return shippingDeadline;
 
             var remainingWorkdays = productionTimeWorkdayFractions;
-            var currentWorkday = GetPreviousValidWorkday(shippingAt);
-            var currentProductionTime = shippingAt;
+            var currentWorkday = GetPreviousValidWorkday(shippingDeadline);
+            var currentProductionTime = shippingDeadline;
 
             while (remainingWorkdays > 0)
             {
@@ -135,10 +135,10 @@ namespace LeadTimeCalculator.API.Domain.WorkdayCalendarFeature
                 var currentDayEnd = currentDayWorkHours.EndTime;
 
                 // Adjust the end time for the last day wanted shipping day
-                if (currentWorkday.Date == shippingAt.Date)
+                if (currentWorkday.Date == shippingDeadline.Date)
                 {
-                    currentDayEnd = shippingAt.TimeOfDay < currentDayEnd
-                        ? shippingAt.TimeOfDay
+                    currentDayEnd = shippingDeadline.TimeOfDay < currentDayEnd
+                        ? shippingDeadline.TimeOfDay
                         : currentDayEnd;
                 }
 

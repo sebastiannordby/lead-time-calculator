@@ -13,57 +13,56 @@
             <RadzenLabel
                 Text="Start production:"
                 Style="width: 150px;"
-                Component="_calculateLeadTimeForWhenCanShipDateTime" />
+                Component="_startProductionDate" />
             <RadzenDatePicker
-                @bind-Value=@_calculateLeadTimeForWhenCanShipDateTime
-                Name="_calculateLeadTimeForWhenCanShipDateTime"
+                @bind-Value=@_startProductionDate
+                Name="_startProductionDate"
                 Disabled="_selectedCalendar is null"
                 ShowCalendarWeek
                 Placeholder="Start production" />
             <RadzenLabel
                 class="mr-2"
                 Text="Time to produce(workdays):"
-                Component="_calculateLeadTimeForWhenCanShipFractionalWorkdays" />
+                Component="_startProductionDateWorkdaysToComplete" />
             <RadzenNumeric
                 ShowUpDown="false"
                 TValue="double"
-                @bind-Value=@_calculateLeadTimeForWhenCanShipFractionalWorkdays
+                @bind-Value=@_startProductionDateWorkdaysToComplete
                 Disabled="_selectedCalendar is null"
-                Name="_calculateLeadTimeForWhenCanShipFractionalWorkdays"
+                Name="_startProductionDateWorkdaysToComplete"
                 Style="width: 115px"
                 Placeholder="Fractional workdays" />
             <RadzenButton 
                 Disabled="_selectedCalendar is null"
-                Click="CalculateEarliestTimeForWhenCanShip">Calculate</RadzenButton>
+                Click="CalculateShippingDate">Calculate</RadzenButton>
         </div>
         <div class="d-flex flex-row gap-2 align-items-center">
             <RadzenLabel
                 Text="Requested shipping:"
                 Style="width: 150px;"
-                Component="_calculateLeadTimeForWhenToStartProductionDateTime" />
+                Component="_requestedShippingDate" />
             <RadzenDatePicker
-                @bind-Value=@_calculateLeadTimeForWhenToStartProductionDateTime
-                Name="_calculateLeadTimeForWhenToStartProductionDateTime"
+                @bind-Value=@_requestedShippingDate
+                Name="_requestedShippingDate"
                 Disabled="_selectedCalendar is null"
                 ShowCalendarWeek
                 Placeholder="Ship product at" />
             <RadzenLabel
                 class="mr-2"
                 Text="Time to produce(workdays):"
-                Component="calculateLeadTimeForWhenToStartProductionFractionalWorkdays" />
+                Component="_requestShippingDateWorkdaysToComplete" />
             <RadzenNumeric
                 ShowUpDown="false"
                 TValue="double"
-                @bind-Value=@_calculateLeadTimeForWhenToStartProductionFractionalWorkdays
+                @bind-Value=@_requestShippingDateWorkdaysToComplete
                 Disabled="_selectedCalendar is null"
-                Name="calculateLeadTimeForWhenToStartProductionFractionalWorkdays"
+                Name="_requestShippingDateWorkdaysToComplete"
                 Style="width: 115px"
                 Placeholder="Fractional workdays" />
             <RadzenButton 
                 Disabled="_selectedCalendar is null"
-                Click="CalculateLatestTimeForWhenToStartProduction">Calculate</RadzenButton>
+                Click="CalculateProductionStartDateForShipping">Calculate</RadzenButton>
         </div>
-
     </div>
 
     <RadzenMenu >

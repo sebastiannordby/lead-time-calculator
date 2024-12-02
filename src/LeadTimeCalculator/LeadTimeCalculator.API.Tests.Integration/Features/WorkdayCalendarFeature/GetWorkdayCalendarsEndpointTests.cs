@@ -15,29 +15,37 @@ namespace LeadTimeCalculator.API.Tests.Integration.Features.WorkdayCalendarFeatu
         }
 
         [Fact]
-        public async Task ShouldReturnValues()
+        public async Task FetchesStoredCalendars()
         {
-            // Arrange
-            var createCalendarHttpResponse = await _sutClient.CreateWorkdayCalendar(
-                new CreateWorkdayCalendarRequest(
-                    DefaultWorkdayStartTime: TimeSpan.FromHours(8),
-                    DefaultWorkdayEndTime: TimeSpan.FromHours(16)));
-            createCalendarHttpResponse.EnsureSuccessStatusCode();
-            var createCalendarRespnse = await createCalendarHttpResponse.Content
-                .ReadFromJsonAsync<CreateWorkdayCalendarResponse>();
+            // Given
+            var createCalendarId = await CreateWorkdayCalendar();
 
-            // Act
+            // When
             var getWorkdayCalendarsHttpResponse = await _sutClient
                 .GetWorkdayCalendars(new());
 
-            // Assert
+            // Then
             await Assert.AssertSuccessfulResponse(getWorkdayCalendarsHttpResponse);
 
             var getWorkdayCalendarsResponse = await getWorkdayCalendarsHttpResponse
                 .Content.ReadFromJsonAsync<GetWorkdayCalendarsResponse>();
 
             Assert.Contains(getWorkdayCalendarsResponse!.CalendarDetailedViews!,
-                x => x.Id == createCalendarRespnse!.CalendarId);
+                x => x.Id == createCalendarId);
+        }
+
+        private async Task<int> CreateWorkdayCalendar()
+        {
+            var createCalendarHttpResponse = await _sutClient.CreateWorkdayCalendar(
+                new CreateWorkdayCalendarRequest(
+                    DefaultWorkdayStartTime: TimeSpan.FromHours(8),
+                    DefaultWorkdayEndTime: TimeSpan.FromHours(16)));
+            createCalendarHttpResponse.EnsureSuccessStatusCode();
+
+            var createCalendarResponse = await createCalendarHttpResponse.Content
+                .ReadFromJsonAsync<CreateWorkdayCalendarResponse>();
+
+            return createCalendarResponse!.CalendarId;
         }
     }
 }

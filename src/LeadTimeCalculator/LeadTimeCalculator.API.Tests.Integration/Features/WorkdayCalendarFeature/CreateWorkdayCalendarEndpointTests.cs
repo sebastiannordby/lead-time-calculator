@@ -18,7 +18,7 @@ namespace LeadTimeCalculator.API.Tests.Integration.Features.WorkdayCalendarFeatu
         [InlineData(8, 8)]
         [InlineData(16, 8)]
         [InlineData(0, 0)]
-        public async Task GivenInvalidRequest_ShouldError(
+        public async Task InvalidRequest_ReturnsError(
             int startTimeAfterMidnight,
             int endTimeAfterMidnight)
         {
@@ -36,7 +36,7 @@ namespace LeadTimeCalculator.API.Tests.Integration.Features.WorkdayCalendarFeatu
         }
 
         [Fact]
-        public async Task GivenValidRequest_ShouldCreateCalendar()
+        public async Task ValidRequest_CreatesCalendar()
         {
             // Given
             var validCreateCalendarRequest = new CreateWorkdayCalendarRequest(

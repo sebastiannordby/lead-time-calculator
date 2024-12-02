@@ -16,7 +16,7 @@ namespace LeadTimeCalculator.API.Tests.Integration.Features.WorkdayCalendarFeatu
         }
 
         [Fact]
-        public async Task GivenInvalidRequest_ShouldError()
+        public async Task InvalidRequest_ReturnsError()
         {
             // Given
             var invalidRequest = new AddWorkdayCalendarHolidayRequest(
@@ -33,7 +33,7 @@ namespace LeadTimeCalculator.API.Tests.Integration.Features.WorkdayCalendarFeatu
         }
 
         [Fact]
-        public async Task GivenValidRequest_ShouldAddExceptionDayToCalendar()
+        public async Task ValidRequest_UpdatedCalendarWithHoliday()
         {
             // Given
             var createCalendarRespose = await CreateWorkdayCalendar();
