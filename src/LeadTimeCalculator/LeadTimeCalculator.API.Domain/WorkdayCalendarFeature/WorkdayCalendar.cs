@@ -1,12 +1,11 @@
 ﻿using LeadTimeCalculator.API.Domain.Shared.Exceptions;
-using System.Collections.ObjectModel;
 
 namespace LeadTimeCalculator.API.Domain.WorkdayCalendarFeature
 {
-    public class WorkdayCalendar
+    public sealed class WorkdayCalendar
     {
         public int Id { get; private set; }
-        private readonly Dictionary<DayOfWeek, WorkHours> _defaultWorkHours;
+        private readonly WorkWeek _workWeek;
         private readonly List<Holiday> _holidays;
         private readonly List<ExceptionDay> _exceptionDays;
         private readonly double _defaultWorkhoursPerDay = 8;
@@ -15,8 +14,7 @@ namespace LeadTimeCalculator.API.Domain.WorkdayCalendarFeature
             _holidays.AsReadOnly();
         public IReadOnlyCollection<ExceptionDay> ExceptionDays =>
             _exceptionDays.AsReadOnly();
-        public ReadOnlyDictionary<DayOfWeek, WorkHours> DefaultWorkHours =>
-            _defaultWorkHours.AsReadOnly();
+        public WorkWeek WorkWeek => _workWeek;
 
         public WorkdayCalendar(
             int id,
@@ -38,13 +36,13 @@ namespace LeadTimeCalculator.API.Domain.WorkdayCalendarFeature
 
             Id = id;
 
-            _defaultWorkHours = new Dictionary<DayOfWeek, WorkHours>
+            _workWeek = new WorkWeek
             {
-                { DayOfWeek.Monday, new(defaultWorkdayStartTime, defaultWorkdayEndTime) },
-                { DayOfWeek.Tuesday, new(defaultWorkdayStartTime, defaultWorkdayEndTime) },
-                { DayOfWeek.Wednesday, new(defaultWorkdayStartTime, defaultWorkdayEndTime) },
-                { DayOfWeek.Thursday, new(defaultWorkdayStartTime, defaultWorkdayEndTime) },
-                { DayOfWeek.Friday, new(defaultWorkdayStartTime, defaultWorkdayEndTime) }
+                MondayWorkingHours = new(defaultWorkdayStartTime, defaultWorkdayEndTime),
+                TuesdayWorkingHours = new(defaultWorkdayStartTime, defaultWorkdayEndTime),
+                WednesdayWorkingHours = new(defaultWorkdayStartTime, defaultWorkdayEndTime),
+                ThursdayWorkingHours = new(defaultWorkdayStartTime, defaultWorkdayEndTime),
+                FridayWorkingHours = new(defaultWorkdayStartTime, defaultWorkdayEndTime)
             };
             _holidays = new List<Holiday>();
             _exceptionDays = new List<ExceptionDay>();
@@ -52,11 +50,11 @@ namespace LeadTimeCalculator.API.Domain.WorkdayCalendarFeature
 
         public WorkdayCalendar(
             double defaultWorkhoursPerDay,
-            Dictionary<DayOfWeek, WorkHours> defaultWorkHours,
+            WorkWeek defaultWorkHours,
             IEnumerable<Holiday> holidays)
         {
             _defaultWorkhoursPerDay = defaultWorkhoursPerDay;
-            _defaultWorkHours = defaultWorkHours;
+            _workWeek = defaultWorkHours;
             _holidays = holidays.ToList();
             _exceptionDays = new List<ExceptionDay>();
         }
@@ -252,12 +250,10 @@ namespace LeadTimeCalculator.API.Domain.WorkdayCalendarFeature
                 return default;
             }
 
-            if (_defaultWorkHours.TryGetValue(date.DayOfWeek, out var hours))
-            {
-                return hours;
-            }
+            var workingHours = _workWeek
+                .GetByDayOfWeek(date.DayOfWeek);
 
-            return default;
+            return workingHours;
         }
     }
 }

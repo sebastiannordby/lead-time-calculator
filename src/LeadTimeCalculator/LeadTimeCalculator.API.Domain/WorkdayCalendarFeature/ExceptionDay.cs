@@ -2,7 +2,7 @@
 
 namespace LeadTimeCalculator.API.Domain.WorkdayCalendarFeature
 {
-    public class ExceptionDay
+    public sealed class ExceptionDay
     {
         public DateTime Date { get; }
         public TimeSpan StartTime { get; }

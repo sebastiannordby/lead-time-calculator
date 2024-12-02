@@ -42,7 +42,8 @@ namespace LeadTimeCalculator.API.Application.WorkdayCalendarFeature.GetCalendars
                         IsRecurring = holiday.IsRecurring
                     });
 
-                var workingDays = calendar.DefaultWorkHours
+                var workingDays = calendar.WorkWeek
+                    .GetWorkingWeek()
                     .Select(day => new CalendarDetailedView.DefaultWorkingDayView()
                     {
                         DayOfWeek = day.Key,

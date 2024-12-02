@@ -1,6 +1,6 @@
 ﻿namespace LeadTimeCalculator.API.Domain.WorkdayCalendarFeature
 {
-    public class Holiday
+    public sealed class Holiday
     {
         public DateTime Date { get; }
         public bool IsRecurring { get; }
@@ -13,7 +13,9 @@
 
         public bool Matches(DateTime date)
         {
-            return IsRecurring ? Date.Month == date.Month && Date.Day == date.Day : Date.Date == date.Date;
+            return IsRecurring
+                ? Date.Month == date.Month && Date.Day == date.Day
+                : Date.Date == date.Date;
         }
     }
 }
