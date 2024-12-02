@@ -47,7 +47,7 @@ There are several areas for improvement that I would address in future iteration
 
 - ✖ **Logging**: Currently not implemented.
 - ✖ **Proper Persistence**: While optional, this could be improved.
-- ✖ **Continuous Integration**: This should have been configured from the start.
+- ✔ **Continuous Integration**: This should have been configured from the start.
 - ✖ **Continuous Delivery with IaC**: This should also be configured from the beginning.
 - ✖ **Branching Strategy**: Currently, everything is pushed to the `main` branch.
 - ✖ **Security/Quality Code Scanning**: Tools like **Snyk** and/or **SonarCloud** should be integrated for scanning and monitoring security and quality.
