@@ -67,8 +67,8 @@ namespace LeadTimeCalculator.API.Application.Tests.Unit.WorkdayCalendarFeature
                 .SaveAsync(
                     Arg.Is<WorkdayCalendar>(x =>
                         x.Id == calendarId
-                        && x.DefaultWorkHours[DayOfWeek.Monday].Start == validRequest.DefaultWorkdayStartTime
-                        && x.DefaultWorkHours[DayOfWeek.Monday].End == validRequest.DefaultWorkdayEndTime),
+                        && x.DefaultWorkHours[DayOfWeek.Monday].StartTime == validRequest.DefaultWorkdayStartTime
+                        && x.DefaultWorkHours[DayOfWeek.Monday].EndTime == validRequest.DefaultWorkdayEndTime),
                     Arg.Any<CancellationToken>());
         }
     }

@@ -6,7 +6,7 @@ namespace LeadTimeCalculator.API.Domain.WorkdayCalendarFeature
     public class WorkdayCalendar
     {
         public int Id { get; private set; }
-        private readonly Dictionary<DayOfWeek, (TimeSpan Start, TimeSpan End)> _defaultWorkHours;
+        private readonly Dictionary<DayOfWeek, WorkHours> _defaultWorkHours;
         private readonly List<Holiday> _holidays;
         private readonly List<ExceptionDay> _exceptionDays;
         private readonly double _defaultWorkhoursPerDay = 8;
@@ -15,7 +15,7 @@ namespace LeadTimeCalculator.API.Domain.WorkdayCalendarFeature
             _holidays.AsReadOnly();
         public IReadOnlyCollection<ExceptionDay> ExceptionDays =>
             _exceptionDays.AsReadOnly();
-        public ReadOnlyDictionary<DayOfWeek, (TimeSpan Start, TimeSpan End)> DefaultWorkHours =>
+        public ReadOnlyDictionary<DayOfWeek, WorkHours> DefaultWorkHours =>
             _defaultWorkHours.AsReadOnly();
 
         public WorkdayCalendar(
@@ -38,13 +38,13 @@ namespace LeadTimeCalculator.API.Domain.WorkdayCalendarFeature
 
             Id = id;
 
-            _defaultWorkHours = new Dictionary<DayOfWeek, (TimeSpan Start, TimeSpan End)>
+            _defaultWorkHours = new Dictionary<DayOfWeek, WorkHours>
             {
-                { DayOfWeek.Monday, (defaultWorkdayStartTime, defaultWorkdayEndTime) },
-                { DayOfWeek.Tuesday, (defaultWorkdayStartTime, defaultWorkdayEndTime) },
-                { DayOfWeek.Wednesday, (defaultWorkdayStartTime, defaultWorkdayEndTime) },
-                { DayOfWeek.Thursday, (defaultWorkdayStartTime, defaultWorkdayEndTime) },
-                { DayOfWeek.Friday, (defaultWorkdayStartTime, defaultWorkdayEndTime) }
+                { DayOfWeek.Monday, new(defaultWorkdayStartTime, defaultWorkdayEndTime) },
+                { DayOfWeek.Tuesday, new(defaultWorkdayStartTime, defaultWorkdayEndTime) },
+                { DayOfWeek.Wednesday, new(defaultWorkdayStartTime, defaultWorkdayEndTime) },
+                { DayOfWeek.Thursday, new(defaultWorkdayStartTime, defaultWorkdayEndTime) },
+                { DayOfWeek.Friday, new(defaultWorkdayStartTime, defaultWorkdayEndTime) }
             };
             _holidays = new List<Holiday>();
             _exceptionDays = new List<ExceptionDay>();
@@ -52,7 +52,7 @@ namespace LeadTimeCalculator.API.Domain.WorkdayCalendarFeature
 
         public WorkdayCalendar(
             double defaultWorkhoursPerDay,
-            Dictionary<DayOfWeek, (TimeSpan Start, TimeSpan End)> defaultWorkHours,
+            Dictionary<DayOfWeek, WorkHours> defaultWorkHours,
             IEnumerable<Holiday> holidays)
         {
             _defaultWorkhoursPerDay = defaultWorkhoursPerDay;
@@ -90,9 +90,9 @@ namespace LeadTimeCalculator.API.Domain.WorkdayCalendarFeature
 
             while (remainingWorkdays > 0)
             {
-                var currentDayWorkHours = TryGetWorkingHours(currentWorkday);
-                var currentDayStart = currentDayWorkHours.Start;
-                var currentDayEnd = currentDayWorkHours.End;
+                var currentDayWorkHours = TryGetWorkingHours(currentWorkday)!;
+                var currentDayStart = currentDayWorkHours.StartTime;
+                var currentDayEnd = currentDayWorkHours.EndTime;
 
                 // Adjust the start time for the first production day
                 if (currentWorkday.Date == startProductionAt.Date)
@@ -138,9 +138,9 @@ namespace LeadTimeCalculator.API.Domain.WorkdayCalendarFeature
 
             while (remainingWorkdays > 0)
             {
-                var currentDayWorkHours = TryGetWorkingHours(currentWorkday);
-                var currentDayStart = currentDayWorkHours.Start;
-                var currentDayEnd = currentDayWorkHours.End;
+                var currentDayWorkHours = TryGetWorkingHours(currentWorkday)!;
+                var currentDayStart = currentDayWorkHours.StartTime;
+                var currentDayEnd = currentDayWorkHours.EndTime;
 
                 // Adjust the end time for the last day wanted shipping day
                 if (currentWorkday.Date == shippingAt.Date)
@@ -189,10 +189,10 @@ namespace LeadTimeCalculator.API.Domain.WorkdayCalendarFeature
                     var currentTime = movingDate.TimeOfDay;
 
                     // Check if we are after working hours
-                    if (currentTime > workingHours.End)
+                    if (currentTime > workingHours.EndTime)
                     {
                         // Move to the next valid working day
-                        movingDate = movingDate.AddDays(1).Date.Add(workingHours.Start);
+                        movingDate = movingDate.AddDays(1).Date.Add(workingHours.StartTime);
                         continue;
                     }
 
@@ -218,10 +218,10 @@ namespace LeadTimeCalculator.API.Domain.WorkdayCalendarFeature
                     var currentTime = movingDate.TimeOfDay;
 
                     // Check if we are before working hours
-                    if (currentTime < workingHours.Start)
+                    if (currentTime < workingHours.StartTime)
                     {
                         // Move to the previous valid working day
-                        movingDate = movingDate.AddDays(-1).Date.Add(workingHours.Start);
+                        movingDate = movingDate.AddDays(-1).Date.Add(workingHours.StartTime);
                         continue;
                     }
 
@@ -233,13 +233,13 @@ namespace LeadTimeCalculator.API.Domain.WorkdayCalendarFeature
             }
         }
 
-        private (TimeSpan Start, TimeSpan End) TryGetWorkingHours(DateTime date)
+        private WorkHours? TryGetWorkingHours(DateTime date)
         {
             var exceptionDay = _exceptionDays
                 .FirstOrDefault(e => e.Date == date.Date);
             if (exceptionDay != null)
             {
-                return (exceptionDay.StartTime, exceptionDay.EndTime);
+                return new(exceptionDay.StartTime, exceptionDay.EndTime);
             }
 
             if (_holidays.Any(h => h.Matches(date)))

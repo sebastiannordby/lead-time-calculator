@@ -20,13 +20,14 @@ namespace LeadTimeCalculator.API.Tests.Unit.Features.WorkdayCalendarFeature
         public void BasicWorkingDayCalculationTest()
         {
             // Arrange
-            var defaultWorkingDays = new Dictionary<DayOfWeek, (TimeSpan, TimeSpan)>()
+            var eightToFour = new WorkHours(TimeSpan.FromHours(8), TimeSpan.FromHours(16));
+            var defaultWorkingDays = new Dictionary<DayOfWeek, WorkHours>()
             {
-                { DayOfWeek.Monday, (TimeSpan.FromHours(8), TimeSpan.FromHours(16)) },
-                { DayOfWeek.Tuesday, (TimeSpan.FromHours(8), TimeSpan.FromHours(16)) },
-                { DayOfWeek.Wednesday, (TimeSpan.FromHours(8), TimeSpan.FromHours(16)) },
-                { DayOfWeek.Thursday, (TimeSpan.FromHours(8), TimeSpan.FromHours(16)) },
-                { DayOfWeek.Friday, (TimeSpan.FromHours(8), TimeSpan.FromHours(16)) },
+                { DayOfWeek.Monday, eightToFour },
+                { DayOfWeek.Tuesday, eightToFour },
+                { DayOfWeek.Wednesday, eightToFour },
+                { DayOfWeek.Thursday, eightToFour },
+                { DayOfWeek.Friday, eightToFour },
             };
             var workdayCalendar = new WorkdayCalendar(
                 defaultWorkhoursPerDay: 8,
@@ -57,13 +58,14 @@ namespace LeadTimeCalculator.API.Tests.Unit.Features.WorkdayCalendarFeature
         public void MidnightBoundaryandFractionalWorkingDayTests()
         {
             // Arrange
-            var defaultWorkingDays = new Dictionary<DayOfWeek, (TimeSpan, TimeSpan)>()
+            var eightToFour = new WorkHours(TimeSpan.FromHours(8), TimeSpan.FromHours(16));
+            var defaultWorkingDays = new Dictionary<DayOfWeek, WorkHours>()
             {
-                { DayOfWeek.Monday, (TimeSpan.FromHours(8), TimeSpan.FromHours(16)) },
-                { DayOfWeek.Tuesday, (TimeSpan.FromHours(8), TimeSpan.FromHours(16)) },
-                { DayOfWeek.Wednesday, (TimeSpan.FromHours(8), TimeSpan.FromHours(16)) },
-                { DayOfWeek.Thursday, (TimeSpan.FromHours(8), TimeSpan.FromHours(16)) },
-                { DayOfWeek.Friday, (TimeSpan.FromHours(8), TimeSpan.FromHours(16)) },
+                { DayOfWeek.Monday, eightToFour },
+                { DayOfWeek.Tuesday, eightToFour },
+                { DayOfWeek.Wednesday, eightToFour },
+                { DayOfWeek.Thursday, eightToFour },
+                { DayOfWeek.Friday, eightToFour },
             };
             var workdayCalendar = new WorkdayCalendar(
                 defaultWorkhoursPerDay: 8,
@@ -94,13 +96,14 @@ namespace LeadTimeCalculator.API.Tests.Unit.Features.WorkdayCalendarFeature
         public void WorkingDayCalculationwithNegativeDays()
         {
             // Arrange
-            var defaultWorkingDays = new Dictionary<DayOfWeek, (TimeSpan, TimeSpan)>()
+            var eightToFour = new WorkHours(TimeSpan.FromHours(8), TimeSpan.FromHours(16));
+            var defaultWorkingDays = new Dictionary<DayOfWeek, WorkHours>()
             {
-                { DayOfWeek.Monday, (TimeSpan.FromHours(8), TimeSpan.FromHours(16)) },
-                { DayOfWeek.Tuesday, (TimeSpan.FromHours(8), TimeSpan.FromHours(16)) },
-                { DayOfWeek.Wednesday, (TimeSpan.FromHours(8), TimeSpan.FromHours(16)) },
-                { DayOfWeek.Thursday, (TimeSpan.FromHours(8), TimeSpan.FromHours(16)) },
-                { DayOfWeek.Friday, (TimeSpan.FromHours(8), TimeSpan.FromHours(16)) },
+                { DayOfWeek.Monday, eightToFour },
+                { DayOfWeek.Tuesday, eightToFour },
+                { DayOfWeek.Wednesday, eightToFour },
+                { DayOfWeek.Thursday, eightToFour },
+                { DayOfWeek.Friday, eightToFour },
             };
 
             var holidays = new List<Holiday>()
@@ -155,8 +158,8 @@ namespace LeadTimeCalculator.API.Tests.Unit.Features.WorkdayCalendarFeature
             DateTime expectedDate = DateTime.Parse(expectedDateStr);
 
             // Arrange
-            var eightToFour = (TimeSpan.FromHours(8), TimeSpan.FromHours(16));
-            var defaultWorkingDays = new Dictionary<DayOfWeek, (TimeSpan, TimeSpan)>()
+            var eightToFour = new WorkHours(TimeSpan.FromHours(8), TimeSpan.FromHours(16));
+            var defaultWorkingDays = new Dictionary<DayOfWeek, WorkHours>()
             {
                 { DayOfWeek.Monday, eightToFour },
                 { DayOfWeek.Tuesday, eightToFour },

@@ -46,8 +46,8 @@ namespace LeadTimeCalculator.API.Application.WorkdayCalendarFeature.GetCalendars
                     .Select(day => new CalendarDetailedView.DefaultWorkingDayView()
                     {
                         DayOfWeek = day.Key,
-                        EndTime = day.Value.End,
-                        StartTime = day.Value.Start
+                        EndTime = day.Value.EndTime,
+                        StartTime = day.Value.StartTime
                     });
 
                 return new CalendarDetailedView()
