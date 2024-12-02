@@ -37,19 +37,23 @@ Initially, I was not concerned with how the data should be stored, as the proble
 
 My approach began by creating a test for the first example, **BasicWorkingDayCalculationTest**. This test served as the foundation for determining the necessary classes and logic to make the test pass.
 
-## What’s Missing in This Project
+## TODO
 
 There are several areas for improvement that I would address in future iterations of this project:
 
-- **Logging**: Currently not implemented.
-- **Proper Persistence**: While optional, this could be improved.
-- **Continuous Integration**: This should have been configured from the start.
-- **Continuous Delivery with IaC**: This should also be configured from the beginning.
-- **Branching Strategy**: Currently, everything is pushed to the `main` branch.
-- **Security/Quality Code Scanning**: Tools like **Snyk** and/or **SonarCloud** should be integrated for scanning and monitoring security and quality.
-- **Frontend Tests**: There are no tests for the frontend at the moment.
-- **Frontend Formatting Rules**: Although not critical, some formatting rules (e.g., using **Prettier**) could be applied, especially for Razor pages.
-- API -> Application: Mediatr Could have been used to dispatch requests to the application layer, to avoid having to reference handlers directly in the API-project.
+✖: Not started/done
+✔: Done
+
+
+- ✖ **Logging**: Currently not implemented.
+- ✖ **Proper Persistence**: While optional, this could be improved.
+- ✖ **Continuous Integration**: This should have been configured from the start.
+- ✖ **Continuous Delivery with IaC**: This should also be configured from the beginning.
+- ✖ **Branching Strategy**: Currently, everything is pushed to the `main` branch.
+- ✖ **Security/Quality Code Scanning**: Tools like **Snyk** and/or **SonarCloud** should be integrated for scanning and monitoring security and quality.
+- ✖ **Frontend Tests**: There are no tests for the frontend at the moment.
+- ✖ **Frontend Formatting Rules**: Although not critical, some formatting rules (e.g., using **Prettier**) could be applied, especially for Razor pages.
+- ✖ API -> Application: Mediatr Could have been used to dispatch requests to the application layer, to avoid having to reference handlers directly in the API-project.
 
 ## General Notes
 - The frontend could use some additional work, but given the short timeframe and my busy schedule, I did my best to implement a functional solution within the constraints.
