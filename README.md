@@ -59,7 +59,6 @@ There are several areas for improvement that I would address in future iteration
 - **Continuous Integration**: This should have been configured from the start.
 - **Continuous Delivery with IaC**: This should also be configured from the beginning.
 - **Branching Strategy**: Currently, everything is pushed to the `main` branch.
-- **Folder Structure**: The project could benefit from separating the client and API into distinct folders.
 - **Security/Quality Code Scanning**: Tools like **Snyk** and/or **SonarCloud** should be integrated for scanning and monitoring security and quality.
 - **Frontend Tests**: There are no tests for the frontend at the moment.
 - **Frontend Formatting Rules**: Although not critical, some formatting rules (e.g., using **Prettier**) could be applied, especially for Razor pages.
