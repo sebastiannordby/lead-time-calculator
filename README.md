@@ -2,7 +2,13 @@
 
 [![.NET - Build & Test](https://github.com/sebastiannordby/lead-time-calculator/actions/workflows/ci-workflow.yml/badge.svg)](https://github.com/sebastiannordby/lead-time-calculator/actions/workflows/ci-workflow.yml)
 
+## Showcase
+
 <img src="resources/images/ui.png" />
+
+Prototype: https://www.youtube.com/watch?v=9zVJeKKJZnA
+
+MVP(minimum viable product): https://www.youtube.com/watch?v=aLnKJqv826A
 
 ## How to Run the Project
 
@@ -60,5 +66,3 @@ There are several areas for improvement that I would address in future iteration
 
 - The frontend could use some additional work, but given the short timeframe and my busy schedule, I did my best to implement a functional solution within the constraints.
 - I have not used AI for anything other than polishing this README file or helped with commenting code for better formulations. The code itself is written solely by me, **Sebastian Nordby**.
-
-Check out the YouTube video for how to use the software: https://www.youtube.com/watch?v=9zVJeKKJZnA
