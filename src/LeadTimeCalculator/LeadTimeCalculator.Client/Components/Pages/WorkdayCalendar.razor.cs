@@ -20,8 +20,11 @@ namespace LeadTimeCalculator.Client.Components.Pages
         private IEnumerable<Appointment> _appointments = [];
         private RadzenScheduler<Appointment>? _scheduler;
 
-        private DateTime _startingLeadTimeCalc;
-        private double _leadTimeCalcFractionalWorkdays;
+        private DateTime _calculateLeadTimeForWhenCanShipDateTime;
+        private double _calculateLeadTimeForWhenCanShipFractionalWorkdays;
+
+        private DateTime _calculateLeadTimeForWhenToStartProductionDateTime;
+        private double _calculateLeadTimeForWhenToStartProductionFractionalWorkdays;
 
         public string PageTitle
         {
@@ -45,27 +48,34 @@ namespace LeadTimeCalculator.Client.Components.Pages
             await SetSelectedCalendar(workdayCalendarId);
         }
 
-        private async Task CalculateLeadTime()
+        private async Task CalculateEarliestTimeForWhenCanShip()
         {
             var calculateLeadTimeResponse = await ApiClient
                 .CalculateLeadTimeWorkdaysResponse(new(
                     CalendarId: _selectedCalendar!.Id,
-                    StartingDate: _startingLeadTimeCalc,
-                    WorkdaysAdjustment: _leadTimeCalcFractionalWorkdays));
+                    StartingDate: _calculateLeadTimeForWhenCanShipDateTime,
+                    WorkdaysAdjustment: _calculateLeadTimeForWhenCanShipFractionalWorkdays));
 
-            var added = _leadTimeCalcFractionalWorkdays > 0;
-            if (added)
-            {
-                var leadTimeMessage = $@"If you receive all items {_startingLeadTimeCalc}
-                    you will be able to ship the product at {calculateLeadTimeResponse.StartOrEndTime}";
-                await DialogService.Alert(leadTimeMessage, "Lead Time");
-            }
-            else
-            {
-                var leadTimeMessage = $@"If you want to ship at {_startingLeadTimeCalc}
-                    you will need to start producing at {calculateLeadTimeResponse.StartOrEndTime} or before";
-                await DialogService.Alert(leadTimeMessage, "Lead Time");
-            }
+            var leadTimeMessage = $@"If you start production at {_calculateLeadTimeForWhenCanShipDateTime}
+                and it takes {_calculateLeadTimeForWhenCanShipFractionalWorkdays} workdays to produce,
+                you will be able to ship the product at {calculateLeadTimeResponse.StartOrEndTime}";
+
+            await DialogService.Alert(leadTimeMessage, "Lead Time");
+        }
+
+        private async Task CalculateLatestTimeForWhenToStartProduction()
+        {
+            var calculateLeadTimeResponse = await ApiClient
+                .CalculateLeadTimeWorkdaysResponse(new(
+                    CalendarId: _selectedCalendar!.Id,
+                    StartingDate: _calculateLeadTimeForWhenToStartProductionDateTime,
+                    WorkdaysAdjustment: -1 * _calculateLeadTimeForWhenToStartProductionFractionalWorkdays));
+
+            var leadTimeMessage = $@"If you want to ship at {_calculateLeadTimeForWhenToStartProductionDateTime}
+                and it takes {_calculateLeadTimeForWhenToStartProductionFractionalWorkdays} workdays to produce,
+                you will have to start production latest at {calculateLeadTimeResponse.StartOrEndTime}";
+
+            await DialogService.Alert(leadTimeMessage, "Lead Time");
         }
 
         public async Task LoadCalendars()

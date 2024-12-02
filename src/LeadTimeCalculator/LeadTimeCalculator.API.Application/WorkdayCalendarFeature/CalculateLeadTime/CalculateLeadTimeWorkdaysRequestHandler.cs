@@ -32,7 +32,7 @@ namespace LeadTimeCalculator.API.Application.WorkdayCalendarFeature.CalculateLea
                 ? calendar.CalculateWhenCanShipWhenProductionStartsAt(request.StartingDate, request.WorkdaysAdjustment)
                 : calendar.CalculateProductionTimeWhenHaveToShipAt(request.StartingDate, -request.WorkdaysAdjustment);
 
-            var response = new CalculateLeadTimeWorkdaysResponse(DateTime.Now);
+            var response = new CalculateLeadTimeWorkdaysResponse(leadTime);
 
             return response;
         }

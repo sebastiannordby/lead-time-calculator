@@ -2,6 +2,8 @@
 
 [![.NET - Build & Test](https://github.com/sebastiannordby/lead-time-calculator/actions/workflows/ci-workflow.yml/badge.svg)](https://github.com/sebastiannordby/lead-time-calculator/actions/workflows/ci-workflow.yml)
 
+<img src="resources/images/ui.png" />
+
 ## How to Run the Project
 
 To run this project, you will need the following prerequisites:
@@ -44,7 +46,6 @@ There are several areas for improvement that I would address in future iteration
 ✖: Not started/done
 ✔: Done
 
-
 - ✖ **Logging**: Currently not implemented.
 - ✖ **Proper Persistence**: While optional, this could be improved.
 - ✔ **Continuous Integration**: This should have been configured from the start.
@@ -56,6 +57,7 @@ There are several areas for improvement that I would address in future iteration
 - ✖ API -> Application: Mediatr Could have been used to dispatch requests to the application layer, to avoid having to reference handlers directly in the API-project.
 
 ## General Notes
+
 - The frontend could use some additional work, but given the short timeframe and my busy schedule, I did my best to implement a functional solution within the constraints.
 - I have not used AI for anything other than polishing this README file or helped with commenting code for better formulations. The code itself is written solely by me, **Sebastian Nordby**.
 

@@ -21,7 +21,7 @@ body > .page {
 
 main > nav:first-child {
     padding: .5em 1em;
-    background: darkseagreen;
+    background-color: green;
 }
 
 a, .btn-link {
