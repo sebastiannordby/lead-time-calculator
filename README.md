@@ -2,19 +2,6 @@
 
 [![.NET - Build & Test](https://github.com/sebastiannordby/lead-time-calculator/actions/workflows/ci-workflow.yml/badge.svg)](https://github.com/sebastiannordby/lead-time-calculator/actions/workflows/ci-workflow.yml)
 
-Given that this is only a simple application, but could envolve to something bigger i will set the line for refactoring to here.
-This is overenginnering at it finest already and the initial structuring is appropriate for this size of a project.
-Given the size of the project the developer(s) should be able to follow principles set in their coding standard and adhere to them.
-
-Mediator could have been used to dispatch requests to the application layer, to avoid having to reference handlers directly in the API-project.
-
-By restructuring the project like this we can
-
-- Unit test domain logic without mocking/fakes
-- Unit test application logic with mocking/fakes
-- Integration test as usual the API to get the whole workflow
-- Allow for architectural testing
-
 ## How to Run the Project
 
 To run this project, you will need the following prerequisites:
@@ -62,6 +49,7 @@ There are several areas for improvement that I would address in future iteration
 - **Security/Quality Code Scanning**: Tools like **Snyk** and/or **SonarCloud** should be integrated for scanning and monitoring security and quality.
 - **Frontend Tests**: There are no tests for the frontend at the moment.
 - **Frontend Formatting Rules**: Although not critical, some formatting rules (e.g., using **Prettier**) could be applied, especially for Razor pages.
+- API -> Application: Mediatr Could have been used to dispatch requests to the application layer, to avoid having to reference handlers directly in the API-project.
 
 ## General Notes
 - The frontend could use some additional work, but given the short timeframe and my busy schedule, I did my best to implement a functional solution within the constraints.
