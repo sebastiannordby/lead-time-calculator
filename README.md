@@ -43,10 +43,11 @@ My approach began by creating a test for the first example, **BasicWorkingDayCal
 
 There are several areas for improvement that I would address in future iterations of this project:
 
-✖: Not started/done
-✔: Done
+✔: Done, could also be partially and i have not bothered going to the full extend.
 
-- ✖ **Logging**: Currently not implemented.
+✖: Not started or won't do.
+
+- ✔ **Logging/Metrics**: Could be improved.
 - ✖ **Proper Persistence**: While optional, this could be improved.
 - ✔ **Continuous Integration**: This should have been configured from the start.
 - ✖ **Continuous Delivery with IaC**: This should also be configured from the beginning.
