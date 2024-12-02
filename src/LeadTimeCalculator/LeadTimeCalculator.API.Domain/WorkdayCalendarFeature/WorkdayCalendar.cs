@@ -85,7 +85,7 @@ namespace LeadTimeCalculator.API.Domain.WorkdayCalendarFeature
                 return startProductionAt;
 
             var remainingWorkdays = productionTimeWorkdayFractions;
-            var currentWorkday = GetNextValidWorkday(startProductionAt, WorkdayTraversal.ForwardsInTime);
+            var currentWorkday = GetNextValidWorkday(startProductionAt);
             var currentProductionTime = startProductionAt;
 
             while (remainingWorkdays > 0)
@@ -117,7 +117,7 @@ namespace LeadTimeCalculator.API.Domain.WorkdayCalendarFeature
 
                 // Move to the next workday
                 remainingWorkdays -= availableWorkHoursAsWorkdayFraction;
-                currentWorkday = GetNextValidWorkday(currentWorkday.AddDays(1), WorkdayTraversal.ForwardsInTime);
+                currentWorkday = GetNextValidWorkday(currentWorkday.AddDays(1));
             }
 
             throw new InvalidOperationException("Production time exceeds calculated workdays");
@@ -133,7 +133,7 @@ namespace LeadTimeCalculator.API.Domain.WorkdayCalendarFeature
                 return shippingAt;
 
             var remainingWorkdays = productionTimeWorkdayFractions;
-            var currentWorkday = GetNextValidWorkday(shippingAt, WorkdayTraversal.BackwardsInTime);
+            var currentWorkday = GetPreviousValidWorkday(shippingAt);
             var currentProductionTime = shippingAt;
 
             while (remainingWorkdays > 0)
@@ -164,7 +164,7 @@ namespace LeadTimeCalculator.API.Domain.WorkdayCalendarFeature
 
                 // Move to the previous workday
                 remainingWorkdays -= availableWorkHoursAsWorkdayFraction;
-                currentWorkday = GetNextValidWorkday(currentWorkday.AddDays(-1), WorkdayTraversal.BackwardsInTime);
+                currentWorkday = GetPreviousValidWorkday(currentWorkday.AddDays(-1));
             }
 
             throw new InvalidOperationException("Production time exceeds calculated workdays");
@@ -175,7 +175,7 @@ namespace LeadTimeCalculator.API.Domain.WorkdayCalendarFeature
             return dateTime.AddTicks(-(dateTime.Ticks % TimeSpan.TicksPerMinute));
         }
 
-        private DateTime GetNextValidWorkday(DateTime date, WorkdayTraversal traversalType)
+        private DateTime GetNextValidWorkday(DateTime date)
         {
             var movingDate = date;
 
@@ -188,30 +188,48 @@ namespace LeadTimeCalculator.API.Domain.WorkdayCalendarFeature
                 {
                     var currentTime = movingDate.TimeOfDay;
 
-                    // If moving forward in time, check if we are after working hours
-                    if (traversalType == WorkdayTraversal.ForwardsInTime && currentTime > workingHours.End)
+                    // Check if we are after working hours
+                    if (currentTime > workingHours.End)
                     {
                         // Move to the next valid working day
                         movingDate = movingDate.AddDays(1).Date.Add(workingHours.Start);
-                        continue; // Recheck the new day
+                        continue;
                     }
 
-                    // If moving backward in time, check if we are before working hours
-                    if (traversalType == WorkdayTraversal.BackwardsInTime && currentTime < workingHours.Start)
-                    {
-                        // Move to the previous valid working day
-                        movingDate = movingDate.AddDays(-1).Date.Add(workingHours.Start);
-                        continue; // Recheck the new day
-                    }
-
-                    // If the current time is within working hours, return the date
                     return movingDate;
                 }
 
-                // If no valid working hours, move to the next/previous day
-                movingDate = traversalType == WorkdayTraversal.ForwardsInTime
-                    ? movingDate.AddDays(1)
-                    : movingDate.AddDays(-1);
+                // If no valid working hours, move to the next day
+                movingDate = movingDate.AddDays(1);
+            }
+        }
+
+        private DateTime GetPreviousValidWorkday(DateTime date)
+        {
+            var movingDate = date;
+
+            while (true)
+            {
+                // Check if the day has valid working hours
+                var workingHours = TryGetWorkingHours(movingDate);
+
+                if (workingHours != default)
+                {
+                    var currentTime = movingDate.TimeOfDay;
+
+                    // Check if we are before working hours
+                    if (currentTime < workingHours.Start)
+                    {
+                        // Move to the previous valid working day
+                        movingDate = movingDate.AddDays(-1).Date.Add(workingHours.Start);
+                        continue;
+                    }
+
+                    return movingDate;
+                }
+
+                // If no valid working hours, move to the previous day
+                movingDate = movingDate.AddDays(-1);
             }
         }
 
@@ -240,12 +258,6 @@ namespace LeadTimeCalculator.API.Domain.WorkdayCalendarFeature
             }
 
             return default;
-        }
-
-        private enum WorkdayTraversal
-        {
-            ForwardsInTime = 0,
-            BackwardsInTime = 1
         }
     }
 }
