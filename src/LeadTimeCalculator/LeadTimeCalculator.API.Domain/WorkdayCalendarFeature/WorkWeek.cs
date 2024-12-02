@@ -61,7 +61,7 @@ namespace LeadTimeCalculator.API.Domain.WorkdayCalendarFeature
         /// <param name="dayOfWeek"></param>
         /// <returns></returns>
         /// <exception cref="DomainException"></exception>
-        public WorkHours GetByDayOfWeek(DayOfWeek dayOfWeek)
+        public WorkHours? GetByDayOfWeek(DayOfWeek dayOfWeek)
         {
             switch (dayOfWeek)
             {
@@ -85,9 +85,9 @@ namespace LeadTimeCalculator.API.Domain.WorkdayCalendarFeature
         /// Returns working hours for Monday-Friday.
         /// </summary>
         /// <returns></returns>
-        public Dictionary<DayOfWeek, WorkHours> GetWorkingWeek()
+        public Dictionary<DayOfWeek, WorkHours?> GetWorkingWeek()
         {
-            return new Dictionary<DayOfWeek, WorkHours>()
+            return new Dictionary<DayOfWeek, WorkHours?>()
             {
                 { DayOfWeek.Monday, MondayWorkingHours },
                 { DayOfWeek.Tuesday, TuesdayWorkingHours},
