@@ -63,7 +63,7 @@ LeadTimeCalculator.API.Domain:
      - Can use models from Shared-folder
 
 LeadTimeCalculator.API.Domain.Tests.Unit:
-- Should not contain any mocking
+- Should only mock if dependend upon other contexts
 
 ## TODO
 
