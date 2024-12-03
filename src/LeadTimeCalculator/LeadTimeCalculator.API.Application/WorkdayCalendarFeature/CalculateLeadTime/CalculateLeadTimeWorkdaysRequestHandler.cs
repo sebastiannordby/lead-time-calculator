@@ -29,8 +29,8 @@ namespace LeadTimeCalculator.API.Application.WorkdayCalendarFeature.CalculateLea
                 throw new ArgumentException($"No WorkdayCalendar with given Id({request.CalendarId})");
 
             var leadTime = request.WorkdaysAdjustment > 0
-                ? calendar.CalculateShippingDate(request.StartingDate, request.WorkdaysAdjustment)
-                : calendar.CalculateProductionStartDateForShipping(request.StartingDate, -request.WorkdaysAdjustment);
+                ? calendar.AddWorkingDays(request.StartingDate, request.WorkdaysAdjustment)
+                : calendar.SubtractWorkingDays(request.StartingDate, -request.WorkdaysAdjustment);
 
             var response = new CalculateLeadTimeWorkdaysResponse(leadTime);
 

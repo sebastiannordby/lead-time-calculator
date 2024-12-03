@@ -32,7 +32,7 @@ namespace LeadTimeCalculator.API.Tests.Unit.Features.WorkdayCalendarFeature
 
             // Act
             var work = workdayCalendar
-                .CalculateShippingDate(date, 0.25);
+                .AddWorkingDays(date, 0.25);
 
             // Assert
             var expectedDate = new DateTime(2004, 5, 25, 09, 7, 0); // 25.05.2004 09:07
@@ -64,7 +64,7 @@ namespace LeadTimeCalculator.API.Tests.Unit.Features.WorkdayCalendarFeature
 
             // Act 
             var work = workdayCalendar
-                .CalculateShippingDate(date, 0.5);
+                .AddWorkingDays(date, 0.5);
 
             // Assert
             var expectedDate = DateTime.Parse("2004-05-24 12:00"); // 24.05.2004 12:00
@@ -102,7 +102,7 @@ namespace LeadTimeCalculator.API.Tests.Unit.Features.WorkdayCalendarFeature
 
             // Act
             var work = workdayCalendar
-                .CalculateProductionStartDateForShipping(date, 5.5);
+                .SubtractWorkingDays(date, 5.5);
 
             // Assert
             var expectedDate = DateTime.Parse("2004-05-14 12:00"); // 14.05.2004 12:00
@@ -155,8 +155,8 @@ namespace LeadTimeCalculator.API.Tests.Unit.Features.WorkdayCalendarFeature
 
             // Act
             var work = workingHoursToAdd > 0
-                ? workdayCalendar.CalculateShippingDate(inputDate, workingHoursToAdd)
-                : workdayCalendar.CalculateProductionStartDateForShipping(inputDate, -workingHoursToAdd);
+                ? workdayCalendar.AddWorkingDays(inputDate, workingHoursToAdd)
+                : workdayCalendar.SubtractWorkingDays(inputDate, -workingHoursToAdd);
 
             // Assert
             Assert.Equal(expectedDate, work);
