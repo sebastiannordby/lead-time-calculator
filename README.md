@@ -34,16 +34,31 @@ Once you have the necessary tools installed:
 
 ## Project Structure
 
-The project is organized into features, with the **WorkdayCalendarFeature** as the core domain and functionality. All business logic is encapsulated in the **LeadTimeCalculator.API** HTTP API.
-
-## Approach to Solving the Exercises
 
 I prefer and advocate for **Test-Driven Development (TDD)**, as it ensures that the code remains clean, testable, and well-structured.
 
-For this exercise, I applied some **Domain-Driven Design (DDD)**, beginning by analyzing the terminology used (which should in a bigger process resulted in a UL) in the interview document and create the models needed for the required functionality.
+For this project, I applied some principles/patterns from **Domain-Driven Design (DDD)**, beginning by analyzing the terminology used in the exercise document and create the models needed for the required functionality.
 Initially, I was not concerned with how the data should be stored, as the problem doesn't dictate a specific persistence strategy.
 
-My approach began by creating a test for the first example, **BasicWorkingDayCalculationTest**. This test served as the foundation for determining the necessary classes and logic to make the test pass.
+The project is organized into features, with the **WorkdayCalendarFeature** as the core domain and functionality.
+
+LeadTimeCalculator.API.Domain:
+- Should contain as much -> to all domain logic
+- Should not be dependent on any internal nor external libraries
+- Should be persistent ignorant
+
+LeadTimeCalculator.API.Application:
+- Acts as an ACL(anti corruption layer) for the domain
+- Should handle requests(commands or queries)
+- Should expose a port(interface) for what it needs to process the requests
+
+LeadTimeCalculator.API:
+- Contains infrastructure
+- Exposes endpoints -> LeadTimeCalculator.API.Application
+
+
+All business logic is encapsulated in the **LeadTimeCalculator.API** HTTP API.
+
 
 ## TODO
 
