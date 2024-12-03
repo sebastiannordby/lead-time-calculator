@@ -1,8 +1,9 @@
-﻿using LeadTimeCalculator.API.Domain.Shared.Exceptions;
+﻿using LeadTimeCalculator.API.Domain.Shared.Contracts;
+using LeadTimeCalculator.API.Domain.Shared.Exceptions;
 
 namespace LeadTimeCalculator.API.Domain.WorkdayCalendarFeature
 {
-    public sealed class WorkdayCalendar
+    public sealed class WorkdayCalendar : IWorkdayCalendar
     {
         public int Id { get; private set; }
         private readonly WorkWeek _workWeek;
