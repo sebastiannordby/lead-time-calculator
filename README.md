@@ -34,7 +34,6 @@ Once you have the necessary tools installed:
 
 ## Project Structure
 
-
 I prefer and advocate for **Test-Driven Development (TDD)**, as it ensures that the code remains clean, testable, and well-structured.
 
 For this project, I applied some principles/patterns from **Domain-Driven Design (DDD)**, beginning by analyzing the terminology used in the exercise document and create the models needed for the required functionality.
@@ -56,9 +55,15 @@ LeadTimeCalculator.API:
 - Contains infrastructure
 - Exposes endpoints -> LeadTimeCalculator.API.Application
 
+## Guidelines
 
-All business logic is encapsulated in the **LeadTimeCalculator.API** HTTP API.
+LeadTimeCalculator.API.Domain:
+- Should only work with the objects defined in the project or native datatypes
+- Should not use models from other features
+     - Can use models from Shared-folder
 
+LeadTimeCalculator.API.Domain.Tests.Unit:
+- Should not contain any mocking
 
 ## TODO
 
