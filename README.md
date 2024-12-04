@@ -2,6 +2,9 @@
 
 [![.NET - Build & Test](https://github.com/sebastiannordby/lead-time-calculator/actions/workflows/ci-workflow.yml/badge.svg)](https://github.com/sebastiannordby/lead-time-calculator/actions/workflows/ci-workflow.yml)
 
+## Why in worktime?
+At my current employer we have a given amount of hours for learning/courses. Since we are refactoring/migrating some older code i thought is was good with some practicing.
+
 ## Showcase
 
 <img src="resources/images/ui.png" />
