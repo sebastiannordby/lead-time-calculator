@@ -54,7 +54,7 @@ namespace LeadTimeCalculator.Client.Components.Dialogs
 
         private async Task ExecuteRequestAsync()
         {
-            await ApiClient.AddWorkdayCalendarExceptionDayAsync(new(
+            await ApiClient.WorkdayCalendar.AddWorkdayCalendarExceptionDayAsync(new(
                 CalendarId: CalendarId,
                 Date: _date,
                 StartTime: _startTime,

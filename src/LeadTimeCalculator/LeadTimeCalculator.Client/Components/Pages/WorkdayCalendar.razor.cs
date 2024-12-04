@@ -51,6 +51,7 @@ namespace LeadTimeCalculator.Client.Components.Pages
         private async Task CalculateShippingDate()
         {
             var calculateLeadTimeResponse = await ApiClient
+                .WorkdayCalendar
                 .CalculateLeadTimeWorkdaysResponse(new(
                     CalendarId: _selectedCalendar!.Id,
                     StartingDate: _startProductionDate,
@@ -66,6 +67,7 @@ namespace LeadTimeCalculator.Client.Components.Pages
         private async Task CalculateProductionStartDateForShipping()
         {
             var calculateLeadTimeResponse = await ApiClient
+                .WorkdayCalendar
                 .CalculateLeadTimeWorkdaysResponse(new(
                     CalendarId: _selectedCalendar!.Id,
                     StartingDate: _requestedShippingDate,
@@ -81,6 +83,7 @@ namespace LeadTimeCalculator.Client.Components.Pages
         public async Task LoadCalendars()
         {
             var getCalendarsResponse = await ApiClient
+                .WorkdayCalendar
                 .GetWorkdayCalendarsAsync(new());
 
             _calendarViews = getCalendarsResponse.CalendarDetailedViews;

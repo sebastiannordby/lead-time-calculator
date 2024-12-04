@@ -20,7 +20,7 @@ namespace LeadTimeCalculator.Client.Components.Dialogs
 
         private async Task ExecuteRequestAsync()
         {
-            await ApiClient.AddWorkdayCalendarHolidayAsync(new(
+            await ApiClient.WorkdayCalendar.AddWorkdayCalendarHolidayAsync(new(
                 CalendarId: CalendarId,
                 Date: _holidayDate,
                 IsRecurring: _isReccuring));

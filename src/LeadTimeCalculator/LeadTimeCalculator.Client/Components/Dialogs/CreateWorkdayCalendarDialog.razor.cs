@@ -51,7 +51,7 @@ namespace LeadTimeCalculator.Client.Components.Dialogs
 
         private async Task ExecuteRequestAsync()
         {
-            var response = await ApiClient.CreateWorkdayCalendarAsync(new(
+            var response = await ApiClient.WorkdayCalendar.CreateWorkdayCalendarAsync(new(
                 DefaultWorkdayStartTime: _startTime,
                 DefaultWorkdayEndTime: _endTime));
 
