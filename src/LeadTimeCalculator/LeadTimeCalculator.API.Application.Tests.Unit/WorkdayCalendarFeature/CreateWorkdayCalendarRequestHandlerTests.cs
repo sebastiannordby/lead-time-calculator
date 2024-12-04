@@ -2,7 +2,8 @@
 using LeadTimeCalculator.API.Application.WorkdayCalendarFeature;
 using LeadTimeCalculator.API.Application.WorkdayCalendarFeature.CreateCalendar;
 using LeadTimeCalculator.API.Constracts.WorkdayCalendar.CreateCalendar;
-using LeadTimeCalculator.API.Domain.WorkdayCalendarFeature;
+using LeadTimeCalculator.API.Domain.Repositories.WorkdayCalendarFeature;
+using LeadTimeCalculator.API.Domain.WorkdayCalendarFeature.Models;
 using Microsoft.Extensions.DependencyInjection;
 using NSubstitute;
 using ValidationException = FluentValidation.ValidationException;
@@ -28,7 +29,7 @@ namespace LeadTimeCalculator.API.Application.Tests.Unit.WorkdayCalendarFeature
         }
 
         [Fact]
-        public async Task InvalidRequest_ErrorsWithInvalidFields()
+        public async Task GivenInvalidRequest_ShouldErrorWithInvalidFields()
         {
             // Given
             var invalidRequest = new CreateWorkdayCalendarRequest(

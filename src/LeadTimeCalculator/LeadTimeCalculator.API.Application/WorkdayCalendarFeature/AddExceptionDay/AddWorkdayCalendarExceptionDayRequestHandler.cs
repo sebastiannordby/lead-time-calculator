@@ -1,6 +1,7 @@
 ﻿using FluentValidation;
 using LeadTimeCalculator.API.Constracts.WorkdayCalendar.AddExceptionDay;
-using LeadTimeCalculator.API.Domain.WorkdayCalendarFeature;
+using LeadTimeCalculator.API.Domain.Repositories.WorkdayCalendarFeature;
+using LeadTimeCalculator.API.Domain.WorkdayCalendarFeature.Models;
 
 namespace LeadTimeCalculator.API.Application.WorkdayCalendarFeature.AddExceptionDay
 {

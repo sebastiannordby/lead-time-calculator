@@ -1,4 +1,5 @@
 ﻿using LeadTimeCalculator.API.Domain.WorkdayCalendarFeature;
+using LeadTimeCalculator.API.Domain.WorkdayCalendarFeature.Models;
 
 namespace LeadTimeCalculator.API.Tests.Unit.Features.WorkdayCalendarFeature
 {

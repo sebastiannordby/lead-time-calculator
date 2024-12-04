@@ -1,5 +1,5 @@
-﻿using LeadTimeCalculator.API.Application.WorkdayCalendarFeature;
-using LeadTimeCalculator.API.Domain.ProductionScheduleFeature.Repositories;
+﻿using LeadTimeCalculator.API.Domain.ProductionScheduleFeature.Repositories;
+using LeadTimeCalculator.API.Domain.Repositories.WorkdayCalendarFeature;
 using LeadTimeCalculator.API.Endpoints;
 using LeadTimeCalculator.API.Infrastructure.Endpoints;
 using LeadTimeCalculator.API.Infrastructure.Repositories;

@@ -1,5 +1,6 @@
 ﻿using FluentValidation;
 using LeadTimeCalculator.API.Constracts.WorkdayCalendar.CalculateLeadTime;
+using LeadTimeCalculator.API.Domain.Repositories.WorkdayCalendarFeature;
 
 namespace LeadTimeCalculator.API.Application.WorkdayCalendarFeature.CalculateLeadTime
 {
