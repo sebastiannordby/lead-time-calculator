@@ -1,9 +1,9 @@
 ﻿using FluentValidation;
-using LeadTimeCalculator.API.Application.WorkdayCalendarFeature.AddExceptionDay;
-using LeadTimeCalculator.API.Application.WorkdayCalendarFeature.AddHoliday;
-using LeadTimeCalculator.API.Application.WorkdayCalendarFeature.CalculateLeadTime;
-using LeadTimeCalculator.API.Application.WorkdayCalendarFeature.CreateCalendar;
-using LeadTimeCalculator.API.Application.WorkdayCalendarFeature.GetCalendars;
+using LeadTimeCalculator.API.Application.WorkdayCalendarFeature.UseCases.AddExceptionDay;
+using LeadTimeCalculator.API.Application.WorkdayCalendarFeature.UseCases.AddHoliday;
+using LeadTimeCalculator.API.Application.WorkdayCalendarFeature.UseCases.CalculateLeadTime;
+using LeadTimeCalculator.API.Application.WorkdayCalendarFeature.UseCases.CreateCalendar;
+using LeadTimeCalculator.API.Application.WorkdayCalendarFeature.UseCases.GetCalendars;
 using LeadTimeCalculator.API.Constracts.WorkdayCalendar.AddExceptionDay;
 using LeadTimeCalculator.API.Constracts.WorkdayCalendar.AddHoliday;
 using LeadTimeCalculator.API.Constracts.WorkdayCalendar.CalculateLeadTime;

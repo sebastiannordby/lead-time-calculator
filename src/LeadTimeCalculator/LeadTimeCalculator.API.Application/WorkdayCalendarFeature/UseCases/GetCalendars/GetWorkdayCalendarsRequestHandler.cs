@@ -1,8 +1,8 @@
 ﻿using FluentValidation;
+using LeadTimeCalculator.API.Application.Repositories.WorkdayCalendarFeature;
 using LeadTimeCalculator.API.Constracts.WorkdayCalendar.GetCalendars;
-using LeadTimeCalculator.API.Domain.Repositories.WorkdayCalendarFeature;
 
-namespace LeadTimeCalculator.API.Application.WorkdayCalendarFeature.GetCalendars
+namespace LeadTimeCalculator.API.Application.WorkdayCalendarFeature.UseCases.GetCalendars
 {
     public sealed class GetWorkdayCalendarsRequestHandler
     {

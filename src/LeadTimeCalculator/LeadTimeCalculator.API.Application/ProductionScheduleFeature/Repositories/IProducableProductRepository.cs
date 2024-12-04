@@ -1,6 +1,6 @@
 ﻿using LeadTimeCalculator.API.Domain.ProductionScheduleFeature.Models;
 
-namespace LeadTimeCalculator.API.Domain.ProductionScheduleFeature.Repositories
+namespace LeadTimeCalculator.API.Application.ProductionScheduleFeature.Repositories
 {
     public interface IProducableProductRepository
     {

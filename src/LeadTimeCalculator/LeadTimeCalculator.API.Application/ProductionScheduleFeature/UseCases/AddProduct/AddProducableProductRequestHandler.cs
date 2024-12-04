@@ -1,9 +1,9 @@
 ﻿using FluentValidation;
+using LeadTimeCalculator.API.Application.ProductionScheduleFeature.Repositories;
 using LeadTimeCalculator.API.Constracts.ProductionScheduleFeature.AddProducableProduct;
 using LeadTimeCalculator.API.Domain.ProductionScheduleFeature.Models;
-using LeadTimeCalculator.API.Domain.ProductionScheduleFeature.Repositories;
 
-namespace LeadTimeCalculator.API.Application.ProductionScheduleFeature.AddProduct
+namespace LeadTimeCalculator.API.Application.ProductionScheduleFeature.UseCases.AddProduct
 {
     public sealed class AddProducableProductRequestHandler
     {

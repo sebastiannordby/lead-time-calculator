@@ -1,8 +1,8 @@
 ﻿using Bogus;
+using LeadTimeCalculator.API.Application.Repositories.WorkdayCalendarFeature;
 using LeadTimeCalculator.API.Application.WorkdayCalendarFeature;
-using LeadTimeCalculator.API.Application.WorkdayCalendarFeature.CreateCalendar;
+using LeadTimeCalculator.API.Application.WorkdayCalendarFeature.UseCases.CreateCalendar;
 using LeadTimeCalculator.API.Constracts.WorkdayCalendar.CreateCalendar;
-using LeadTimeCalculator.API.Domain.Repositories.WorkdayCalendarFeature;
 using LeadTimeCalculator.API.Domain.WorkdayCalendarFeature.Models;
 using Microsoft.Extensions.DependencyInjection;
 using NSubstitute;

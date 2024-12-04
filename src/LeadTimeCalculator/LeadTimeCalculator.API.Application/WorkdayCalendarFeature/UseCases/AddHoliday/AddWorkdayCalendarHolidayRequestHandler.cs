@@ -1,9 +1,9 @@
 ﻿using FluentValidation;
+using LeadTimeCalculator.API.Application.Repositories.WorkdayCalendarFeature;
 using LeadTimeCalculator.API.Constracts.WorkdayCalendar.AddHoliday;
-using LeadTimeCalculator.API.Domain.Repositories.WorkdayCalendarFeature;
 using LeadTimeCalculator.API.Domain.WorkdayCalendarFeature.Models;
 
-namespace LeadTimeCalculator.API.Application.WorkdayCalendarFeature.AddHoliday
+namespace LeadTimeCalculator.API.Application.WorkdayCalendarFeature.UseCases.AddHoliday
 {
     public class AddWorkdayCalendarHolidayRequestHandler
     {
