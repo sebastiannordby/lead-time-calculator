@@ -1,6 +1,9 @@
 ﻿using LeadTimeCalculator.API.Application.WorkdayCalendarFeature;
+using LeadTimeCalculator.API.Domain.ProductionScheduleFeature.Repositories;
+using LeadTimeCalculator.API.Endpoints;
 using LeadTimeCalculator.API.Infrastructure.Endpoints;
 using LeadTimeCalculator.API.Infrastructure.Repositories;
+using LeadTimeCalculator.API.Repositories;
 
 namespace LeadTimeCalculator.API.Infrastructure
 {
@@ -10,7 +13,8 @@ namespace LeadTimeCalculator.API.Infrastructure
             this IServiceCollection services)
         {
             return services
-                .AddSingleton<IWorkdayCalendarRepository, InMemoryWorkdayCalendarRepository>();
+                .AddSingleton<IWorkdayCalendarRepository, InMemoryWorkdayCalendarRepository>()
+                .AddSingleton<IProducableProductRepository, InMemoryProducableProductRepository>();
         }
 
         internal static void AddWorkdayCalendarFeatureEndpoints(
@@ -33,6 +37,20 @@ namespace LeadTimeCalculator.API.Infrastructure
 
             workdayCalendarGroup
                 .MapPost("/list", WorkdayCalendarEndpoints.GetWorkdayCalendars);
+        }
+
+        internal static void AddProductionScheduleFeatureEndpoints(
+            this RouteGroupBuilder builder)
+        {
+            var productionScheduleGroup = builder
+                .MapGroup("/production-schedule");
+
+            var producableProductGroup = productionScheduleGroup
+                .MapGroup("/producable-product");
+
+            producableProductGroup.MapPost(
+                string.Empty,
+                ProductionScheduleEndpoints.ProducableProduct.AddProduct);
         }
     }
 }

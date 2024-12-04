@@ -24,6 +24,7 @@ namespace LeadTimeCalculator.API.Tests.Integration.Features.WorkdayCalendarFeatu
 
             // When
             var calculateLeadTimeHttpResponse = await _sutClient
+                .WorkdayCalendar
                 .CalculateLeadTimeWorkdays(invalidRequest);
 
             // Then
