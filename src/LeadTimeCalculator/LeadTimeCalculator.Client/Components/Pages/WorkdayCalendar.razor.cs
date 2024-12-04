@@ -7,6 +7,7 @@ using Radzen.Blazor;
 
 namespace LeadTimeCalculator.Client.Components.Pages
 {
+    [Route(LeadTimeCalculatorRoutes.WORKDAY_CALENDAR)]
     public partial class WorkdayCalendar
     {
         [Inject]

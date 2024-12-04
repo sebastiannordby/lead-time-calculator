@@ -4,8 +4,19 @@
 
 <div class="page">
     <main>
-        <nav>
+        <nav class="d-flex justify-content-between align-items-center">
             <a class="navbar-brand text-white" href="">LeadTimeCalculator</a>
+
+            <div class="flex gap-4">
+                <a 
+                    class="text-white"
+                    style="text-decoration: underline;"
+                    href="@LeadTimeCalculatorRoutes.WORKDAY_CALENDAR">Calendar</a>
+                <a 
+                    class="text-white"
+                    style="text-decoration: underline;"
+                    href="@LeadTimeCalculatorRoutes.PRODUCABLE_PRODUCTS">Products</a>
+            </div>
         </nav>
 
         <article class="content px-4">
