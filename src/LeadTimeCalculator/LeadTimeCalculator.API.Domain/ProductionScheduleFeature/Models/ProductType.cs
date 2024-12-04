@@ -1,4 +1,4 @@
-﻿namespace LeadTimeCalculator.API.Domain.ProductionScheduleFeature
+﻿namespace LeadTimeCalculator.API.Domain.ProductionScheduleFeature.Models
 {
     public sealed class ProductType
     {

@@ -1,4 +1,4 @@
-﻿using LeadTimeCalculator.API.Domain.ProductionScheduleFeature;
+﻿using LeadTimeCalculator.API.Domain.ProductionScheduleFeature.Models;
 using LeadTimeCalculator.API.Domain.Shared.Contracts;
 using LeadTimeCalculator.API.Domain.Shared.Exceptions;
 using NSubstitute;
@@ -14,16 +14,16 @@ namespace LeadTimeCalculator.API.Domain.Tests.Unit.Features.ProductionScheduleFe
             var workdayCalendarMock = Substitute
                 .For<IWorkdayCalendar>();
 
-            var sut = new Order(
-                id: new OrderId(1),
-                product: new Product(
+            var sut = new ProductionOrder(
+                id: new ProductionOrderId(1),
+                product: new ProducableProduct(
                     "Robotics Arm",
                     new ProductionTime(1),
                     new ProductType("Robotics")),
                 orderParts: [
-                    new OrderPart("Bearings", DateTime.Now),
-                    new OrderPart("Oil", null),
-                    new OrderPart("Silicone", DateTime.Now)
+                    new ProductionOrderPart("Bearings", DateTime.Now),
+                    new ProductionOrderPart("Oil", null),
+                    new ProductionOrderPart("Silicone", DateTime.Now)
                 ]);
 
             // When & Then
@@ -52,16 +52,16 @@ namespace LeadTimeCalculator.API.Domain.Tests.Unit.Features.ProductionScheduleFe
                 .AddWorkingDays(timeNow.AddDays(10), workdaysToProduce)
                 .Returns(lastPartArrivesAt.AddDays(workdaysToProduce));
 
-            var sut = new Order(
-                id: new OrderId(1),
-                product: new Product(
+            var sut = new ProductionOrder(
+                id: new ProductionOrderId(1),
+                product: new ProducableProduct(
                     "Robotics Arm",
                     new ProductionTime(workdaysToProduce),
                     new ProductType("Robotics")),
                 orderParts: [
-                    new OrderPart("Bearings", lastPartArrivesAt.AddDays(-1)),
-                    new OrderPart("Oil", lastPartArrivesAt),
-                    new OrderPart("Silicone", lastPartArrivesAt.AddDays(-2))
+                    new ProductionOrderPart("Bearings", lastPartArrivesAt.AddDays(-1)),
+                    new ProductionOrderPart("Oil", lastPartArrivesAt),
+                    new ProductionOrderPart("Silicone", lastPartArrivesAt.AddDays(-2))
                 ]);
 
             // When

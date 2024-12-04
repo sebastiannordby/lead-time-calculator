@@ -1,3 +1,4 @@
+using LeadTimeCalculator.API.Application.ProductionScheduleFeature;
 using LeadTimeCalculator.API.Application.WorkdayCalendarFeature;
 using LeadTimeCalculator.API.Infrastructure;
 using OpenTelemetry.Metrics;
@@ -23,6 +24,7 @@ builder.Services.AddOpenTelemetry()
 
 builder.Services.AddInfrastructure();
 builder.Services.AddWorkdayCalendarApplicationFeature();
+builder.Services.AddProductionScheduleApplicationFeature();
 
 var app = builder.Build();
 
@@ -40,6 +42,7 @@ var apiEndpointGroup = app
     .WithOpenApi();
 
 apiEndpointGroup.AddWorkdayCalendarFeatureEndpoints();
+apiEndpointGroup.AddProductionScheduleFeatureEndpoints();
 app.MapGet("/", () => TypedResults.Redirect("/scalar/v1"));
 app.Run();
 

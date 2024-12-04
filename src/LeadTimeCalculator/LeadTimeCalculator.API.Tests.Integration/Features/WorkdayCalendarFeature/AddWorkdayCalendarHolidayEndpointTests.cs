@@ -26,6 +26,7 @@ namespace LeadTimeCalculator.API.Tests.Integration.Features.WorkdayCalendarFeatu
 
             // When
             var addHolidayHttpResponse = await _sutClient
+                .WorkdayCalendar
                 .AddWorkdayCalendarHoliday(invalidRequest);
 
             // Then
@@ -47,6 +48,7 @@ namespace LeadTimeCalculator.API.Tests.Integration.Features.WorkdayCalendarFeatu
 
             // When
             var addHolidayHttpResponse = await _sutClient
+                .WorkdayCalendar
                 .AddWorkdayCalendarHoliday(validAddExceptionDayRequest);
 
             // Then
@@ -62,6 +64,7 @@ namespace LeadTimeCalculator.API.Tests.Integration.Features.WorkdayCalendarFeatu
         private async Task<GetWorkdayCalendarsResponse> GetWorkdayCalendars()
         {
             var getWorkdayCalendarsHttpResponse = await _sutClient
+                .WorkdayCalendar
                 .GetWorkdayCalendars(new());
             getWorkdayCalendarsHttpResponse.EnsureSuccessStatusCode();
 
@@ -74,6 +77,7 @@ namespace LeadTimeCalculator.API.Tests.Integration.Features.WorkdayCalendarFeatu
         private async Task<CreateWorkdayCalendarResponse> CreateWorkdayCalendar()
         {
             var createCalendarHttpResponse = await _sutClient
+                .WorkdayCalendar
                 .CreateWorkdayCalendar(
                     new CreateWorkdayCalendarRequest(
                         TimeSpan.FromHours(8),

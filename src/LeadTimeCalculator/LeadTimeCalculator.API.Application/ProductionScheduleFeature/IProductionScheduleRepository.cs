@@ -1,4 +1,4 @@
-﻿using LeadTimeCalculator.API.Domain.ProductionScheduleFeature;
+﻿using LeadTimeCalculator.API.Domain.ProductionScheduleFeature.Models;
 
 namespace LeadTimeCalculator.API.Application.ProductionScheduleFeature
 {

@@ -1,12 +1,17 @@
-﻿namespace LeadTimeCalculator.API.Domain.ProductionScheduleFeature
+﻿using LeadTimeCalculator.API.Domain.ProductionScheduleFeature.Exceptions;
+
+namespace LeadTimeCalculator.API.Domain.ProductionScheduleFeature.Models
 {
-    public sealed class Product
+    public sealed class ProducableProduct
     {
+        private readonly List<ProducableProductPart> _parts;
+
         public string Name { get; }
         public ProductionTime ProductionTime { get; }
         public ProductType ProductType { get; }
+        public IReadOnlyCollection<ProducableProductPart> Parts => _parts;
 
-        public Product(
+        public ProducableProduct(
             string name,
             ProductionTime productionTime,
             ProductType productType)
@@ -17,11 +22,23 @@
             Name = name;
             ProductType = productType ?? throw new ArgumentNullException(nameof(productType));
             ProductionTime = productionTime ?? throw new ArgumentException(nameof(productionTime));
+            _parts = new List<ProducableProductPart>();
+        }
+
+        public void AddPart(
+            ProducableProductPart part)
+        {
+            if (part is null)
+                throw new ArgumentNullException(nameof(part));
+            if (_parts.Contains(part))
+                throw new ProducableProductAddExistingPartException("Product already contains part");
+
+            _parts.Add(part);
         }
 
         public override bool Equals(object? obj)
         {
-            if (obj is not Product other)
+            if (obj is not ProducableProduct other)
                 return false;
 
             return Name.Equals(other.Name, StringComparison.OrdinalIgnoreCase) &&

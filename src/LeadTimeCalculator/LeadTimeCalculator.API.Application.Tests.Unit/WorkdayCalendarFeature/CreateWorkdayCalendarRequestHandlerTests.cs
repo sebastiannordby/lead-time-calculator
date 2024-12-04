@@ -28,7 +28,7 @@ namespace LeadTimeCalculator.API.Application.Tests.Unit.WorkdayCalendarFeature
         }
 
         [Fact]
-        public async Task GivenInvalidRequest_ShouldErrorWithInvalidFields()
+        public async Task InvalidRequest_ErrorsWithInvalidFields()
         {
             // Given
             var invalidRequest = new CreateWorkdayCalendarRequest(

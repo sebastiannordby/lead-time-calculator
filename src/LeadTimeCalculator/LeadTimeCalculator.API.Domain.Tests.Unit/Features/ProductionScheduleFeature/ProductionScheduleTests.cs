@@ -1,4 +1,5 @@
 ﻿using LeadTimeCalculator.API.Domain.ProductionScheduleFeature;
+using LeadTimeCalculator.API.Domain.ProductionScheduleFeature.Models;
 using LeadTimeCalculator.API.Domain.Shared.Exceptions;
 
 namespace LeadTimeCalculator.API.Domain.Tests.Unit.Features.ProductionScheduleFeature
@@ -51,17 +52,17 @@ namespace LeadTimeCalculator.API.Domain.Tests.Unit.Features.ProductionScheduleFe
                 ex.Message, StringComparison.OrdinalIgnoreCase);
         }
 
-        private static Order InitializeOrder(
+        private static ProductionOrder InitializeOrder(
             ProductType productType)
         {
-            return new Order(
-                id: new OrderId(1),
-                product: new Product(
+            return new ProductionOrder(
+                id: new ProductionOrderId(1),
+                product: new ProducableProduct(
                     "Robotics Leg",
                     new ProductionTime(1),
                     productType),
                 orderParts: [
-                    new OrderPart("Silicone", DateTime.Now)
+                    new ProductionOrderPart("Silicone", DateTime.Now)
                 ]);
         }
     }

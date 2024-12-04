@@ -8,8 +8,7 @@ namespace LeadTimeCalculator.API.Tests.Integration
         {
             if (response.StatusCode != HttpStatusCode.OK)
             {
-                var content = await response.Content.ReadAsStringAsync();
-                throw new Exception(content);
+                await ThrowRequestError(response);
             }
 
             Assert.Equal(HttpStatusCode.OK, response.StatusCode);
@@ -19,11 +18,20 @@ namespace LeadTimeCalculator.API.Tests.Integration
         {
             if (response.StatusCode != HttpStatusCode.BadRequest)
             {
-                var content = await response.Content.ReadAsStringAsync();
-                throw new Exception(content);
+                await ThrowRequestError(response);
             }
 
             Assert.Equal(HttpStatusCode.BadRequest, response.StatusCode);
+        }
+
+        private static async Task ThrowRequestError(HttpResponseMessage response)
+        {
+            var content = await response.Content.ReadAsStringAsync();
+            var displayContent = !string.IsNullOrWhiteSpace(content)
+                ? content
+                : "EMPTY CONTENT";
+
+            throw new Exception($"{response.RequestMessage?.Method} : {response.StatusCode} : {displayContent} : {response.RequestMessage?.RequestUri}");
         }
     }
 }

@@ -1,24 +1,23 @@
 ﻿using LeadTimeCalculator.API.Domain.Shared.Contracts;
 using LeadTimeCalculator.API.Domain.Shared.Exceptions;
 
-namespace LeadTimeCalculator.API.Domain.ProductionScheduleFeature
+namespace LeadTimeCalculator.API.Domain.ProductionScheduleFeature.Models
 {
-    public sealed class Order
+    public sealed class ProductionOrder
     {
-        private readonly OrderId _id;
-        private readonly Product _product;
-        private readonly List<OrderPart> _orderParts;
+        public ProductionOrderId Id { get; }
+        public ProducableProduct Product { get; }
+        public IReadOnlyCollection<ProductionOrderPart> OrderParts => _orderParts;
 
-        public Product Product => _product;
-        public OrderId Id => _id;
+        public List<ProductionOrderPart> _orderParts;
 
-        public Order(
-            OrderId id,
-            Product product,
-            IEnumerable<OrderPart> orderParts)
+        public ProductionOrder(
+            ProductionOrderId id,
+            ProducableProduct product,
+            IEnumerable<ProductionOrderPart> orderParts)
         {
-            _id = id;
-            _product = product;
+            Id = id;
+            Product = product;
             _orderParts = orderParts.ToList();
         }
 
@@ -31,7 +30,7 @@ namespace LeadTimeCalculator.API.Domain.ProductionScheduleFeature
 
             var latestPartArrival = _orderParts
                 .Max(part => part.ExpectedArrivalDate!.Value);
-            var productionDuration = _product.ProductionTime;
+            var productionDuration = Product.ProductionTime;
 
             var shippingDate = workdayCalendar
                 .AddWorkingDays(latestPartArrival, productionDuration.Workdays);
