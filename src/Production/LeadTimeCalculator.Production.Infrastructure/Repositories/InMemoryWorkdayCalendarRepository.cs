@@ -1,5 +1,5 @@
-﻿using LeadTimeCalculator.Production.Application.WorkdayCalendarFeature.UseCases.Contracts;
-using LeadTimeCalculator.Production.Domain.Models.WorkdayCalendar;
+﻿using LeadTimeCalculator.Production.Application.Calendar.UseCases.Contracts;
+using LeadTimeCalculator.Production.Domain.Models.Calendar;
 
 namespace LeadTimeCalculator.API.Infrastructure.Repositories
 {

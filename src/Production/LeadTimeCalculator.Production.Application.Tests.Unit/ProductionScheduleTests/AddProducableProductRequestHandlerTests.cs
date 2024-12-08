@@ -1,8 +1,8 @@
 ﻿using LeadTimeCalculator.Production.Application.ProductionScheduleFeature;
 using LeadTimeCalculator.Production.Application.ProductionScheduleFeature.Repositories;
 using LeadTimeCalculator.Production.Application.ProductionScheduleFeature.UseCases.AddProduct;
-using LeadTimeCalculator.Production.Constracts.ProductionScheduleFeature.ProductionSchedule.AddProducableProduct;
-using LeadTimeCalculator.Production.Domain.Models.Schedule;
+using LeadTimeCalculator.Production.Contracts.Schedule.AddProducableProduct;
+using LeadTimeCalculator.Production.Domain.Models.Order;
 using Microsoft.Extensions.DependencyInjection;
 using NSubstitute;
 using ValidationException = FluentValidation.ValidationException;

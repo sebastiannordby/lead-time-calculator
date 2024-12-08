@@ -3,8 +3,8 @@ using LeadTimeCalculator.API.Infrastructure.Endpoints;
 using LeadTimeCalculator.API.Infrastructure.Repositories;
 using LeadTimeCalculator.API.Repositories;
 using LeadTimeCalculator.Production.Application.ProductionScheduleFeature.Repositories;
-using LeadTimeCalculator.Production.Application.WorkdayCalendarFeature.Queries.Contracts;
-using LeadTimeCalculator.Production.Application.WorkdayCalendarFeature.UseCases.Contracts;
+using LeadTimeCalculator.Production.Application.Calendar.Queries.Contracts;
+using LeadTimeCalculator.Production.Application.Calendar.UseCases.Contracts;
 using LeadTimeCalculator.Production.Infrastructure.Queries;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Routing;
@@ -18,7 +18,7 @@ namespace LeadTimeCalculator.Production.Infrastructure
             this IServiceCollection services)
         {
             return services
-                .AddSingleton<IQueryCalendarDetailedView, InMemoryQueryCalendarDetailedView>()
+                .AddSingleton<IQueryWorkdayCalendarDetailedView, InMemoryQueryWorkdayCalendarDetailedView>()
                 .AddSingleton<IWorkdayCalendarRepository, InMemoryWorkdayCalendarRepository>()
                 .AddSingleton<IProducableProductRepository, InMemoryProducableProductRepository>()
                 .AddSingleton<InMemoryWorkdayCalendarRepository>();

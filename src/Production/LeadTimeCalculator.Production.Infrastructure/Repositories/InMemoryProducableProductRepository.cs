@@ -1,5 +1,5 @@
 ﻿using LeadTimeCalculator.Production.Application.ProductionScheduleFeature.Repositories;
-using LeadTimeCalculator.Production.Domain.Models.Schedule;
+using LeadTimeCalculator.Production.Domain.Models.Order;
 
 namespace LeadTimeCalculator.API.Repositories
 {

@@ -1,4 +1,4 @@
-﻿using LeadTimeCalculator.Production.Constracts.ProductionScheduleFeature.ProductionSchedule.AddProducableProduct;
+﻿using LeadTimeCalculator.Production.Contracts.Schedule.AddProducableProduct;
 
 namespace LeadTimeCalculator.API.Tests.Integration.Shared
 {

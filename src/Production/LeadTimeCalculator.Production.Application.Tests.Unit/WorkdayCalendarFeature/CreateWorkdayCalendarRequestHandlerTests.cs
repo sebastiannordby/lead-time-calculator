@@ -1,9 +1,9 @@
 ﻿using Bogus;
-using LeadTimeCalculator.Production.Application.WorkdayCalendarFeature;
-using LeadTimeCalculator.Production.Application.WorkdayCalendarFeature.UseCases.Contracts;
-using LeadTimeCalculator.Production.Application.WorkdayCalendarFeature.UseCases.CreateCalendar;
-using LeadTimeCalculator.Production.Constracts.ProductionScheduleFeature.WorkdayCalendar.CreateCalendar;
-using LeadTimeCalculator.Production.Domain.Models.WorkdayCalendar;
+using LeadTimeCalculator.Production.Application.Calendar;
+using LeadTimeCalculator.Production.Application.Calendar.UseCases.Contracts;
+using LeadTimeCalculator.Production.Application.Calendar.UseCases.CreateCalendar;
+using LeadTimeCalculator.Production.Contracts.Calendar.CreateCalendar;
+using LeadTimeCalculator.Production.Domain.Models.Calendar;
 using Microsoft.Extensions.DependencyInjection;
 using NSubstitute;
 using ValidationException = FluentValidation.ValidationException;

@@ -1,6 +1,6 @@
 ﻿using FluentValidation;
 using LeadTimeCalculator.Production.Application.ProductionScheduleFeature.UseCases.AddProduct;
-using LeadTimeCalculator.Production.Constracts.ProductionScheduleFeature.ProductionSchedule.AddProducableProduct;
+using LeadTimeCalculator.Production.Contracts.Schedule.AddProducableProduct;
 using Microsoft.Extensions.DependencyInjection;
 
 namespace LeadTimeCalculator.Production.Application.ProductionScheduleFeature

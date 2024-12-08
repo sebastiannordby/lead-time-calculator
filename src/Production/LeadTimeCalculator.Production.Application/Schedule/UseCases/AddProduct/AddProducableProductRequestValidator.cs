@@ -1,5 +1,5 @@
 ﻿using FluentValidation;
-using LeadTimeCalculator.Production.Constracts.ProductionScheduleFeature.ProductionSchedule.AddProducableProduct;
+using LeadTimeCalculator.Production.Contracts.Schedule.AddProducableProduct;
 
 namespace LeadTimeCalculator.Production.Application.ProductionScheduleFeature.UseCases.AddProduct
 {
