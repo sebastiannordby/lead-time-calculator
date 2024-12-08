@@ -19,7 +19,7 @@ namespace LeadTimeCalculator.Production.Application.Tests.Unit.WorkdayCalendarFe
         public CreateWorkdayCalendarRequestHandlerTests()
         {
             var serviceCollection = new ServiceCollection();
-            serviceCollection.AddWorkdayCalendarApplicationFeature();
+            serviceCollection.AddProductionApplicationFeature();
 
             _workdayCalendarRepositoryMock = Substitute.For<IWorkdayCalendarRepository>();
             serviceCollection.AddSingleton(_workdayCalendarRepositoryMock);

@@ -2,7 +2,7 @@
 using LeadTimeCalculator.Production.Contracts.Calendar.CreateCalendar;
 using LeadTimeCalculator.Production.Contracts.Calendar.GetCalendars;
 
-namespace LeadTimeCalculator.API.Tests.Integration.Features.WorkdayCalendarFeature
+namespace LeadTimeCalculator.API.Tests.Integration.Contexts.Production.Calendar
 {
     [Collection(LeadTimeCalculatorApiTestCollection.CollectionName)]
     public class AddWorkdayCalendarHolidayEndpointTests
@@ -26,7 +26,8 @@ namespace LeadTimeCalculator.API.Tests.Integration.Features.WorkdayCalendarFeatu
 
             // When
             var addHolidayHttpResponse = await _sutClient
-                .WorkdayCalendar
+                .Production
+                .Calendar
                 .AddWorkdayCalendarHoliday(invalidRequest);
 
             // Then
@@ -48,7 +49,8 @@ namespace LeadTimeCalculator.API.Tests.Integration.Features.WorkdayCalendarFeatu
 
             // When
             var addHolidayHttpResponse = await _sutClient
-                .WorkdayCalendar
+                .Production
+                .Calendar
                 .AddWorkdayCalendarHoliday(validAddExceptionDayRequest);
 
             // Then
@@ -56,7 +58,7 @@ namespace LeadTimeCalculator.API.Tests.Integration.Features.WorkdayCalendarFeatu
 
             var getWorkdayCalendarsResponse = await GetWorkdayCalendars();
 
-            Assert.Contains(getWorkdayCalendarsResponse.CalendarDetailedViews,
+            Xunit.Assert.Contains(getWorkdayCalendarsResponse.CalendarDetailedViews,
                 calendar => calendar.Holidays.Any(holiday =>
                     holiday.Date.Date == thisDate.Date && holiday.IsRecurring));
         }
@@ -64,7 +66,8 @@ namespace LeadTimeCalculator.API.Tests.Integration.Features.WorkdayCalendarFeatu
         private async Task<GetWorkdayCalendarsResponse> GetWorkdayCalendars()
         {
             var getWorkdayCalendarsHttpResponse = await _sutClient
-                .WorkdayCalendar
+                .Production
+                .Calendar
                 .GetWorkdayCalendars(new());
             getWorkdayCalendarsHttpResponse.EnsureSuccessStatusCode();
 
@@ -77,7 +80,8 @@ namespace LeadTimeCalculator.API.Tests.Integration.Features.WorkdayCalendarFeatu
         private async Task<CreateWorkdayCalendarResponse> CreateWorkdayCalendar()
         {
             var createCalendarHttpResponse = await _sutClient
-                .WorkdayCalendar
+                .Production
+                .Calendar
                 .CreateWorkdayCalendar(
                     new CreateWorkdayCalendarRequest(
                         TimeSpan.FromHours(8),

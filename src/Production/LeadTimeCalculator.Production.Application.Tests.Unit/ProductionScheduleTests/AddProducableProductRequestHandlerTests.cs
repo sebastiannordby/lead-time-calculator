@@ -1,5 +1,4 @@
-﻿using LeadTimeCalculator.Production.Application.ProductionScheduleFeature;
-using LeadTimeCalculator.Production.Application.ProductionScheduleFeature.Repositories;
+﻿using LeadTimeCalculator.Production.Application.ProductionScheduleFeature.Repositories;
 using LeadTimeCalculator.Production.Application.ProductionScheduleFeature.UseCases.AddProduct;
 using LeadTimeCalculator.Production.Contracts.Schedule.AddProducableProduct;
 using LeadTimeCalculator.Production.Domain.Models.Order;
@@ -17,7 +16,7 @@ namespace LeadTimeCalculator.Production.Application.Tests.Unit.ProductionSchedul
         public AddProducableProductRequestHandlerTests()
         {
             var serviceCollection = new ServiceCollection();
-            serviceCollection.AddProductionScheduleApplicationFeature();
+            serviceCollection.AddProductionApplicationFeature();
 
             _producableProductRepositoryMock = Substitute
                 .For<IProducableProductRepository>();

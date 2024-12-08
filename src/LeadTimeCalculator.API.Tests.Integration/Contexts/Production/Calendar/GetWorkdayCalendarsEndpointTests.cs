@@ -1,7 +1,7 @@
 ﻿using LeadTimeCalculator.Production.Contracts.Calendar.CreateCalendar;
 using LeadTimeCalculator.Production.Contracts.Calendar.GetCalendars;
 
-namespace LeadTimeCalculator.API.Tests.Integration.Features.WorkdayCalendarFeature
+namespace LeadTimeCalculator.API.Tests.Integration.Contexts.Production.Calendar
 {
     [Collection(LeadTimeCalculatorApiTestCollection.CollectionName)]
     public class GetWorkdayCalendarsEndpointTests
@@ -22,7 +22,8 @@ namespace LeadTimeCalculator.API.Tests.Integration.Features.WorkdayCalendarFeatu
 
             // When
             var getWorkdayCalendarsHttpResponse = await _sutClient
-                .WorkdayCalendar
+                .Production
+                .Calendar
                 .GetWorkdayCalendars(new());
 
             // Then
@@ -31,14 +32,15 @@ namespace LeadTimeCalculator.API.Tests.Integration.Features.WorkdayCalendarFeatu
             var getWorkdayCalendarsResponse = await getWorkdayCalendarsHttpResponse
                 .Content.ReadFromJsonAsync<GetWorkdayCalendarsResponse>();
 
-            Assert.Contains(getWorkdayCalendarsResponse!.CalendarDetailedViews!,
+            Xunit.Assert.Contains(getWorkdayCalendarsResponse!.CalendarDetailedViews!,
                 x => x.Id == createCalendarId);
         }
 
         private async Task<int> CreateWorkdayCalendar()
         {
             var createCalendarHttpResponse = await _sutClient
-                .WorkdayCalendar
+                .Production
+                .Calendar
                 .CreateWorkdayCalendar(
                     new CreateWorkdayCalendarRequest(
                         DefaultWorkdayStartTime: TimeSpan.FromHours(8),

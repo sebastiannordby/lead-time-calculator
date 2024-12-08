@@ -1,19 +1,14 @@
-﻿using LeadTimeCalculator.API.Tests.Integration.Shared;
-
-namespace LeadTimeCalculator.API.Tests.Integration
+﻿namespace LeadTimeCalculator.API.Tests.Integration
 {
     internal class SutClient
     {
-        internal WorkdayCalendarEndpoints WorkdayCalendar { get; }
-        internal ProductionScheduleEndpoints ProductionSchedule { get; }
-
+        internal ProductionEndpoints Production { get; }
         private readonly HttpClient _httpClient;
 
         internal SutClient(HttpClient httpClient)
         {
             _httpClient = httpClient;
-            WorkdayCalendar = new(_httpClient);
-            ProductionSchedule = new(_httpClient);
+            Production = new(httpClient);
         }
     }
 }

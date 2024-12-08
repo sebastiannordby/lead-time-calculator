@@ -14,7 +14,7 @@ namespace LeadTimeCalculator.API.Tests.Integration.Shared
         internal async Task<HttpResponseMessage> AddProducableProduct(
             AddProducableProductRequest request)
         {
-            var uri = "/api/production-schedule/producable-product";
+            var uri = "/api/production/schedule/producable-product";
             var response = await _httpClient
                 .PostAsJsonAsync(uri, request);
 

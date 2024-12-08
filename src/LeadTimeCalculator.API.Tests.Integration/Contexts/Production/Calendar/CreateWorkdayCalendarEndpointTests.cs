@@ -1,7 +1,7 @@
 ﻿using LeadTimeCalculator.Production.Contracts.Calendar.CreateCalendar;
 using LeadTimeCalculator.Production.Contracts.Calendar.GetCalendars;
 
-namespace LeadTimeCalculator.API.Tests.Integration.Features.WorkdayCalendarFeature
+namespace LeadTimeCalculator.API.Tests.Integration.Contexts.Production.Calendar
 {
     [Collection(LeadTimeCalculatorApiTestCollection.CollectionName)]
     public class CreateWorkdayCalendarEndpointTests
@@ -29,7 +29,8 @@ namespace LeadTimeCalculator.API.Tests.Integration.Features.WorkdayCalendarFeatu
 
             // When
             var createCalendarHttpResponse = await _sutClient
-                .WorkdayCalendar
+                .Production
+                .Calendar
                 .CreateWorkdayCalendar(validCreateCalendarRequest);
 
             // Then
@@ -46,7 +47,8 @@ namespace LeadTimeCalculator.API.Tests.Integration.Features.WorkdayCalendarFeatu
 
             // When
             var createCalendarHttpResponse = await _sutClient
-                .WorkdayCalendar
+                .Production
+                .Calendar
                 .CreateWorkdayCalendar(validCreateCalendarRequest);
 
             var createCalendarResponse = await createCalendarHttpResponse
@@ -56,14 +58,15 @@ namespace LeadTimeCalculator.API.Tests.Integration.Features.WorkdayCalendarFeatu
             await Assert.AssertSuccessfulResponse(createCalendarHttpResponse);
 
             var workdayCalendarsResponse = await GetWorkdayCalendars();
-            Assert.Contains(workdayCalendarsResponse.CalendarDetailedViews,
+            Xunit.Assert.Contains(workdayCalendarsResponse.CalendarDetailedViews,
                 x => x.Id == createCalendarResponse!.CalendarId);
         }
 
         private async Task<GetWorkdayCalendarsResponse> GetWorkdayCalendars()
         {
             var getWorkdayCalendarsHttpResponse = await _sutClient
-                .WorkdayCalendar
+                .Production
+                .Calendar
                 .GetWorkdayCalendars(new());
             getWorkdayCalendarsHttpResponse.EnsureSuccessStatusCode();
 

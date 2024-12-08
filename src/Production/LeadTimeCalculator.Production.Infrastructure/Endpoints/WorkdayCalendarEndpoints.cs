@@ -2,11 +2,13 @@
 using LeadTimeCalculator.Production.Application.Calendar.Queries.GetCalendars;
 using LeadTimeCalculator.Production.Application.Calendar.UseCases.AddExceptionDay;
 using LeadTimeCalculator.Production.Application.Calendar.UseCases.AddHoliday;
-using LeadTimeCalculator.Production.Application.Calendar.UseCases.CalculateLeadTime;
+using LeadTimeCalculator.Production.Application.Calendar.UseCases.CalculateTimeBackward;
+using LeadTimeCalculator.Production.Application.Calendar.UseCases.CalculculateTimeForward;
 using LeadTimeCalculator.Production.Application.Calendar.UseCases.CreateCalendar;
 using LeadTimeCalculator.Production.Contracts.Calendar.AddExceptionDay;
 using LeadTimeCalculator.Production.Contracts.Calendar.AddHoliday;
-using LeadTimeCalculator.Production.Contracts.Calendar.CalculateLeadTime;
+using LeadTimeCalculator.Production.Contracts.Calendar.CalculateTimeBackward;
+using LeadTimeCalculator.Production.Contracts.Calendar.CalculateTimeForward;
 using LeadTimeCalculator.Production.Contracts.Calendar.CreateCalendar;
 using LeadTimeCalculator.Production.Contracts.Calendar.GetCalendars;
 using Microsoft.AspNetCore.Http;
@@ -17,6 +19,24 @@ namespace LeadTimeCalculator.API.Infrastructure.Endpoints
 {
     internal sealed class WorkdayCalendarEndpoints
     {
+        internal static async Task<Results<Ok<CalculateWorkdayCalendarTimeForwardResponse>, BadRequest<string>>> CalculateWorkdayCalendarTimeForward(
+            [FromBody] CalculateWorkdayCalendarTimeForwardRequest request,
+            [FromServices] CalculateWorkdayCalendarTimeForwardRequestHandler requestHandler,
+            CancellationToken cancellationToken)
+        {
+            try
+            {
+                var calculateTimeForwardResponse = await requestHandler
+                    .HandleAsync(request, cancellationToken);
+
+                return TypedResults.Ok(calculateTimeForwardResponse);
+            }
+            catch (Exception ex) when (ex is ArgumentException || ex is ValidationException)
+            {
+                return TypedResults.BadRequest(ex.Message);
+            }
+        }
+
         internal static async Task<Results<Ok, BadRequest<string>>> AddExceptionDay(
             [FromBody] AddWorkdayCalendarExceptionDayRequest request,
             [FromServices] AddWorkdayCalendarExceptionDayRequestHandler requestHandler,
@@ -53,17 +73,17 @@ namespace LeadTimeCalculator.API.Infrastructure.Endpoints
             }
         }
 
-        internal static async Task<Results<Ok<CalculateLeadTimeWorkdaysResponse>, BadRequest<string>>> CalculateLeadTimeWorkdays(
-            [FromBody] CalculateLeadTimeWorkdaysRequest request,
-            [FromServices] CalculateLeadTimeWorkdaysRequestHandler requestHandler,
+        internal static async Task<Results<Ok<CalculateWorkdayCalendarTimeBackwardResponse>, BadRequest<string>>> CalculateWorkdayCalendarTimeBackward(
+            [FromBody] CalculateWorkdayCalendarTimeBackwardRequest request,
+            [FromServices] CalculateWorkdayCalendarTimeBackwardRequestHandler requestHandler,
             CancellationToken cancellationToken)
         {
             try
             {
-                var calculateLeadTimeResponse = await requestHandler
+                var calculateTimeBackwardResponse = await requestHandler
                     .HandleAsync(request, cancellationToken);
 
-                return TypedResults.Ok(calculateLeadTimeResponse);
+                return TypedResults.Ok(calculateTimeBackwardResponse);
             }
             catch (Exception ex) when (ex is ArgumentException || ex is ValidationException)
             {
