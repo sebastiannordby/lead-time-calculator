@@ -3,6 +3,7 @@
 [![.NET - Build & Test](https://github.com/sebastiannordby/lead-time-calculator/actions/workflows/ci-workflow.yml/badge.svg)](https://github.com/sebastiannordby/lead-time-calculator/actions/workflows/ci-workflow.yml)
 
 ## Why in worktime?
+
 At my current employer we have a given amount of hours for learning/courses. Since we are refactoring/migrating some older code i thought is was good with some practicing.
 
 ## Showcase
@@ -44,16 +45,19 @@ For this project, I applied some principles/patterns from: **Domain-Driven Desig
 ### Production-context
 
 LeadTimeCalculator.Production.Domain:
+
 - Should contain as much -> to all domain logic
 - Should not be dependent on any internal nor external libraries
 - Should be persistent ignorant
 
 LeadTimeCalculator.Production.Application:
+
 - Acts as an ACL(anti corruption layer) for the domain
 - Should handle requests(commands or queries)
 - Should expose a port(interface) for what it needs to process the requests
 
 LeadTimeCalculator.Production.Infrastructure:
+
 - Contains infrastructure
 - Exposes endpoints -> LeadTimeCalculator.API.Application
 
@@ -62,9 +66,10 @@ LeadTimeCalculator.Production.Infrastructure:
 ### Production:
 
 Domain:
+
 - Should only work with the objects defined in the project or native datatypes
 - Should not use models from other features
-     - Can use models from Shared-folder
+  - Can use models from Shared-folder
 
 ## TODO
 
@@ -78,7 +83,7 @@ There are several areas for improvement that I would address in future iteration
 - ✖ **Proper Persistence**: While optional, this could be improved.
 - ✔ **Continuous Integration**: This should have been configured from the start.
 - ✖ **Continuous Delivery with IaC**: This should also be configured from the beginning.
-- ✖ **Branching Strategy**: Currently, everything is pushed to the `main` branch.
+- ✔ **Branching Strategy**: Pullrequest -> main, smallest changes possible.
 - ✖ **Security/Quality Code Scanning**: Tools like **Snyk** and/or **SonarCloud** should be integrated for scanning and monitoring security and quality.
 - ✖ **Frontend Tests**: There are no tests for the frontend at the moment.
 - ✖ API -> Application: Mediatr Could have been used to dispatch requests to the application layer, to avoid having to reference handlers directly in the API-project.
