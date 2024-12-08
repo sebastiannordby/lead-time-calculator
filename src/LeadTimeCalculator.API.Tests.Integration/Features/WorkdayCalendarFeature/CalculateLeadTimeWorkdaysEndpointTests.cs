@@ -1,4 +1,4 @@
-﻿using LeadTimeCalculator.Production.Constracts.ProductionScheduleFeature.WorkdayCalendar.CalculateLeadTime;
+﻿using LeadTimeCalculator.Production.Contracts.Calendar.CalculateLeadTime;
 
 namespace LeadTimeCalculator.API.Tests.Integration.Features.WorkdayCalendarFeature
 {

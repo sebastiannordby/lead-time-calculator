@@ -1,5 +1,5 @@
 using LeadTimeCalculator.Production.Application.ProductionScheduleFeature;
-using LeadTimeCalculator.Production.Application.WorkdayCalendarFeature;
+using LeadTimeCalculator.Production.Application.Calendar;
 using LeadTimeCalculator.Production.Infrastructure;
 using OpenTelemetry.Metrics;
 using OpenTelemetry.Resources;

@@ -1,5 +1,5 @@
 ﻿using LeadTimeCalculator.Production.Application.ProductionScheduleFeature.UseCases.AddProduct;
-using LeadTimeCalculator.Production.Constracts.ProductionScheduleFeature.ProductionSchedule.AddProducableProduct;
+using LeadTimeCalculator.Production.Contracts.Schedule.AddProducableProduct;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Http.HttpResults;
 using Microsoft.AspNetCore.Mvc;

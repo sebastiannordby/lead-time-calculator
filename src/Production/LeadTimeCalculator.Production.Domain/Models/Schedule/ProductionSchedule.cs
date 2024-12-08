@@ -1,4 +1,5 @@
-﻿using LeadTimeCalculator.Production.Domain.Shared.Exceptions;
+﻿using LeadTimeCalculator.Production.Domain.Models.Order;
+using LeadTimeCalculator.Production.Domain.Shared.Exceptions;
 
 namespace LeadTimeCalculator.Production.Domain.Models.Schedule
 {

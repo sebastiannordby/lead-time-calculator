@@ -1,8 +1,8 @@
-﻿using LeadTimeCalculator.Production.Constracts.ProductionScheduleFeature.WorkdayCalendar.AddExceptionDay;
-using LeadTimeCalculator.Production.Constracts.ProductionScheduleFeature.WorkdayCalendar.AddHoliday;
-using LeadTimeCalculator.Production.Constracts.ProductionScheduleFeature.WorkdayCalendar.CalculateLeadTime;
-using LeadTimeCalculator.Production.Constracts.ProductionScheduleFeature.WorkdayCalendar.CreateCalendar;
-using LeadTimeCalculator.Production.Constracts.ProductionScheduleFeature.WorkdayCalendar.GetCalendars;
+﻿using LeadTimeCalculator.Production.Contracts.Calendar.AddExceptionDay;
+using LeadTimeCalculator.Production.Contracts.Calendar.AddHoliday;
+using LeadTimeCalculator.Production.Contracts.Calendar.CalculateLeadTime;
+using LeadTimeCalculator.Production.Contracts.Calendar.CreateCalendar;
+using LeadTimeCalculator.Production.Contracts.Calendar.GetCalendars;
 
 namespace LeadTimeCalculator.API.Tests.Integration.Shared
 {

@@ -1,6 +1,7 @@
 ﻿using FluentValidation;
 using LeadTimeCalculator.Production.Application.ProductionScheduleFeature.Repositories;
-using LeadTimeCalculator.Production.Constracts.ProductionScheduleFeature.ProductionSchedule.AddProducableProduct;
+using LeadTimeCalculator.Production.Contracts.Schedule.AddProducableProduct;
+using LeadTimeCalculator.Production.Domain.Models.Order;
 using LeadTimeCalculator.Production.Domain.Models.Schedule;
 
 namespace LeadTimeCalculator.Production.Application.ProductionScheduleFeature.UseCases.AddProduct
