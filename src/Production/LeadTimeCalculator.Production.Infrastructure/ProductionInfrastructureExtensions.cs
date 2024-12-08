@@ -2,9 +2,9 @@
 using LeadTimeCalculator.API.Infrastructure.Endpoints;
 using LeadTimeCalculator.API.Infrastructure.Repositories;
 using LeadTimeCalculator.API.Repositories;
-using LeadTimeCalculator.Production.Application.ProductionScheduleFeature.Repositories;
 using LeadTimeCalculator.Production.Application.Calendar.Queries.Contracts;
 using LeadTimeCalculator.Production.Application.Calendar.UseCases.Contracts;
+using LeadTimeCalculator.Production.Application.ProductionScheduleFeature.Repositories;
 using LeadTimeCalculator.Production.Infrastructure.Queries;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Routing;
@@ -24,45 +24,55 @@ namespace LeadTimeCalculator.Production.Infrastructure
                 .AddSingleton<InMemoryWorkdayCalendarRepository>();
         }
 
-        public static RouteGroupBuilder AddProductionEndpoints(
+        public static void AddProductionEndpoints(
             this RouteGroupBuilder apiGroupBuilder)
         {
-            apiGroupBuilder
+            var productionGroupBuilder = apiGroupBuilder
+                .MapGroup("/production");
+
+            productionGroupBuilder
                 .AddWorkdayCalendarFeatureEndpoints();
 
-            apiGroupBuilder
+            productionGroupBuilder
                 .AddProductionScheduleFeatureEndpoints();
-
-            return apiGroupBuilder;
         }
 
         internal static void AddWorkdayCalendarFeatureEndpoints(
             this RouteGroupBuilder builder)
         {
             var workdayCalendarGroup = builder
-                .MapGroup("/workday-calendar");
+                .MapGroup("/calendar");
 
-            workdayCalendarGroup
-                .MapPost(string.Empty, WorkdayCalendarEndpoints.CreateCalendar);
+            workdayCalendarGroup.MapPost(
+                string.Empty,
+                WorkdayCalendarEndpoints.CreateCalendar);
 
-            workdayCalendarGroup
-                .MapPost("/add-holiday", WorkdayCalendarEndpoints.AddHoliday);
+            workdayCalendarGroup.MapPost(
+                "/add-holiday",
+                WorkdayCalendarEndpoints.AddHoliday);
 
-            workdayCalendarGroup
-                .MapPost("/add-exception-day", WorkdayCalendarEndpoints.AddExceptionDay);
+            workdayCalendarGroup.MapPost(
+                "/add-exception-day",
+                WorkdayCalendarEndpoints.AddExceptionDay);
 
-            workdayCalendarGroup
-                .MapPost("/calculate-lead-time-workdays", WorkdayCalendarEndpoints.CalculateLeadTimeWorkdays);
+            workdayCalendarGroup.MapPost(
+                "/list",
+                WorkdayCalendarEndpoints.GetWorkdayCalendars);
 
-            workdayCalendarGroup
-                .MapPost("/list", WorkdayCalendarEndpoints.GetWorkdayCalendars);
+            workdayCalendarGroup.MapPost(
+                "/calculate-time-backward",
+                WorkdayCalendarEndpoints.CalculateWorkdayCalendarTimeBackward);
+
+            workdayCalendarGroup.MapPost(
+                "/calculate-time-forward",
+                WorkdayCalendarEndpoints.CalculateWorkdayCalendarTimeForward);
         }
 
         internal static void AddProductionScheduleFeatureEndpoints(
             this RouteGroupBuilder builder)
         {
             var productionScheduleGroup = builder
-                .MapGroup("/production-schedule");
+                .MapGroup("/schedule");
 
             var producableProductGroup = productionScheduleGroup
                 .MapGroup("/producable-product");

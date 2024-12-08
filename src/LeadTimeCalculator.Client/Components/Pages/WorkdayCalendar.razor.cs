@@ -1,9 +1,9 @@
 ﻿using LeadTimeCalculator.Client.Components.Dialogs;
 using LeadTimeCalculator.Client.Data;
+using LeadTimeCalculator.Production.Contracts.Calendar.GetCalendars;
 using Microsoft.AspNetCore.Components;
 using Radzen;
 using Radzen.Blazor;
-using LeadTimeCalculator.Production.Contracts.Calendar.GetCalendars;
 
 namespace LeadTimeCalculator.Client.Components.Pages
 {
@@ -21,11 +21,11 @@ namespace LeadTimeCalculator.Client.Components.Pages
         private IEnumerable<Appointment> _appointments = [];
         private RadzenScheduler<Appointment>? _scheduler;
 
-        private DateTime _startProductionDate;
-        private double _startProductionDateWorkdaysToComplete;
+        private DateTime _calculateTimeForwardFromDate;
+        private double _calculateTimeForwardWorkingDaysToAdd;
 
-        private DateTime _requestedShippingDate;
-        private double _requestShippingDateWorkdaysToComplete;
+        private DateTime _calculateTimeBackwardsFromDate;
+        private double _calculateTimeBackwardsWorkingDaysToSubtract;
 
         public string PageTitle
         {
@@ -49,34 +49,34 @@ namespace LeadTimeCalculator.Client.Components.Pages
             await SetSelectedCalendar(workdayCalendarId);
         }
 
-        private async Task CalculateShippingDate()
+        private async Task CalculateTimeForward()
         {
-            var calculateLeadTimeResponse = await ApiClient
+            var timeResponse = await ApiClient
                 .WorkdayCalendar
-                .CalculateLeadTimeWorkdaysResponse(new(
-                    CalendarId: _selectedCalendar!.Id,
-                    StartingDate: _startProductionDate,
-                    WorkdaysAdjustment: _startProductionDateWorkdaysToComplete));
+                .CalculateWorkdayCalendarTimeForward(new(
+                    WorkdayCalendarId: _selectedCalendar!.Id,
+                    StartDateTime: _calculateTimeForwardFromDate,
+                    WorkdaysToAdd: _calculateTimeForwardWorkingDaysToAdd));
 
-            var leadTimeMessage = $@"If you start production at {_startProductionDate}
-                and it takes {_startProductionDateWorkdaysToComplete} workdays to produce,
-                you will be able to ship the product at {calculateLeadTimeResponse.StartOrEndTime}";
+            var leadTimeMessage = $@"If you start at {timeResponse.StartDateTime}
+                and it takes {timeResponse.WorkdaysAdded} workdays,
+                you will be finished at {timeResponse.EndDateTime}";
 
             await DialogService.Alert(leadTimeMessage, "Lead Time");
         }
 
-        private async Task CalculateProductionStartDateForShipping()
+        private async Task CalculateTimeBackward()
         {
-            var calculateLeadTimeResponse = await ApiClient
+            var timeResponse = await ApiClient
                 .WorkdayCalendar
-                .CalculateLeadTimeWorkdaysResponse(new(
-                    CalendarId: _selectedCalendar!.Id,
-                    StartingDate: _requestedShippingDate,
-                    WorkdaysAdjustment: -1 * _requestShippingDateWorkdaysToComplete));
+                .CalculateWorkdayCalendarTimeBackward(new(
+                    WorkdayCalendarId: _selectedCalendar!.Id,
+                    DateTimeToSubtractFrom: _calculateTimeBackwardsFromDate,
+                    WorkdaysToSubtract: _calculateTimeBackwardsWorkingDaysToSubtract));
 
-            var leadTimeMessage = $@"If you want to ship at {_requestedShippingDate}
-                and it takes {_requestShippingDateWorkdaysToComplete} workdays to produce,
-                you will have to start production latest at {calculateLeadTimeResponse.StartOrEndTime}";
+            var leadTimeMessage = $@"If you want to be finished at {timeResponse.StartDateTime}
+                and it takes {timeResponse.WorkdaysSubtracted} workdays,
+                you will have to begin at {timeResponse.EndDateTime}";
 
             await DialogService.Alert(leadTimeMessage, "Lead Time");
         }
@@ -90,7 +90,7 @@ namespace LeadTimeCalculator.Client.Components.Pages
             _calendarViews = getCalendarsResponse.CalendarDetailedViews;
         }
 
-        public void OnSchedulerLoadData(SchedulerLoadDataEventArgs args)
+        private void OnSchedulerLoadData(SchedulerLoadDataEventArgs args)
         {
             UpdateAppointmentsForSelectedCalendar(
                 args.Start,
@@ -234,6 +234,26 @@ namespace LeadTimeCalculator.Client.Components.Pages
                  });
 
             await SetSelectedCalendar(_selectedCalendar.Id);
+        }
+
+        private void OnSlotRender(SchedulerSlotRenderEventArgs args)
+        {
+            if (args.View.Text == "Month" && args.Start.Date == DateTime.Today)
+            {
+                args.Attributes["style"] = "background: var(--rz-scheduler-highlight-background-color, rgba(255,220,40,.2));";
+            }
+        }
+
+        private void OnAppointmentRender(SchedulerAppointmentRenderEventArgs<Appointment> args)
+        {
+            if (args.Data.Text.Contains("Holiday"))
+            {
+                args.Attributes["style"] = "background: red";
+            }
+            else if (args.Data.Text.Contains("Exception Day"))
+            {
+                args.Attributes["style"] = "background: yellow; color: black;";
+            }
         }
     }
 }

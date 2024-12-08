@@ -1,6 +1,6 @@
 ﻿using LeadTimeCalculator.Production.Contracts.Schedule.AddProducableProduct;
 
-namespace LeadTimeCalculator.API.Tests.Integration.Features.ProductionScheduleFeature
+namespace LeadTimeCalculator.API.Tests.Integration.Contexts.Production.Schedule
 {
     [Collection(LeadTimeCalculatorApiTestCollection.CollectionName)]
     public class AddProducableProductEndpointTests
@@ -25,7 +25,8 @@ namespace LeadTimeCalculator.API.Tests.Integration.Features.ProductionScheduleFe
 
             // When
             var httpResponse = await _sutClient
-                .ProductionSchedule
+                .Production
+                .Schedule
                 .AddProducableProduct(invalidRequest);
 
             // Then

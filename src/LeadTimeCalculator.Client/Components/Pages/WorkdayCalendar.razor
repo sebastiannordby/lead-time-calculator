@@ -11,57 +11,57 @@
     <div class="p-2 d-flex flex-column gap-3 border-1 border-bottom bg-white">
         <div class="d-flex flex-row gap-2 align-items-center">
             <RadzenLabel
-                Text="Start production:"
-                Style="width: 150px;"
-                Component="_startProductionDate" />
+                Text="Calculate forwards:"
+                Style="width: 175px;"
+                Component="@nameof(_calculateTimeForwardFromDate)" />
             <RadzenDatePicker
-                @bind-Value=@_startProductionDate
-                Name="_startProductionDate"
+                @bind-Value=@_calculateTimeForwardFromDate
+                Name="@nameof(_calculateTimeForwardFromDate)"
                 Disabled="_selectedCalendar is null"
                 ShowCalendarWeek
-                Placeholder="Start production" />
+                Placeholder="Calculate from" />
             <RadzenLabel
                 class="mr-2"
-                Text="Time to produce(workdays):"
-                Component="_startProductionDateWorkdaysToComplete" />
+                Text="Workdays to add:"
+                Component="@nameof(_calculateTimeForwardWorkingDaysToAdd)" />
             <RadzenNumeric
                 ShowUpDown="false"
                 TValue="double"
-                @bind-Value=@_startProductionDateWorkdaysToComplete
+                @bind-Value=@_calculateTimeForwardWorkingDaysToAdd
                 Disabled="_selectedCalendar is null"
-                Name="_startProductionDateWorkdaysToComplete"
+                Name="@nameof(_calculateTimeForwardWorkingDaysToAdd)"
                 Style="width: 115px"
                 Placeholder="Fractional workdays" />
             <RadzenButton 
                 Disabled="_selectedCalendar is null"
-                Click="CalculateShippingDate">Calculate</RadzenButton>
+                Click="CalculateTimeForward">Calculate</RadzenButton>
         </div>
         <div class="d-flex flex-row gap-2 align-items-center">
             <RadzenLabel
-                Text="Requested shipping:"
-                Style="width: 150px;"
-                Component="_requestedShippingDate" />
+                Text="Calculate backwards:"
+                Style="width: 175px;"
+                Component="@nameof(_calculateTimeBackwardsFromDate)" />
             <RadzenDatePicker
-                @bind-Value=@_requestedShippingDate
-                Name="_requestedShippingDate"
+                @bind-Value=@_calculateTimeBackwardsFromDate
+                Name="@nameof(_calculateTimeBackwardsFromDate)"
                 Disabled="_selectedCalendar is null"
                 ShowCalendarWeek
-                Placeholder="Ship product at" />
+                Placeholder="Calculate from" />
             <RadzenLabel
                 class="mr-2"
-                Text="Time to produce(workdays):"
-                Component="_requestShippingDateWorkdaysToComplete" />
+                Text="Workdays to subtract:"
+                Component="@nameof(_calculateTimeBackwardsWorkingDaysToSubtract)" />
             <RadzenNumeric
                 ShowUpDown="false"
                 TValue="double"
-                @bind-Value=@_requestShippingDateWorkdaysToComplete
+                @bind-Value=@_calculateTimeBackwardsWorkingDaysToSubtract
                 Disabled="_selectedCalendar is null"
                 Name="_requestShippingDateWorkdaysToComplete"
                 Style="width: 115px"
                 Placeholder="Fractional workdays" />
             <RadzenButton 
                 Disabled="_selectedCalendar is null"
-                Click="CalculateProductionStartDateForShipping">Calculate</RadzenButton>
+                Click="CalculateTimeBackward">Calculate</RadzenButton>
         </div>
     </div>
 
@@ -108,30 +108,3 @@
         </div>
     }
 </div>
-
-
-
-@code {
-    Dictionary<DateTime, string> events = new Dictionary<DateTime, string>();
-
-    void OnSlotRender(SchedulerSlotRenderEventArgs args)
-    {
-        // Highlight today in month view
-        if (args.View.Text == "Month" && args.Start.Date == DateTime.Today)
-        {
-            args.Attributes["style"] = "background: var(--rz-scheduler-highlight-background-color, rgba(255,220,40,.2));";
-        }
-    }
-
-    void OnAppointmentRender(SchedulerAppointmentRenderEventArgs<Appointment> args)
-    {
-        if (args.Data.Text.Contains("Holiday"))
-        {
-            args.Attributes["style"] = "background: red";
-        }
-        else if(args.Data.Text.Contains("Exception Day")) 
-        {
-            args.Attributes["style"] = "background: yellow; color: black;";
-        }
-    }
-}

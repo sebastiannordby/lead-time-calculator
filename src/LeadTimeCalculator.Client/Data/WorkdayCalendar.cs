@@ -1,7 +1,8 @@
 ﻿using LeadTimeCalculator.Client.Data.Utilities;
 using LeadTimeCalculator.Production.Contracts.Calendar.AddExceptionDay;
 using LeadTimeCalculator.Production.Contracts.Calendar.AddHoliday;
-using LeadTimeCalculator.Production.Contracts.Calendar.CalculateLeadTime;
+using LeadTimeCalculator.Production.Contracts.Calendar.CalculateTimeBackward;
+using LeadTimeCalculator.Production.Contracts.Calendar.CalculateTimeForward;
 using LeadTimeCalculator.Production.Contracts.Calendar.CreateCalendar;
 using LeadTimeCalculator.Production.Contracts.Calendar.GetCalendars;
 
@@ -17,26 +18,41 @@ namespace LeadTimeCalculator.Client.Data
             _httpClient = httpClient;
         }
 
-        public async Task<CalculateLeadTimeWorkdaysResponse> CalculateLeadTimeWorkdaysResponse(
-            CalculateLeadTimeWorkdaysRequest request,
+        public async Task<CalculateWorkdayCalendarTimeForwardResponse> CalculateWorkdayCalendarTimeForward(
+            CalculateWorkdayCalendarTimeForwardRequest request,
             CancellationToken cancellationToken = default)
         {
-            var uri = $"/api/workday-calendar/calculate-lead-time-workdays";
+            var uri = $"/api/production/calendar/calculate-time-forward";
             var httpReponse = await _httpClient
                 .PostAsJsonAsync(uri, request, cancellationToken);
             httpReponse.EnsureSuccessStatusCode();
 
-            var response = await httpReponse.ReadResponseAs<CalculateLeadTimeWorkdaysResponse>();
+            var response = await httpReponse
+                .ReadResponseAs<CalculateWorkdayCalendarTimeForwardResponse>();
 
             return response;
+        }
 
+        public async Task<CalculateWorkdayCalendarTimeBackwardResponse> CalculateWorkdayCalendarTimeBackward(
+            CalculateWorkdayCalendarTimeBackwardRequest request,
+            CancellationToken cancellationToken = default)
+        {
+            var uri = $"/api/production/calendar/calculate-time-backward";
+            var httpReponse = await _httpClient
+                .PostAsJsonAsync(uri, request, cancellationToken);
+            httpReponse.EnsureSuccessStatusCode();
+
+            var response = await httpReponse
+                .ReadResponseAs<CalculateWorkdayCalendarTimeBackwardResponse>();
+
+            return response;
         }
 
         public async Task AddWorkdayCalendarExceptionDayAsync(
             AddWorkdayCalendarExceptionDayRequest request,
             CancellationToken cancellationToken = default)
         {
-            var uri = $"/api/workday-calendar/add-exception-day";
+            var uri = $"/api/production/calendar/add-exception-day";
             var httpReponse = await _httpClient
                 .PostAsJsonAsync(uri, request, cancellationToken);
             httpReponse.EnsureSuccessStatusCode();
@@ -46,7 +62,7 @@ namespace LeadTimeCalculator.Client.Data
             AddWorkdayCalendarHolidayRequest request,
             CancellationToken cancellationToken = default)
         {
-            var uri = $"/api/workday-calendar/add-holiday";
+            var uri = $"/api/production/calendar/add-holiday";
             var httpReponse = await _httpClient
                 .PostAsJsonAsync(uri, request, cancellationToken);
             httpReponse.EnsureSuccessStatusCode();
@@ -56,7 +72,7 @@ namespace LeadTimeCalculator.Client.Data
             GetWorkdayCalendarsRequest request,
             CancellationToken cancellationToken = default)
         {
-            var uri = $"/api/workday-calendar/list";
+            var uri = $"/api/production/calendar/list";
             var httpReponse = await _httpClient
                 .PostAsJsonAsync(uri, request, cancellationToken);
             var response =
@@ -69,7 +85,7 @@ namespace LeadTimeCalculator.Client.Data
             CreateWorkdayCalendarRequest request,
             CancellationToken cancellationToken = default)
         {
-            var uri = "/api/workday-calendar";
+            var uri = "/api/production/calendar";
             var httpResponse = await _httpClient
                 .PostAsJsonAsync(uri, request, cancellationToken);
             var response =
