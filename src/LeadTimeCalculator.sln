@@ -1,0 +1,79 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio Version 17
+VisualStudioVersion = 17.12.35506.116
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "LeadTimeCalculator.API", "LeadTimeCalculator.API\LeadTimeCalculator.API.csproj", "{7D23DA48-AA8C-42FB-94CA-B7000AEFD15F}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "LeadTimeCalculator.Client", "LeadTimeCalculator.Client\LeadTimeCalculator.Client.csproj", "{B93D3E90-8CE0-4A0C-A332-4DAAD7AD8227}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "LeadTimeCalculator.Orchestrator", "LeadTimeCalculator.Orchestrator\LeadTimeCalculator.Orchestrator.csproj", "{403A279B-E118-46D2-93DD-5B10891F1642}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Production", "Production", "{EAA6C464-62B6-4BB2-97E0-479C060CFA77}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "LeadTimeCalculator.Production.Contracts", "Production\LeadTimeCalculator.Production.Contracts\LeadTimeCalculator.Production.Contracts.csproj", "{29513E78-F38A-43F3-8B5C-98BAF83DB7C0}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "LeadTimeCalculator.Production.Domain", "Production\LeadTimeCalculator.Production.Domain\LeadTimeCalculator.Production.Domain.csproj", "{EAC9FCED-D77E-462A-9188-729ABBFA10D3}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "LeadTimeCalculator.Production.Domain.Tests.Unit", "Production\LeadTimeCalculator.Production.Domain.Tests.Unit\LeadTimeCalculator.Production.Domain.Tests.Unit.csproj", "{E15BCB23-84D3-4D13-9DFE-B7991B0068A4}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "LeadTimeCalculator.Production.Application.Tests.Unit", "Production\LeadTimeCalculator.Production.Application.Tests.Unit\LeadTimeCalculator.Production.Application.Tests.Unit.csproj", "{1EE931EA-9595-4F2B-A4DD-B6098BF416B8}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "LeadTimeCalculator.Production.Application", "Production\LeadTimeCalculator.Production.Application\LeadTimeCalculator.Production.Application.csproj", "{9D052D2B-717F-4A67-83B2-236555C6FD7E}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "LeadTimeCalculator.API.Tests.Integration", "LeadTimeCalculator.API.Tests.Integration\LeadTimeCalculator.API.Tests.Integration.csproj", "{FDC212EB-6C3F-4105-94D1-F887A92265E1}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{7D23DA48-AA8C-42FB-94CA-B7000AEFD15F}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{7D23DA48-AA8C-42FB-94CA-B7000AEFD15F}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{7D23DA48-AA8C-42FB-94CA-B7000AEFD15F}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{7D23DA48-AA8C-42FB-94CA-B7000AEFD15F}.Release|Any CPU.Build.0 = Release|Any CPU
+		{B93D3E90-8CE0-4A0C-A332-4DAAD7AD8227}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{B93D3E90-8CE0-4A0C-A332-4DAAD7AD8227}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{B93D3E90-8CE0-4A0C-A332-4DAAD7AD8227}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{B93D3E90-8CE0-4A0C-A332-4DAAD7AD8227}.Release|Any CPU.Build.0 = Release|Any CPU
+		{403A279B-E118-46D2-93DD-5B10891F1642}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{403A279B-E118-46D2-93DD-5B10891F1642}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{403A279B-E118-46D2-93DD-5B10891F1642}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{403A279B-E118-46D2-93DD-5B10891F1642}.Release|Any CPU.Build.0 = Release|Any CPU
+		{29513E78-F38A-43F3-8B5C-98BAF83DB7C0}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{29513E78-F38A-43F3-8B5C-98BAF83DB7C0}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{29513E78-F38A-43F3-8B5C-98BAF83DB7C0}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{29513E78-F38A-43F3-8B5C-98BAF83DB7C0}.Release|Any CPU.Build.0 = Release|Any CPU
+		{EAC9FCED-D77E-462A-9188-729ABBFA10D3}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{EAC9FCED-D77E-462A-9188-729ABBFA10D3}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{EAC9FCED-D77E-462A-9188-729ABBFA10D3}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{EAC9FCED-D77E-462A-9188-729ABBFA10D3}.Release|Any CPU.Build.0 = Release|Any CPU
+		{E15BCB23-84D3-4D13-9DFE-B7991B0068A4}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{E15BCB23-84D3-4D13-9DFE-B7991B0068A4}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{E15BCB23-84D3-4D13-9DFE-B7991B0068A4}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{E15BCB23-84D3-4D13-9DFE-B7991B0068A4}.Release|Any CPU.Build.0 = Release|Any CPU
+		{1EE931EA-9595-4F2B-A4DD-B6098BF416B8}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{1EE931EA-9595-4F2B-A4DD-B6098BF416B8}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{1EE931EA-9595-4F2B-A4DD-B6098BF416B8}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{1EE931EA-9595-4F2B-A4DD-B6098BF416B8}.Release|Any CPU.Build.0 = Release|Any CPU
+		{9D052D2B-717F-4A67-83B2-236555C6FD7E}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{9D052D2B-717F-4A67-83B2-236555C6FD7E}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{9D052D2B-717F-4A67-83B2-236555C6FD7E}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{9D052D2B-717F-4A67-83B2-236555C6FD7E}.Release|Any CPU.Build.0 = Release|Any CPU
+		{FDC212EB-6C3F-4105-94D1-F887A92265E1}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{FDC212EB-6C3F-4105-94D1-F887A92265E1}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{FDC212EB-6C3F-4105-94D1-F887A92265E1}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{FDC212EB-6C3F-4105-94D1-F887A92265E1}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(NestedProjects) = preSolution
+		{29513E78-F38A-43F3-8B5C-98BAF83DB7C0} = {EAA6C464-62B6-4BB2-97E0-479C060CFA77}
+		{EAC9FCED-D77E-462A-9188-729ABBFA10D3} = {EAA6C464-62B6-4BB2-97E0-479C060CFA77}
+		{E15BCB23-84D3-4D13-9DFE-B7991B0068A4} = {EAA6C464-62B6-4BB2-97E0-479C060CFA77}
+		{1EE931EA-9595-4F2B-A4DD-B6098BF416B8} = {EAA6C464-62B6-4BB2-97E0-479C060CFA77}
+		{9D052D2B-717F-4A67-83B2-236555C6FD7E} = {EAA6C464-62B6-4BB2-97E0-479C060CFA77}
+	EndGlobalSection
+EndGlobal

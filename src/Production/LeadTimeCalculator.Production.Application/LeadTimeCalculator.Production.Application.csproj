@@ -1,0 +1,19 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <TargetFramework>net9.0</TargetFramework>
+    <ImplicitUsings>enable</ImplicitUsings>
+    <Nullable>enable</Nullable>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <PackageReference Include="FluentValidation" Version="11.11.0" />
+    <PackageReference Include="Microsoft.Extensions.DependencyInjection.Abstractions" Version="9.0.0" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\LeadTimeCalculator.Production.Contracts\LeadTimeCalculator.Production.Contracts.csproj" />
+    <ProjectReference Include="..\LeadTimeCalculator.Production.Domain\LeadTimeCalculator.Production.Domain.csproj" />
+  </ItemGroup>
+
+</Project>

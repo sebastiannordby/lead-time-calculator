@@ -1,0 +1,17 @@
+<Project Sdk="Microsoft.NET.Sdk.Web">
+
+  <PropertyGroup>
+    <TargetFramework>net9.0</TargetFramework>
+    <Nullable>enable</Nullable>
+    <ImplicitUsings>enable</ImplicitUsings>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <PackageReference Include="Microsoft.Extensions.ServiceDiscovery" Version="9.0.0" />
+    <PackageReference Include="Radzen.Blazor" Version="5.6.7" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\Production\LeadTimeCalculator.Production.Contracts\LeadTimeCalculator.Production.Contracts.csproj" />
+  </ItemGroup>
+</Project>
