@@ -1,5 +1,5 @@
 ﻿using FluentValidation;
-using LeadTimeCalculator.Production.Application.Repositories.WorkdayCalendarFeature;
+using LeadTimeCalculator.Production.Application.WorkdayCalendarFeature.UseCases.Contracts;
 using LeadTimeCalculator.Production.Constracts.ProductionScheduleFeature.WorkdayCalendar.CalculateLeadTime;
 
 namespace LeadTimeCalculator.Production.Application.WorkdayCalendarFeature.UseCases.CalculateLeadTime

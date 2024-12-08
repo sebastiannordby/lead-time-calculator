@@ -1,4 +1,4 @@
-﻿using LeadTimeCalculator.Production.Application.Repositories.WorkdayCalendarFeature;
+﻿using LeadTimeCalculator.Production.Application.WorkdayCalendarFeature.UseCases.Contracts;
 using LeadTimeCalculator.Production.Domain.Models.WorkdayCalendar;
 
 namespace LeadTimeCalculator.API.Infrastructure.Repositories
@@ -6,9 +6,9 @@ namespace LeadTimeCalculator.API.Infrastructure.Repositories
     /// <summary>
     /// In memory collection of workday calendars.
     /// </summary>
-    public class InMemoryWorkdayCalendarRepository : IWorkdayCalendarRepository
+    internal class InMemoryWorkdayCalendarRepository : IWorkdayCalendarRepository
     {
-        private readonly List<WorkdayCalendar> _workdayCalendars = new();
+        private static List<WorkdayCalendar> _workdayCalendars = new();
 
         public async Task<WorkdayCalendar?> FindAsync(
             int calendarId,

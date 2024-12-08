@@ -1,29 +1,26 @@
-﻿using FluentValidation;
-using LeadTimeCalculator.Production.Application.Repositories.WorkdayCalendarFeature;
+﻿using LeadTimeCalculator.API.Infrastructure.Repositories;
+using LeadTimeCalculator.Production.Application.WorkdayCalendarFeature.Queries.Contracts;
 using LeadTimeCalculator.Production.Constracts.ProductionScheduleFeature.WorkdayCalendar.GetCalendars;
 
-namespace LeadTimeCalculator.Production.Application.WorkdayCalendarFeature.UseCases.GetCalendars
+namespace LeadTimeCalculator.Production.Infrastructure.Queries
 {
-    public sealed class GetWorkdayCalendarsRequestHandler
+    /// <summary>
+    /// This implementation should not use the repository to fetch these,
+    /// but since this is an in-memory implementation it "have" to.
+    /// </summary>
+    internal class InMemoryQueryCalendarDetailedView : IQueryCalendarDetailedView
     {
-        private readonly IWorkdayCalendarRepository _workdayCalendarRepository;
-        private readonly IValidator<GetWorkdayCalendarsRequest> _requestValidator;
+        private readonly InMemoryWorkdayCalendarRepository _workdayCalendarRepository;
 
-        public GetWorkdayCalendarsRequestHandler(
-            IWorkdayCalendarRepository workdayCalendarRepository,
-            IValidator<GetWorkdayCalendarsRequest> requestValidator)
+        public InMemoryQueryCalendarDetailedView(
+            InMemoryWorkdayCalendarRepository workdayCalendarRepository)
         {
             _workdayCalendarRepository = workdayCalendarRepository;
-            _requestValidator = requestValidator;
         }
 
-        public async Task<GetWorkdayCalendarsResponse> HandleAsync(
-            GetWorkdayCalendarsRequest request,
-            CancellationToken cancellationToken = default)
+        public async Task<CalendarDetailedView[]> GetCalendarsAsync(
+            CancellationToken cancellationToken)
         {
-            await _requestValidator
-                .ValidateAndThrowAsync(request, cancellationToken);
-
             var calendars = await _workdayCalendarRepository
                 .GetAllAsync(cancellationToken);
             var calendarDetailViews = calendars.Select(calendar =>
@@ -59,11 +56,9 @@ namespace LeadTimeCalculator.Production.Application.WorkdayCalendarFeature.UseCa
                     Holidays = holidays.ToArray(),
                     DefaultWorkingDays = workingDays.ToArray()
                 };
-            });
+            }).ToArray();
 
-            var response = new GetWorkdayCalendarsResponse(calendarDetailViews);
-
-            return response;
+            return calendarDetailViews;
         }
     }
 }

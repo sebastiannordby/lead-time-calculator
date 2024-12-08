@@ -1,6 +1,6 @@
 ﻿using Bogus;
-using LeadTimeCalculator.Production.Application.Repositories.WorkdayCalendarFeature;
 using LeadTimeCalculator.Production.Application.WorkdayCalendarFeature;
+using LeadTimeCalculator.Production.Application.WorkdayCalendarFeature.UseCases.Contracts;
 using LeadTimeCalculator.Production.Application.WorkdayCalendarFeature.UseCases.CreateCalendar;
 using LeadTimeCalculator.Production.Constracts.ProductionScheduleFeature.WorkdayCalendar.CreateCalendar;
 using LeadTimeCalculator.Production.Domain.Models.WorkdayCalendar;

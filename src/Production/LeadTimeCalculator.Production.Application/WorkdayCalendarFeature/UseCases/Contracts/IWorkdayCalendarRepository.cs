@@ -1,6 +1,6 @@
 ﻿using LeadTimeCalculator.Production.Domain.Models.WorkdayCalendar;
 
-namespace LeadTimeCalculator.Production.Application.Repositories.WorkdayCalendarFeature
+namespace LeadTimeCalculator.Production.Application.WorkdayCalendarFeature.UseCases.Contracts
 {
     public interface IWorkdayCalendarRepository
     {

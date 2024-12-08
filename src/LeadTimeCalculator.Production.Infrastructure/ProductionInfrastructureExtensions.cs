@@ -1,20 +1,39 @@
-﻿using LeadTimeCalculator.Production.Application.ProductionScheduleFeature.Repositories;
-using LeadTimeCalculator.Production.Application.Repositories.WorkdayCalendarFeature;
-using LeadTimeCalculator.API.Endpoints;
+﻿using LeadTimeCalculator.API.Endpoints;
 using LeadTimeCalculator.API.Infrastructure.Endpoints;
 using LeadTimeCalculator.API.Infrastructure.Repositories;
 using LeadTimeCalculator.API.Repositories;
+using LeadTimeCalculator.Production.Application.ProductionScheduleFeature.Repositories;
+using LeadTimeCalculator.Production.Application.WorkdayCalendarFeature.Queries.Contracts;
+using LeadTimeCalculator.Production.Application.WorkdayCalendarFeature.UseCases.Contracts;
+using LeadTimeCalculator.Production.Infrastructure.Queries;
+using Microsoft.AspNetCore.Builder;
+using Microsoft.AspNetCore.Routing;
+using Microsoft.Extensions.DependencyInjection;
 
-namespace LeadTimeCalculator.API.Infrastructure
+namespace LeadTimeCalculator.Production.Infrastructure
 {
-    internal static class Extensions
+    public static class ProductionInfrastructureExtensions
     {
-        internal static IServiceCollection AddInfrastructure(
+        public static IServiceCollection AddProductionInfrastructure(
             this IServiceCollection services)
         {
             return services
+                .AddSingleton<IQueryCalendarDetailedView, InMemoryQueryCalendarDetailedView>()
                 .AddSingleton<IWorkdayCalendarRepository, InMemoryWorkdayCalendarRepository>()
-                .AddSingleton<IProducableProductRepository, InMemoryProducableProductRepository>();
+                .AddSingleton<IProducableProductRepository, InMemoryProducableProductRepository>()
+                .AddSingleton<InMemoryWorkdayCalendarRepository>();
+        }
+
+        public static RouteGroupBuilder AddProductionEndpoints(
+            this RouteGroupBuilder apiGroupBuilder)
+        {
+            apiGroupBuilder
+                .AddWorkdayCalendarFeatureEndpoints();
+
+            apiGroupBuilder
+                .AddProductionScheduleFeatureEndpoints();
+
+            return apiGroupBuilder;
         }
 
         internal static void AddWorkdayCalendarFeatureEndpoints(
