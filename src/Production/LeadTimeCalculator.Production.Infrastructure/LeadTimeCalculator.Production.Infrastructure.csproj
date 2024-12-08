@@ -7,7 +7,7 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\Production\LeadTimeCalculator.Production.Application\LeadTimeCalculator.Production.Application.csproj" />
+    <ProjectReference Include="..\\LeadTimeCalculator.Production.Application\LeadTimeCalculator.Production.Application.csproj" />
   </ItemGroup>
 
   <ItemGroup>

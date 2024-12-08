@@ -18,7 +18,7 @@
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\LeadTimeCalculator.Production.Infrastructure\LeadTimeCalculator.Production.Infrastructure.csproj" />
+    <ProjectReference Include="..\Production\LeadTimeCalculator.Production.Infrastructure\LeadTimeCalculator.Production.Infrastructure.csproj" />
     <ProjectReference Include="..\Production\LeadTimeCalculator.Production.Application\LeadTimeCalculator.Production.Application.csproj" />
     <ProjectReference Include="..\Production\LeadTimeCalculator.Production.Contracts\LeadTimeCalculator.Production.Contracts.csproj" />
     <ProjectReference Include="..\Production\LeadTimeCalculator.Production.Domain\LeadTimeCalculator.Production.Domain.csproj" />
