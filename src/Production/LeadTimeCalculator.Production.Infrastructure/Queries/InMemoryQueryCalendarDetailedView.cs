@@ -6,7 +6,7 @@ namespace LeadTimeCalculator.Production.Infrastructure.Queries
 {
     /// <summary>
     /// This implementation should not use the repository to fetch these,
-    /// but since this is an in-memory implementation it "have" to.
+    /// but since this is an in memory implementation it "have" to.
     /// </summary>
     internal class InMemoryQueryCalendarDetailedView : IQueryCalendarDetailedView
     {
