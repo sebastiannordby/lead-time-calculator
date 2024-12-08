@@ -39,34 +39,32 @@ Once you have the necessary tools installed:
 
 I prefer and advocate for **Test-Driven Development (TDD)**, as it ensures that the code remains clean, testable, and well-structured.
 
-For this project, I applied some principles/patterns from **Domain-Driven Design (DDD)**, beginning by analyzing the terminology used in the exercise document and create the models needed for the required functionality.
-Initially, I was not concerned with how the data should be stored, as the problem doesn't dictate a specific persistence strategy.
+For this project, I applied some principles/patterns from: **Domain-Driven Design (DDD)**, **Clean Architecture**, **Hexagonial Architecture**.
 
-The project is organized into features, with the **WorkdayCalendarFeature** as the core domain and functionality.
+### Production-context
 
-LeadTimeCalculator.API.Domain:
+LeadTimeCalculator.Production.Domain:
 - Should contain as much -> to all domain logic
 - Should not be dependent on any internal nor external libraries
 - Should be persistent ignorant
 
-LeadTimeCalculator.API.Application:
+LeadTimeCalculator.Production.Application:
 - Acts as an ACL(anti corruption layer) for the domain
 - Should handle requests(commands or queries)
 - Should expose a port(interface) for what it needs to process the requests
 
-LeadTimeCalculator.API:
+LeadTimeCalculator.Production.Infrastructure:
 - Contains infrastructure
 - Exposes endpoints -> LeadTimeCalculator.API.Application
 
 ## Guidelines
 
-LeadTimeCalculator.API.Domain:
+### Production:
+
+Domain:
 - Should only work with the objects defined in the project or native datatypes
 - Should not use models from other features
      - Can use models from Shared-folder
-
-LeadTimeCalculator.API.Domain.Tests.Unit:
-- Should only mock if dependend upon other contexts
 
 ## TODO
 
