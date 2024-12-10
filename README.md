@@ -87,6 +87,7 @@ There are several areas for improvement that I would address in future iteration
 - ✖ **Security/Quality Code Scanning**: Tools like **Snyk** and/or **SonarCloud** should be integrated for scanning and monitoring security and quality.
 - ✖ **Frontend Tests**: There are no tests for the frontend at the moment.
 - ✖ API -> Application: Mediatr Could have been used to dispatch requests to the application layer, to avoid having to reference handlers directly in the API-project.
+- ✖ Localization for frontend: The calendar now displays in the language of the browser, but everything else is just hard-coded English.
 
 ## General Notes
 
