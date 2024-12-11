@@ -1,8 +1,7 @@
-﻿using LeadTimeCalculator.Production.Domain.Models.Order;
+﻿using LeadTimeCalculator.Production.Domain.Exceptions;
+using LeadTimeCalculator.Production.Domain.Models.Calendar;
+using LeadTimeCalculator.Production.Domain.Models.Order;
 using LeadTimeCalculator.Production.Domain.Models.Schedule;
-using LeadTimeCalculator.Production.Domain.Shared.Contracts;
-using LeadTimeCalculator.Production.Domain.Shared.Exceptions;
-using NSubstitute;
 
 namespace LeadTimeCalculator.Production.Domain.Tests.Unit.Schedule
 {
@@ -12,8 +11,10 @@ namespace LeadTimeCalculator.Production.Domain.Tests.Unit.Schedule
         public void CalculateShippingDate_PartsMissingArrivalDateFails()
         {
             // Given
-            var workdayCalendarMock = Substitute
-                .For<IWorkdayCalendar>();
+            var workdayCalendarMock = new WorkdayCalendar(
+                defaultWorkhoursPerDay: 8,
+                new WorkWeek(new WorkHours(TimeSpan.FromHours(8), TimeSpan.FromHours(16))),
+                holidays: Enumerable.Empty<Holiday>());
 
             var sut = new ProductionOrder(
                 id: new ProductionOrderId(1),
@@ -41,17 +42,13 @@ namespace LeadTimeCalculator.Production.Domain.Tests.Unit.Schedule
         public void CalculateShippingDate_ShouldUseLatestArrivalDateForCalculation()
         {
             // Given
-            var timeNow = DateTime.Now;
-            var lastPartArrivesAt = timeNow.AddDays(10);
+            var lastPartArrivesAt = DateTime.Parse("2024-12-13 08:00");
             var workdaysToProduce = 5;
-            var expectedFinishDate = lastPartArrivesAt.AddDays(5);
 
-            var workdayCalendarMock = Substitute
-                .For<IWorkdayCalendar>();
-
-            workdayCalendarMock
-                .AddWorkingDays(timeNow.AddDays(10), workdaysToProduce)
-                .Returns(lastPartArrivesAt.AddDays(workdaysToProduce));
+            var workdayCalendar = new WorkdayCalendar(
+                defaultWorkhoursPerDay: 8,
+                new WorkWeek(new WorkHours(TimeSpan.FromHours(8), TimeSpan.FromHours(16))),
+                holidays: Enumerable.Empty<Holiday>());
 
             var sut = new ProductionOrder(
                 id: new ProductionOrderId(1),
@@ -67,10 +64,11 @@ namespace LeadTimeCalculator.Production.Domain.Tests.Unit.Schedule
 
             // When
             var shippingDate = sut
-                .CalculateShippingDate(workdayCalendarMock);
+                .CalculateShippingDate(workdayCalendar);
 
             // Then
-            Assert.Equal(expectedFinishDate, shippingDate);
+            var expectedShippingDate = DateTime.Parse("2024-12-19 16:00");
+            Assert.Equal(expectedShippingDate, shippingDate);
         }
     }
 }

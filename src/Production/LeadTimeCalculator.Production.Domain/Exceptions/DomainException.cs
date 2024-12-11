@@ -1,4 +1,4 @@
-﻿namespace LeadTimeCalculator.Production.Domain.Shared.Exceptions
+﻿namespace LeadTimeCalculator.Production.Domain.Exceptions
 {
     public class DomainException : Exception
     {
