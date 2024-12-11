@@ -1,8 +1,8 @@
 ﻿using FluentValidation;
 using LeadTimeCalculator.Production.Application.Calendar.UseCases.Contracts;
 using LeadTimeCalculator.Production.Contracts.Calendar.CreateCalendar;
+using LeadTimeCalculator.Production.Domain.Exceptions;
 using LeadTimeCalculator.Production.Domain.Models.Calendar;
-using LeadTimeCalculator.Production.Domain.Shared.Exceptions;
 
 namespace LeadTimeCalculator.Production.Application.Calendar.UseCases.CreateCalendar
 {

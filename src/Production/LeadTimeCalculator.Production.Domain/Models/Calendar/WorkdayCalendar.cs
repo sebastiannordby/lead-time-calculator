@@ -1,9 +1,9 @@
-﻿using LeadTimeCalculator.Production.Domain.Shared.Contracts;
-using LeadTimeCalculator.Production.Domain.Shared.Exceptions;
+﻿
+using LeadTimeCalculator.Production.Domain.Exceptions;
 
 namespace LeadTimeCalculator.Production.Domain.Models.Calendar
 {
-    public sealed class WorkdayCalendar : IWorkdayCalendar
+    public sealed class WorkdayCalendar
     {
         public int Id { get; private set; }
         private readonly WorkWeek _workWeek;

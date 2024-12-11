@@ -1,5 +1,5 @@
-﻿using LeadTimeCalculator.Production.Domain.Shared.Contracts;
-using LeadTimeCalculator.Production.Domain.Shared.Exceptions;
+﻿using LeadTimeCalculator.Production.Domain.Exceptions;
+using LeadTimeCalculator.Production.Domain.Models.Calendar;
 
 namespace LeadTimeCalculator.Production.Domain.Models.Order
 {
@@ -22,7 +22,7 @@ namespace LeadTimeCalculator.Production.Domain.Models.Order
         }
 
         public DateTime CalculateShippingDate(
-            IWorkdayCalendar workdayCalendar)
+            WorkdayCalendar workdayCalendar)
         {
             if (_orderParts.Any(part => !part.ExpectedArrivalDate.HasValue))
                 throw new DomainException(
