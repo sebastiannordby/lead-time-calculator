@@ -61,5 +61,51 @@ namespace LeadTimeCalculator.Sales.Domain.Tests.Unit.Order
             productAddedEvent.Quantity.Should().Be(productDetails.Quantity);
             productAddedEvent.Price.Should().Be(productDetails.Price);
         }
+
+        [Fact]
+        public void Mark_as_finished_processing_replays_event()
+        {
+            // Given & When
+            var order = new SalesOrder([
+                new OrderCreatedEvent(
+                    1, "Aerodynamics LTD"),
+                new AddProductEvent(
+                    productId: Guid.NewGuid(),
+                    productName: _faker.Random.Word(),
+                    quantity: new(ProductQuantity.QuantityType.Partial, 1.2),
+                    price: _faker.Random.Double(-1000, 1000)),
+                new OrderMarkedAsFinishedProcessingEvent()
+            ]);
+
+            // Then
+            order.UncommittedEvents
+                .Should()
+                .BeEmpty();
+
+            order.Status.Should().Be(SalesOrderStatus.FinishedProcessing);
+        }
+
+        [Fact]
+        public void Mark_as_finished_processing_stores_event()
+        {
+            // Given
+            var order = new SalesOrder([
+                new OrderCreatedEvent(
+                    1, "Aerodynamics LTD"),
+                new AddProductEvent(
+                    productId: Guid.NewGuid(),
+                    productName: _faker.Random.Word(),
+                    quantity: new(ProductQuantity.QuantityType.Partial, 1.2),
+                    price: _faker.Random.Double(-1000, 1000))
+            ]);
+
+            // When
+            order.MarkAsFinishedProcessing();
+
+            // Then
+            order.UncommittedEvents.Count.Should().Be(1);
+            var productAddedEvent = order.UncommittedEvents.OfType<OrderMarkedAsFinishedProcessingEvent>().Single();
+            productAddedEvent.Should().NotBeNull();
+        }
     }
 }

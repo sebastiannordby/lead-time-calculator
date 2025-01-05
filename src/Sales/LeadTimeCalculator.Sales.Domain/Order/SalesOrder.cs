@@ -1,13 +1,16 @@
 ﻿using LeadTimeCalculator.Sales.Domain.Order.Events;
+using LeadTimeCalculator.Sales.Domain.Order.Exceptions;
+using LeadTimeCalculator.Sales.Domain.Order.Snapshots;
 
 namespace LeadTimeCalculator.Sales.Domain.Order
 {
     public class SalesOrder
     {
-        public string Customer { get; private set; } = null!;
-        public List<SalesOrderLine> OrderLines { get; set; } = new();
+        internal string Customer { get; private set; } = null!;
+        internal SalesOrderStatus Status { get; private set; }
+        internal List<SalesOrderLine> OrderLines { get; set; } = new();
 
-        public IReadOnlyCollection<object> UncommittedEvents => _uncommittedEvents.AsReadOnly();
+        internal IReadOnlyCollection<object> UncommittedEvents => _uncommittedEvents.AsReadOnly();
         private readonly List<object> _uncommittedEvents = new();
 
         public SalesOrder(IEnumerable<object> eventStream)
@@ -63,10 +66,30 @@ namespace LeadTimeCalculator.Sales.Domain.Order
                         e.Price));
                     break;
 
+                case OrderMarkedAsFinishedProcessingEvent:
+                    Status = SalesOrderStatus.FinishedProcessing;
+                    break;
+
                 default:
                     throw new ArgumentException(
                         $"Not supported event {@event.GetType().Name}");
             }
+        }
+
+        public void MarkAsFinishedProcessing()
+        {
+            if (!OrderLines.Any())
+                throw new CannotBeMarkedAsFinishedProcessingWithoutOrderlinesException();
+
+            ApplyChange(new OrderMarkedAsFinishedProcessingEvent());
+        }
+
+        public OrderSnapshot GetSnapshot()
+        {
+            return new OrderSnapshot()
+            {
+                Status = Status
+            };
         }
     }
 }

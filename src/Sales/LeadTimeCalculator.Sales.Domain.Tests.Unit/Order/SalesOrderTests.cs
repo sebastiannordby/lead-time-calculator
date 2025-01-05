@@ -1,6 +1,7 @@
 ﻿using Bogus;
 using FluentAssertions;
 using LeadTimeCalculator.Sales.Domain.Order;
+using LeadTimeCalculator.Sales.Domain.Order.Exceptions;
 
 namespace LeadTimeCalculator.Sales.Domain.Tests.Unit.Order
 {
@@ -62,9 +63,47 @@ namespace LeadTimeCalculator.Sales.Domain.Tests.Unit.Order
                     && x.Price == productDetails.Price);
         }
 
+        [Fact]
+        public void Mark_as_finished_processing_fails_without_orderlines()
+        {
+            // Given
+            var order = GetOrder("Mike Tyson");
+
+            // When & Then
+            Assert.Throws<CannotBeMarkedAsFinishedProcessingWithoutOrderlinesException>(() =>
+            {
+                order.MarkAsFinishedProcessing();
+            });
+        }
+
+        [Fact]
+        public void Mark_as_finished_processing_changes_status()
+        {
+            // Given
+            var order = GetOrder("Mike Tyson");
+
+            order.AddProduct(GetRandomProductDetails());
+
+            // When
+            order.MarkAsFinishedProcessing();
+
+            // Then
+            order.GetSnapshot().Status.Should().Be(SalesOrderStatus.FinishedProcessing);
+        }
+
         private SalesOrder GetOrder(string customer)
         {
             return SalesOrder.CreateOrder(1, customer);
+        }
+
+
+        private ProductDetails GetRandomProductDetails()
+        {
+            return new ProductDetails(
+                productId: Guid.NewGuid(),
+                productName: "Airplane Wing",
+                quantity: new(ProductQuantity.QuantityType.Whole, 1),
+                price: 123.45d);
         }
     }
 }

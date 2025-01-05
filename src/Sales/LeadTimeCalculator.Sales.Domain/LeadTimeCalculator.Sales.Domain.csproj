@@ -6,4 +6,7 @@
     <Nullable>enable</Nullable>
   </PropertyGroup>
 
+  <ItemGroup>
+    <InternalsVisibleTo Include="LeadTimeCalculator.Sales.Domain.Tests.Unit" />
+  </ItemGroup>
 </Project>
